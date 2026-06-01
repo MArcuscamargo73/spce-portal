@@ -114,6 +114,15 @@ button{cursor:pointer;font-family:var(--font-body)}
 .fipe-cod{font-family:monospace;font-size:.8rem;color:var(--blue)}
 .empty{padding:4rem;text-align:center;color:var(--text3)}
 .empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.3}
+.range-wrap{display:flex;flex-direction:column;gap:.3rem;min-width:180px;max-width:220px}
+.range-labels{display:flex;justify-content:space-between;font-size:.75rem;color:var(--text3)}
+.dual-range{position:relative;height:36px;display:flex;align-items:center}
+.dual-range input[type=range]{position:absolute;width:100%;height:4px;background:none;outline:none;cursor:pointer;-webkit-appearance:none;pointer-events:none}
+.dual-range input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--green);border:2px solid var(--bg);cursor:pointer;pointer-events:all;transition:transform .15s}
+.dual-range input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
+.dual-range input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--green);border:2px solid var(--bg);cursor:pointer;pointer-events:all}
+.range-track{position:absolute;width:100%;height:4px;background:var(--border2);border-radius:2px;pointer-events:none}
+.range-fill{position:absolute;height:100%;background:var(--green);border-radius:2px}
 .empty h3{font-family:var(--font-head);font-size:1.1rem;color:var(--text2);margin-bottom:.4rem}
 .footer{padding:2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;color:var(--text3);font-size:.82rem}
 .footer strong{color:var(--green)}
@@ -153,10 +162,29 @@ button{cursor:pointer;font-family:var(--font-body)}
   <button class="chip" data-tipo="PHEV" onclick="setTipo(this)">🔌 PHEV</button>
   <button class="chip" data-tipo="HEV" onclick="setTipo(this)">♻️ HEV</button>
   <span class="filter-label">Preço:</span>
-  <button class="chip on" data-preco="all" onclick="setPreco(this)">Todos</button>
-  <button class="chip" data-preco="100" onclick="setPreco(this)">Até R$100k</button>
-  <button class="chip" data-preco="200" onclick="setPreco(this)">Até R$200k</button>
-  <button class="chip" data-preco="300" onclick="setPreco(this)">Até R$300k</button>
+  <div class="range-wrap">
+    <div class="range-labels">
+      <span id="preco-min-label">R$ 0</span>
+      <span id="preco-max-label">R$ 1.000.000</span>
+    </div>
+    <div class="dual-range">
+      <input type="range" id="preco-min" min="0" max="1000000" step="50000" value="0" oninput="updateRanges()">
+      <input type="range" id="preco-max" min="0" max="1000000" step="50000" value="1000000" oninput="updateRanges()">
+      <div class="range-track"><div class="range-fill" id="preco-fill"></div></div>
+    </div>
+  </div>
+  <span class="filter-label">Autonomia:</span>
+  <div class="range-wrap">
+    <div class="range-labels">
+      <span id="auto-min-label">0 km</span>
+      <span id="auto-max-label">600+ km</span>
+    </div>
+    <div class="dual-range">
+      <input type="range" id="auto-min" min="0" max="600" step="50" value="0" oninput="updateRanges()">
+      <input type="range" id="auto-max" min="0" max="600" step="50" value="600" oninput="updateRanges()">
+      <div class="range-track"><div class="range-fill" id="auto-fill"></div></div>
+    </div>
+  </div>
   <span class="filter-count" id="count-label"></span>
 </div>
 <div class="grid-wrap">
@@ -189,7 +217,7 @@ button{cursor:pointer;font-family:var(--font-body)}
 const SB_URL='https://dbevcdmycekcqcpovphb.supabase.co'
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXZjZG15Y2VrY3FjcG92cGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNzg1MDIsImV4cCI6MjA5NTg1NDUwMn0.4DJhA8TB6TP5aLaHbG-HXC0tBsyF47_ctdCwRpIpFyA'
 const H={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'}
-let allData=[],filteredData=[],tipoAtivo='all',precoAtivo='all'
+let allData=[],filteredData=[],tipoAtivo='all'
 
 async function fetchData(){
   try{
@@ -212,11 +240,12 @@ async function fetchData(){
   document.getElementById('stat-total').textContent=allData.length
   document.getElementById('stat-bev').textContent=allData.filter(d=>d.tipo==='BEV').length
   document.getElementById('stat-phev').textContent=allData.filter(d=>d.tipo==='PHEV').length
+  updateRanges()
   renderCards()
 }
 
 function setTipo(btn){document.querySelectorAll('[data-tipo]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');tipoAtivo=btn.dataset.tipo;renderCards()}
-function setPreco(btn){document.querySelectorAll('[data-preco]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');precoAtivo=btn.dataset.preco;renderCards()}
+// setPreco substituído por sliders
 
 function getPreco(d){
   // Usar melhor preço disponível: histórico FIPE ou preço base da versão
@@ -225,17 +254,51 @@ function getPreco(d){
 
 function getFiltered(){
   const q=document.getElementById('search').value.toLowerCase()
+  const pMin=parseInt(document.getElementById('preco-min').value)
+  const pMax=parseInt(document.getElementById('preco-max').value)
+  const aMin=parseInt(document.getElementById('auto-min').value)
+  const aMax=parseInt(document.getElementById('auto-max').value)
+  const pFiltroAtivo=pMin>0||pMax<1000000
+  const aFiltroAtivo=aMin>0||aMax<600
   return allData.filter(d=>{
     const mt=tipoAtivo==='all'||d.tipo===tipoAtivo
+    // Filtro de preço
     const p=getPreco(d)
-    // Se não tem preço e filtro ativo, incluir apenas no "Todos"
-    const mp=precoAtivo==='all'||
-      (p>0 && precoAtivo==='100' && p<=100000)||
-      (p>0 && precoAtivo==='200' && p<=200000)||
-      (p>0 && precoAtivo==='300' && p<=300000)
+    const mp=!pFiltroAtivo||(p>0&&p>=pMin&&p<=pMax)
+    // Filtro de autonomia
+    const a=d.autonomia_pbev_km||0
+    const ma=!aFiltroAtivo||(a>0&&a>=aMin&&(aMax>=600||a<=aMax))
+    // Busca
     const mq=!q||(d.marca+' '+d.modelo+' '+(d.versao||'')).toLowerCase().includes(q)
-    return mt&&mp&&mq
+    return mt&&mp&&ma&&mq
   })
+}
+
+function updateRanges(){
+  const pMin=parseInt(document.getElementById('preco-min').value)
+  const pMax=parseInt(document.getElementById('preco-max').value)
+  const aMin=parseInt(document.getElementById('auto-min').value)
+  const aMax=parseInt(document.getElementById('auto-max').value)
+  // Garantir min <= max
+  if(pMin>pMax){document.getElementById('preco-min').value=pMax}
+  if(aMin>aMax){document.getElementById('auto-min').value=aMax}
+  // Atualizar labels
+  const pMinF=parseInt(document.getElementById('preco-min').value)
+  const pMaxF=parseInt(document.getElementById('preco-max').value)
+  const aMinF=parseInt(document.getElementById('auto-min').value)
+  const aMaxF=parseInt(document.getElementById('auto-max').value)
+  document.getElementById('preco-min-label').textContent='R$ '+pMinF.toLocaleString('pt-BR')
+  document.getElementById('preco-max-label').textContent=pMaxF>=1000000?'Qualquer':'R$ '+pMaxF.toLocaleString('pt-BR')
+  document.getElementById('auto-min-label').textContent=aMinF+'km'
+  document.getElementById('auto-max-label').textContent=aMaxF>=600?'600+ km':aMaxF+'km'
+  // Atualizar barra colorida
+  const pPct1=pMinF/1000000*100, pPct2=pMaxF/1000000*100
+  const aPct1=aMinF/600*100, aPct2=aMaxF/600*100
+  const pFill=document.getElementById('preco-fill')
+  const aFill=document.getElementById('auto-fill')
+  if(pFill){pFill.style.left=pPct1+'%';pFill.style.width=(pPct2-pPct1)+'%'}
+  if(aFill){aFill.style.left=aPct1+'%';aFill.style.width=(aPct2-aPct1)+'%'}
+  renderCards()
 }
 
 function fp(v){return v?'R$ '+Math.round(v).toLocaleString('pt-BR'):null}
