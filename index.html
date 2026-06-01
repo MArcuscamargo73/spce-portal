@@ -1,217 +1,411 @@
--- ============================================================
--- SPCE — Atualização COMPLETA de dados técnicos
--- Fontes: iCarros, Webmotors, CanalVE, GWM oficial,
---         Wikipedia, Revista Carro, fichacompleta.com.br
--- Data: Mai/2026
--- ============================================================
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPCE — Seu Primeiro Carro Elétrico</title>
+<meta name="description" content="O maior guia de veículos eletrificados do Brasil. Dados oficiais INMETRO, preços FIPE e fichas técnicas completas.">
+<meta property="og:title" content="SPCE — Seu Primeiro Carro Elétrico">
+<meta property="og:description" content="95 versões de carros elétricos e híbridos com dados validados.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0f0d;--bg2:#111810;--bg3:#16201a;--bg4:#1c2a22;
+  --green:#22c55e;--green2:#16a34a;--green3:#15803d;--greendim:#052e16;
+  --teal:#2dd4bf;--blue:#38bdf8;
+  --text:#f0fdf4;--text2:#a7c4b0;--text3:#6b9078;
+  --border:#1e3328;--border2:#2a4a37;
+  --card:#111810;--red:#f87171;--amber:#fbbf24;
+  --font-head:'Syne',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+  --r:10px;--r2:16px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:var(--font-body)}
+.header{position:sticky;top:0;z-index:100;background:rgba(10,15,13,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{font-family:var(--font-head);font-weight:800;font-size:1.3rem;background:linear-gradient(135deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo span{font-weight:400;font-size:.9rem;-webkit-text-fill-color:var(--text3);margin-left:.5rem}
+.hero{padding:4rem 2rem 2rem;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(34,197,94,.08),transparent);}
+.hero-tag{display:inline-flex;align-items:center;gap:.4rem;background:var(--greendim);border:1px solid var(--green3);color:var(--green);font-size:.78rem;font-weight:500;letter-spacing:.05em;padding:.3rem .8rem;border-radius:100px;margin-bottom:1.2rem}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:var(--font-head);font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;margin-bottom:.8rem}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero p{color:var(--text2);font-size:1.05rem;max-width:520px;margin-bottom:2rem}
+.hero-stats{display:flex;gap:2rem;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column}
+.stat-n{font-family:var(--font-head);font-size:1.8rem;font-weight:700;color:var(--green)}
+.stat-l{font-size:.8rem;color:var(--text3);letter-spacing:.03em}
+.filters{padding:1.5rem 2rem;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:.75rem;align-items:center}
+.filter-label{font-size:.75rem;color:var(--text3);letter-spacing:.05em;padding:.3rem 0}
+.chip{background:none;border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:100px;font-size:.82rem;transition:all .18s;white-space:nowrap}
+.chip:hover{border-color:var(--green);color:var(--green)}
+.chip.on{background:var(--green);border-color:var(--green);color:#000;font-weight:500}
+.search-wrap{flex:1;min-width:200px;position:relative;max-width:320px}
+.search-wrap input{width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:.45rem .9rem .45rem 2.2rem;border-radius:var(--r);font-size:.9rem;font-family:var(--font-body);outline:none;transition:border-color .2s}
+.search-wrap input:focus{border-color:var(--green)}
+.search-wrap input::placeholder{color:var(--text3)}
+.search-icon{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:var(--text3);font-size:1rem;pointer-events:none}
+.filter-count{margin-left:auto;font-size:.82rem;color:var(--text3)}
+.grid-wrap{padding:1.5rem 2rem 4rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
+.car-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:all .22s;cursor:pointer;position:relative}
+.car-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.card-badge{position:absolute;top:.75rem;right:.75rem;z-index:2;font-size:.7rem;font-weight:600;letter-spacing:.06em;padding:.25rem .6rem;border-radius:100px}
+.badge-bev{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.badge-phev{background:rgba(56,189,248,.12);color:var(--blue);border:1px solid rgba(56,189,248,.25)}
+.badge-hev{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.2)}
+.badge-desc{background:rgba(107,144,120,.1);color:var(--text3);border:1px solid var(--border)}
+.card-img-wrap{height:160px;background:var(--bg3);display:flex;align-items:center;justify-content:center;transition:background .22s;overflow:hidden}
+.car-card:hover .card-img-wrap{background:var(--bg4)}
+.card-img-wrap img{width:100%;height:100%;object-fit:cover}
+.card-img-placeholder{font-family:var(--font-head);font-size:2rem;font-weight:800;color:var(--border2)}
+.card-body{padding:1rem 1.1rem 1.1rem}
+.card-marca{font-size:.72rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem}.card-ano{color:var(--green);font-weight:600;letter-spacing:0}
+.card-nome{font-family:var(--font-head);font-size:1.2rem;font-weight:800;margin-bottom:.1rem;line-height:1.15}
+.card-versao{font-size:.85rem;color:var(--text2);margin-bottom:.9rem;font-weight:500}
+.card-specs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem .6rem;margin-bottom:1rem}
+.spec{display:flex;flex-direction:column}
+.spec-v{font-size:.92rem;font-weight:500;color:var(--text)}
+.spec-v.green{color:var(--green)}
+.spec-l{font-size:.72rem;color:var(--text3)}
+.card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:.8rem;border-top:1px solid var(--border)}
+.card-preco{font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--green)}
+.card-preco small{font-size:.7rem;color:var(--text3);font-weight:400;font-family:var(--font-body);margin-left:.2rem}
+.card-arrow{color:var(--text3);font-size:1rem;transition:all .2s}
+.car-card:hover .card-arrow{color:var(--green);transform:translateX(3px)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.open{opacity:1;pointer-events:all}
+.detail{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:860px;transform:translateY(20px);transition:transform .25s;overflow:hidden}
+.overlay.open .detail{transform:translateY(0)}
+.detail-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.detail-marca{font-size:.75rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.detail-nome{font-family:var(--font-head);font-size:1.4rem;font-weight:800}
+.detail-versao{font-size:.9rem;color:var(--text2)}
+.close-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:36px;height:36px;border-radius:50%;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.close-btn:hover{border-color:var(--red);color:var(--red)}
+.detail-img{height:220px;background:var(--bg3);overflow:hidden}
+.detail-img img{width:100%;height:100%;object-fit:cover}
+.detail-img-placeholder{height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:3rem;font-weight:800;color:var(--border2)}
+.detail-body{padding:1.5rem}
+.detail-preco-wrap{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;background:var(--greendim);border:1px solid var(--green3);border-radius:var(--r2);padding:1rem 1.25rem;margin-bottom:1.5rem}
+.detail-preco{font-family:var(--font-head);font-size:1.8rem;font-weight:800;color:var(--green)}
+.detail-preco-label{font-size:.8rem;color:var(--text3)}
+.detail-preco-fonte{font-size:.75rem;color:var(--green);background:rgba(34,197,94,.1);padding:.2rem .6rem;border-radius:100px;margin-left:auto}
+.section-title{font-family:var(--font-head);font-size:.78rem;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.8rem;margin-top:1.25rem}
+.specs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.6rem}
+.spec-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem .9rem}
+.spec-card .sv{font-size:1rem;font-weight:500;color:var(--text);margin-bottom:.15rem}
+.spec-card .sv.g{color:var(--green)}
+.spec-card .sl{font-size:.72rem;color:var(--text3)}
+.tags-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+.tag{font-size:.78rem;padding:.3rem .75rem;border-radius:100px;border:1px solid var(--border2);color:var(--text2)}
+.tag.green{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--green)}
+.tag.blue{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.2);color:var(--blue)}
+.tag.amber{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2);color:var(--amber)}
+.fipe-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;margin-top:.5rem;display:flex;flex-direction:column;gap:.3rem}
+.fipe-row{display:flex;justify-content:space-between;align-items:center;font-size:.85rem}
+.fipe-row .lbl{color:var(--text3)}
+.fipe-row .val{font-weight:500;color:var(--text)}
+.fipe-row .val.green{color:var(--green)}
+.fipe-cod{font-family:monospace;font-size:.8rem;color:var(--blue)}
+.empty{padding:4rem;text-align:center;color:var(--text3)}
+.empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.3}
+.range-wrap{display:flex;flex-direction:column;gap:.3rem;min-width:180px;max-width:220px}
+.range-labels{display:flex;justify-content:space-between;font-size:.75rem;color:var(--text3)}
+.single-range{position:relative;height:36px;display:flex;align-items:center}
+.single-range input[type=range]{position:absolute;width:100%;height:4px;background:none;outline:none;cursor:pointer;-webkit-appearance:none;z-index:2}
+.single-range input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--green);border:2px solid var(--bg);cursor:pointer;transition:transform .15s;box-shadow:0 2px 8px rgba(34,197,94,.4)}
+.single-range input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.single-range input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--green);border:2px solid var(--bg);cursor:pointer}
+.range-track{position:absolute;width:100%;height:4px;background:var(--border2);border-radius:2px;z-index:1}
+.range-fill{position:absolute;height:100%;background:var(--green);border-radius:2px}
+.range-val{color:var(--green);font-weight:500}
+.empty h3{font-family:var(--font-head);font-size:1.1rem;color:var(--text2);margin-bottom:.4rem}
+.footer{padding:2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;color:var(--text3);font-size:.82rem}
+.footer strong{color:var(--green)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:600px){
+  .header{padding:0 1rem}
+  .hero,.filters,.grid-wrap{padding-left:1rem;padding-right:1rem}
+  .hero h1{font-size:1.8rem}
+  .detail{border-radius:16px 16px 0 0}
+  .overlay{padding:0;align-items:flex-end}
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="logo">SPCE <span>Seu Primeiro Carro Elétrico</span></div>
+</header>
+<section class="hero">
+  <div class="hero-tag">Base atualizada Mai/2026</div>
+  <h1>Encontre seu próximo<br><em>carro elétrico</em></h1>
+  <p>O maior guia de veículos eletrificados do Brasil. Dados oficiais INMETRO, preços FIPE e fichas técnicas completas.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-n" id="stat-total">—</span><span class="stat-l">versões disponíveis</span></div>
+    <div class="stat"><span class="stat-n" id="stat-bev">—</span><span class="stat-l">elétricos puros</span></div>
+    <div class="stat"><span class="stat-n" id="stat-phev">—</span><span class="stat-l">plug-in híbridos</span></div>
+    <div class="stat"><span class="stat-n" id="stat-marcas">20</span><span class="stat-l">marcas</span></div>
+  </div>
+</section>
+<div class="filters">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="Buscar marca ou modelo..." oninput="renderCards()">
+  </div>
+  <span class="filter-label">Tipo:</span>
+  <button class="chip on" data-tipo="all" onclick="setTipo(this)">Todos</button>
+  <button class="chip" data-tipo="BEV" onclick="setTipo(this)">⚡ BEV</button>
+  <button class="chip" data-tipo="PHEV" onclick="setTipo(this)">🔌 PHEV</button>
+  <button class="chip" data-tipo="HEV" onclick="setTipo(this)">♻️ HEV</button>
+  <span class="filter-label">Preço máximo:</span>
+  <div class="range-wrap">
+    <div class="range-labels">
+      <span>Qualquer</span>
+      <span id="preco-label" class="range-val">Qualquer</span>
+    </div>
+    <div class="single-range">
+      <input type="range" id="preco-max" min="0" max="1000000" step="50000" value="1000000" oninput="updateRanges()">
+      <div class="range-track"><div class="range-fill" id="preco-fill"></div></div>
+    </div>
+  </div>
+  <span class="filter-label">Autonomia mínima:</span>
+  <div class="range-wrap">
+    <div class="range-labels">
+      <span>Qualquer</span>
+      <span id="auto-label" class="range-val">Qualquer</span>
+    </div>
+    <div class="single-range">
+      <input type="range" id="auto-min" min="0" max="600" step="50" value="0" oninput="updateRanges()">
+      <div class="range-track"><div class="range-fill" id="auto-fill"></div></div>
+    </div>
+  </div>
+  <span class="filter-count" id="count-label"></span>
+</div>
+<div class="grid-wrap">
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none">
+    <div class="empty-icon">🔍</div>
+    <h3>Nenhum resultado encontrado</h3>
+    <p>Tente ajustar os filtros ou a busca</p>
+  </div>
+</div>
+<div class="overlay" id="overlay" onclick="closeDetail(event)">
+  <div class="detail" id="detail">
+    <div class="detail-header">
+      <div>
+        <div class="detail-marca" id="d-marca"></div>
+        <div class="detail-nome" id="d-nome"></div>
+        <div class="detail-versao" id="d-versao"></div>
+      </div>
+      <button class="close-btn" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="detail-img" id="d-img"></div>
+    <div class="detail-body" id="d-body"></div>
+  </div>
+</div>
+<footer class="footer">
+  <span>© 2026 <strong>SPCE</strong> — Seu Primeiro Carro Elétrico</span>
+  <span>Dados: INMETRO · ABVE · FIPE · Fabricantes</span>
+</footer>
+<script>
+const SB_URL='https://dbevcdmycekcqcpovphb.supabase.co'
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXZjZG15Y2VrY3FjcG92cGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNzg1MDIsImV4cCI6MjA5NTg1NDUwMn0.4DJhA8TB6TP5aLaHbG-HXC0tBsyF47_ctdCwRpIpFyA'
+const H={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'}
+let allData=[],filteredData=[],tipoAtivo='all'
 
--- ══ BYD ══════════════════════════════════════════════════════
+async function fetchData(){
+  try{
+    const[r1,r2]=await Promise.all([
+      fetch(SB_URL+'/rest/v1/vw_catalogo?select=*&order=marca,modelo,versao',{headers:H}),
+      fetch(SB_URL+'/rest/v1/vw_preco_atual?select=*',{headers:H})
+    ])
+    allData=await r1.json()
+    const precos=await r2.json()
+    const pm={}
+    precos.forEach(p=>{pm[p.versao_id]=p})
+    allData.forEach(d=>{
+      if(pm[d.versao_id]){
+        d.preco_atual=pm[d.versao_id].preco_0km
+        d.preco_usado=pm[d.versao_id].preco_usado
+        d.fonte_hist=pm[d.versao_id].fonte
+      }
+    })
+  }catch(e){console.error('Erro Supabase:',e);document.getElementById('count-label').textContent='Erro ao carregar dados'}
+  document.getElementById('stat-total').textContent=allData.length
+  document.getElementById('stat-bev').textContent=allData.filter(d=>d.tipo==='BEV').length
+  document.getElementById('stat-phev').textContent=allData.filter(d=>d.tipo==='PHEV').length
+  updateRanges()
+  renderCards()
+}
 
--- Dolphin Mini
-UPDATE modelos SET comprimento_mm=3780,largura_mm=1715,altura_mm=1580,entre_eixos_mm=2500,vao_livre_mm=110 WHERE slug='byd-dolphin-mini';
-UPDATE versoes SET potencia_cv=75,torque_nm=135,zero_100_s=14.9,vel_max_kmh=130,peso_kg=1245,porta_malas_l=230,passageiros=5 WHERE slug='byd-dolphin-mini-eletrico-5l';
-UPDATE versoes SET potencia_cv=75,torque_nm=135,zero_100_s=14.9,vel_max_kmh=130,peso_kg=1239,porta_malas_l=230,passageiros=5 WHERE slug='byd-dolphin-mini-eletrico-4l';
+function setTipo(btn){document.querySelectorAll('[data-tipo]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');tipoAtivo=btn.dataset.tipo;renderCards()}
+// setPreco substituído por sliders
 
--- Dolphin GS e SE
-UPDATE modelos SET comprimento_mm=4125,largura_mm=1770,altura_mm=1570,entre_eixos_mm=2700,vao_livre_mm=130 WHERE slug='byd-dolphin';
-UPDATE versoes SET potencia_cv=95,torque_nm=180,zero_100_s=10.9,vel_max_kmh=160,peso_kg=1490,porta_malas_l=250,passageiros=5 WHERE slug='byd-dolphin-gs';
-UPDATE versoes SET potencia_cv=95,torque_nm=180,zero_100_s=10.9,vel_max_kmh=160,peso_kg=1510,porta_malas_l=312,passageiros=5 WHERE slug='byd-dolphin-se';
-UPDATE modelos SET comprimento_mm=4290,largura_mm=1770,altura_mm=1570,entre_eixos_mm=2700,vao_livre_mm=130 WHERE slug='byd-dolphin-se';
+function getPreco(d){
+  // Usar melhor preço disponível: histórico FIPE ou preço base da versão
+  return d.preco_atual || d.preco_base || 0
+}
 
--- Dolphin Plus
-UPDATE versoes SET potencia_cv=204,torque_nm=310,zero_100_s=7.0,vel_max_kmh=160,peso_kg=1530,porta_malas_l=345,passageiros=5 WHERE slug='byd-dolphin-plus';
+function getFiltered(){
+  const q=document.getElementById('search').value.toLowerCase()
+  const pMax=parseInt(document.getElementById('preco-max').value)
+  const aMin=parseInt(document.getElementById('auto-min').value)
+  const pFiltroAtivo=pMax<1000000
+  const aFiltroAtivo=aMin>0
+  return allData.filter(d=>{
+    const mt=tipoAtivo==='all'||d.tipo===tipoAtivo
+    // Preço: mostrar carros até o valor máximo selecionado
+    // Carros sem preço: excluir apenas se filtro de preço estiver ativo
+    const p=getPreco(d)
+    const mp=!pFiltroAtivo||(p>0&&p<=pMax)
+    // Autonomia: mostrar carros com pelo menos X km
+    // Carros sem autonomia (HEVs): excluir apenas se filtro ativo
+    const a=d.autonomia_pbev_km||0
+    const ma=!aFiltroAtivo||(a>=aMin)
+    // Busca por texto
+    const mq=!q||(d.marca+' '+d.modelo+' '+(d.versao||'')).toLowerCase().includes(q)
+    return mt&&mp&&ma&&mq
+  })
+}
 
--- Yuan Pro
-UPDATE modelos SET comprimento_mm=4310,largura_mm=1830,altura_mm=1675,entre_eixos_mm=2620,vao_livre_mm=150 WHERE slug='byd-yuan-pro';
-UPDATE versoes SET potencia_cv=177,torque_nm=290,zero_100_s=8.5,vel_max_kmh=160,peso_kg=1550,porta_malas_l=265,passageiros=5 WHERE slug='byd-yuan-pro-ev';
-UPDATE versoes SET potencia_cv=215,torque_nm=300,zero_100_s=7.5,vel_max_kmh=180,peso_kg=1560,porta_malas_l=265,passageiros=5 WHERE slug='byd-yuan-pro-dmi';
+function updateRanges(){
+  const pMax=parseInt(document.getElementById('preco-max').value)
+  const aMin=parseInt(document.getElementById('auto-min').value)
+  // Labels
+  const pLbl=document.getElementById('preco-label')
+  const aLbl=document.getElementById('auto-label')
+  if(pLbl) pLbl.textContent=pMax>=1000000?'Qualquer':'Até R$ '+pMax.toLocaleString('pt-BR')
+  if(aLbl) aLbl.textContent=aMin===0?'Qualquer':'Mín. '+aMin+' km'
+  // Barras — preço: preenche da esquerda até o handle
+  const pPct=pMax/1000000*100
+  const aPct=aMin/600*100
+  const pFill=document.getElementById('preco-fill')
+  const aFill=document.getElementById('auto-fill')
+  if(pFill){pFill.style.left='0%';pFill.style.width=pPct+'%'}
+  // Autonomia: preenche do handle até o fim (representa mínimo)
+  if(aFill){aFill.style.left=aPct+'%';aFill.style.width=(100-aPct)+'%'}
+  renderCards()
+}
 
--- Yuan Plus
-UPDATE modelos SET comprimento_mm=4455,largura_mm=1875,altura_mm=1615,entre_eixos_mm=2720,vao_livre_mm=150 WHERE slug='byd-yuan-plus';
-UPDATE versoes SET potencia_cv=204,torque_nm=310,zero_100_s=7.3,vel_max_kmh=160,peso_kg=1750,porta_malas_l=440,passageiros=5 WHERE slug='byd-yuan-plus';
+function fp(v){return v?'R$ '+Math.round(v).toLocaleString('pt-BR'):null}
+function fn(v,u=''){return(v===null||v===undefined)?'—':v.toLocaleString('pt-BR')+(u?' '+u:'')}
+function bc(tipo,status){if(status==='Descontinuado')return'badge-desc';return tipo==='BEV'?'badge-bev':tipo==='PHEV'?'badge-phev':'badge-hev'}
+function tl(tipo){return tipo==='BEV'?'⚡ BEV':tipo==='PHEV'?'🔌 PHEV':'♻️ HEV'}
+function gi(m,mo){return(m[0]+(mo[0]||'')).toUpperCase()}
+function sc(v,u){return`<div class="spec-card"><div class="sv${u===true?' g':''}">${v}</div><div class="sl">${typeof u==='string'?u:''}</div></div>`}
 
--- Seal
-UPDATE modelos SET comprimento_mm=4800,largura_mm=1875,altura_mm=1460,entre_eixos_mm=2920,vao_livre_mm=130 WHERE slug='byd-seal';
-UPDATE versoes SET potencia_cv=313,torque_nm=360,zero_100_s=5.9,vel_max_kmh=180,peso_kg=1920,porta_malas_l=400,passageiros=5 WHERE slug='byd-seal-standard-range';
-UPDATE versoes SET potencia_cv=530,torque_nm=670,zero_100_s=3.8,vel_max_kmh=180,peso_kg=2065,porta_malas_l=400,passageiros=5 WHERE slug='byd-seal-awd';
+function renderCards(){
+  filteredData=getFiltered()
+  const grid=document.getElementById('grid'),empty=document.getElementById('empty')
+  document.getElementById('count-label').textContent=filteredData.length+' resultado'+(filteredData.length!==1?'s':'')
+  if(!filteredData.length){grid.innerHTML='';empty.style.display='block';return}
+  empty.style.display='none'
+  grid.innerHTML=filteredData.map((d,i)=>`
+  <div class="car-card" onclick="openDetail(${i})" style="animation:fadeIn .3s ease ${(i%12)*.04}s both">
+    <span class="card-badge ${bc(d.tipo,d.status_venda)}">${tl(d.tipo)}</span>
+    <div class="card-img-wrap">
+      ${d.foto_principal?`<img src="${d.foto_principal}" alt="${d.marca} ${d.modelo}" loading="lazy">`:`<div class="card-img-placeholder">${gi(d.marca,d.modelo)}</div>`}
+    </div>
+    <div class="card-body">
+      <div class="card-marca">${d.marca}</div>
+      <div class="card-nome">${d.modelo}</div>
+      <div class="card-versao">${d.versao||'—'}</div>
+      <div class="card-specs">
+        <div class="spec"><span class="spec-v ${d.autonomia_pbev_km||d.consumo_hev_cidade?'green':''}">${d.autonomia_pbev_km?d.autonomia_pbev_km+'km':d.consumo_hev_cidade?d.consumo_hev_cidade+' km/l':'—'}</span><span class="spec-l">${d.tipo==='HEV'?'Consumo cidade':'Autonomia PBEV'}</span></div>
+        <div class="spec"><span class="spec-v">${d.bateria_kwh?d.bateria_kwh+'kWh':'—'}</span><span class="spec-l">Bateria</span></div>
+        <div class="spec"><span class="spec-v">${d.potencia_cv?d.potencia_cv+'cv':'—'}</span><span class="spec-l">Potência</span></div>
+        <div class="spec"><span class="spec-v">${d.tracao||'—'}</span><span class="spec-l">Tração</span></div>
+      </div>
+      <div class="card-footer">
+        <div class="card-preco">${d.preco_atual?fp(d.preco_atual)+'<small>'+(d.fonte_hist||d.fonte_preco||'Fabricante')+'</small>':`<span style="color:var(--text3)">Consulte</span>`}</div>
+        <span class="card-arrow">→</span>
+      </div>
+    </div>
+  </div>`).join('')
+}
 
--- Han EV
-UPDATE modelos SET comprimento_mm=4995,largura_mm=1910,altura_mm=1495,entre_eixos_mm=2920,vao_livre_mm=130 WHERE slug='byd-han';
-UPDATE versoes SET potencia_cv=517,torque_nm=700,zero_100_s=3.9,vel_max_kmh=180,peso_kg=2200,porta_malas_l=410,passageiros=5 WHERE slug='byd-han-ev-awd';
-UPDATE versoes SET potencia_cv=316,torque_nm=630,zero_100_s=7.9,vel_max_kmh=185,peso_kg=1985,porta_malas_l=410,passageiros=5 WHERE slug='byd-han-dmi';
+function openDetail(idx){
+  const d=filteredData[idx];if(!d)return
+  document.getElementById('d-marca').textContent=d.marca
+  document.getElementById('d-nome').textContent=d.modelo
+  document.getElementById('d-versao').textContent=d.versao||''
+  document.getElementById('d-img').innerHTML=d.foto_principal?`<img src="${d.foto_principal}" alt="${d.marca} ${d.modelo}" style="width:100%;height:100%;object-fit:cover">`:`<div class="detail-img-placeholder">${gi(d.marca,d.modelo)}</div>`
+  const p=d.preco_atual,f=d.fonte_hist||d.fonte_preco||'Fabricante'
+  document.getElementById('d-body').innerHTML=`
+    ${p?`<div class="detail-preco-wrap"><div><div class="detail-preco-label">Preço de referência</div><div class="detail-preco">${fp(p)}</div></div>${d.preco_usado?`<div><div class="detail-preco-label">Preço 1 ano</div><div style="font-family:var(--font-head);font-size:1.2rem;font-weight:600;color:var(--text2)">${fp(d.preco_usado)}</div></div>`:''}<span class="detail-preco-fonte">${f}</span></div>`:''}
+    <div class="section-title">Autonomia e eficiência</div>
+    <div class="specs-grid">
+      ${d.autonomia_pbev_km?sc(d.autonomia_pbev_km+' km','Autonomia PBEV INMETRO'):''} 
+      ${d.consumo_kmkwh?sc(d.consumo_kmkwh+' km/kWh','Consumo elétrico'):''}
+      ${d.consumo_hev_cidade?sc(d.consumo_hev_cidade+' km/l','Consumo cidade'):''}
+      ${d.eficiencia_mj_km?sc(d.eficiencia_mj_km+' MJ/km','Eficiência INMETRO'):''}
+      ${d.bateria_kwh?sc(d.bateria_kwh+' kWh','Bateria'):''}
+      ${d.recarga_ac_h?sc(d.recarga_ac_h+'h','Recarga AC'):''}
+      ${d.recarga_dc_min?sc(d.recarga_dc_min+' min','Recarga DC (30→80%)'):''}
+    </div>
+    <div class="section-title">Desempenho</div>
+    <div class="specs-grid">
+      ${d.potencia_cv?sc(d.potencia_cv+' cv','Potência'):''}
+      ${d.torque_nm?sc(d.torque_nm+' Nm','Torque'):''}
+      ${d.tracao?sc(d.tracao,'Tração'):''}
+      ${d.zero_100_s?sc(d.zero_100_s+'s','0–100 km/h'):''}
+      ${d.vel_max_kmh?sc(d.vel_max_kmh+' km/h','Vel. máxima'):''}
+      ${d.peso_kg?sc(fn(d.peso_kg)+' kg','Peso'):''}
+    </div>
+    <div class="section-title">Dimensões e capacidade</div>
+    <div class="specs-grid">
+      ${d.comprimento_mm?sc(fn(d.comprimento_mm)+' mm','Comprimento'):''}
+      ${d.largura_mm?sc(fn(d.largura_mm)+' mm','Largura'):''}
+      ${d.altura_mm?sc(fn(d.altura_mm)+' mm','Altura'):''}
+      ${d.entre_eixos_mm?sc(fn(d.entre_eixos_mm)+' mm','Entre-eixos'):''}
+      ${d.porta_malas_l?sc(d.porta_malas_l+' L','Porta-malas'):''}
+      ${d.frunk_l?sc(d.frunk_l+' L','Frunk'):''}
+      ${d.passageiros?sc(d.passageiros,'Passageiros'):''}
+    </div>
+    <div class="section-title">Segurança e tecnologia</div>
+    <div class="tags-row">
+      ${d.airbags_qtd?`<span class="tag">${d.airbags_qtd} airbags</span>`:''}
+      ${d.adas_nivel?`<span class="tag blue">ADAS ${d.adas_nivel}</span>`:''}
+      ${d.hud==='Sim'?`<span class="tag green">HUD</span>`:d.hud==='Opcional'?`<span class="tag amber">HUD opcional</span>`:''}
+      ${d.estepe_kit?`<span class="tag">${d.estepe_kit}</span>`:''}
+      ${d.pcd_isencao?`<span class="tag green">PcD</span>`:''}
+      ${d.fabricado_em?`<span class="tag">Fabricado: ${d.fabricado_em}</span>`:''}
+    </div>
+    ${d.codigo_fipe?`
+    <div class="section-title">Tabela FIPE</div>
+    <div class="fipe-box">
+      <div class="fipe-row"><span class="lbl">Código FIPE</span><span class="val fipe-cod">${d.codigo_fipe}</span></div>
+      ${p?`<div class="fipe-row"><span class="lbl">Preço 0km</span><span class="val green">${fp(p)}</span></div>`:''}
+      ${d.preco_usado?`<div class="fipe-row"><span class="lbl">Preço 1 ano</span><span class="val">${fp(d.preco_usado)}</span></div>`:''}
+      ${p&&d.preco_usado?`<div class="fipe-row"><span class="lbl">Desvalorização</span><span class="val" style="color:var(--red)">−${fp(p-d.preco_usado)}</span></div>`:''}
+    </div>`:''}
+    ${d.garantia_bat_anos?`
+    <div class="section-title">Garantia bateria</div>
+    <div class="tags-row">
+      <span class="tag green">${d.garantia_bat_anos} anos</span>
+      ${d.garantia_bat_km?`<span class="tag">${fn(d.garantia_bat_km)} km</span>`:''}
+    </div>`:''}
+    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;gap:.6rem;flex-wrap:wrap">
+      ${d.mes_ensaio_inmetro?`<span style="font-size:.75rem;color:var(--text3)">INMETRO: ${d.mes_ensaio_inmetro}</span>`:''}
+      <span style="font-size:.75rem;color:var(--text3)">Ano: ${d.ano_inicio}${d.ano_fim?'–'+d.ano_fim:''}</span>
+      ${d.status_venda!=='Ativo'?`<span style="font-size:.75rem;color:var(--red)">${d.status_venda}</span>`:''}
+    </div>`
+  document.getElementById('overlay').classList.add('open')
+  document.body.style.overflow='hidden'
+}
 
--- Tan/Tang
-UPDATE modelos SET comprimento_mm=4970,largura_mm=1955,altura_mm=1745,entre_eixos_mm=2820,vao_livre_mm=180 WHERE slug='byd-tan';
-UPDATE versoes SET potencia_cv=517,torque_nm=700,zero_100_s=4.9,vel_max_kmh=180,peso_kg=2636,porta_malas_l=235,passageiros=7 WHERE slug='byd-tan-awd-ev';
-UPDATE versoes SET potencia_cv=517,torque_nm=700,zero_100_s=4.9,vel_max_kmh=180,peso_kg=2380,porta_malas_l=235,passageiros=7 WHERE slug='byd-tang-dmi';
+function closeDetail(e){
+  if(e&&e.target!==document.getElementById('overlay'))return
+  document.getElementById('overlay').classList.remove('open')
+  document.body.style.overflow=''
+}
 
--- King DM-i
-UPDATE modelos SET comprimento_mm=4780,largura_mm=1837,altura_mm=1495,entre_eixos_mm=2718,vao_livre_mm=130 WHERE slug='byd-king';
-UPDATE versoes SET potencia_cv=215,torque_nm=325,zero_100_s=7.5,vel_max_kmh=185,peso_kg=1680,porta_malas_l=450,passageiros=5 WHERE slug='byd-king-dmi-gl';
-UPDATE versoes SET potencia_cv=235,torque_nm=430,zero_100_s=7.5,vel_max_kmh=185,peso_kg=1730,porta_malas_l=450,passageiros=5 WHERE slug='byd-king-dmi-gs';
-
--- Song Pro DM-i
-UPDATE modelos SET comprimento_mm=4738,largura_mm=1860,altura_mm=1710,entre_eixos_mm=2712,vao_livre_mm=165 WHERE slug='byd-song-pro';
-UPDATE versoes SET potencia_cv=223,torque_nm=408,zero_100_s=8.5,vel_max_kmh=175,peso_kg=1730,porta_malas_l=520,passageiros=5 WHERE slug='byd-song-pro-dmi-gl';
-UPDATE versoes SET potencia_cv=235,torque_nm=430,zero_100_s=8.5,vel_max_kmh=175,peso_kg=1780,porta_malas_l=520,passageiros=5 WHERE slug='byd-song-pro-dmi-gs';
-
--- Shark PHEV
-UPDATE modelos SET comprimento_mm=5457,largura_mm=1966,altura_mm=1849,entre_eixos_mm=3360,vao_livre_mm=250 WHERE slug='byd-shark';
-UPDATE versoes SET potencia_cv=430,torque_nm=650,zero_100_s=NULL,vel_max_kmh=NULL,peso_kg=2380,porta_malas_l=800,passageiros=5 WHERE slug='byd-shark-gs';
-
--- ══ GWM ══════════════════════════════════════════════════════
-
--- Ora 03
-UPDATE modelos SET comprimento_mm=4235,largura_mm=1825,altura_mm=1603,entre_eixos_mm=2650,vao_livre_mm=135 WHERE slug='gwm-ora-03';
-UPDATE versoes SET potencia_cv=171,torque_nm=250,zero_100_s=8.0,vel_max_kmh=160,peso_kg=1580,porta_malas_l=228,passageiros=5 WHERE slug='gwm-ora-03-bev58';
-UPDATE versoes SET potencia_cv=171,torque_nm=250,zero_100_s=8.0,vel_max_kmh=160,peso_kg=1520,porta_malas_l=228,passageiros=5 WHERE slug='gwm-ora-03-skin';
-
--- Haval H6
-UPDATE modelos SET comprimento_mm=4703,largura_mm=1886,altura_mm=1730,entre_eixos_mm=2738,vao_livre_mm=181 WHERE slug='gwm-haval-h6';
-UPDATE modelos SET comprimento_mm=4703,largura_mm=1886,altura_mm=1730,entre_eixos_mm=2738,vao_livre_mm=181 WHERE slug='gwm-haval-h6-hev';
-UPDATE versoes SET potencia_cv=243,torque_nm=530,zero_100_s=NULL,vel_max_kmh=175,peso_kg=1699,porta_malas_l=560,passageiros=5 WHERE slug='gwm-haval-h6-hev2';
-UPDATE versoes SET potencia_cv=326,torque_nm=540,zero_100_s=7.6,vel_max_kmh=175,peso_kg=1835,porta_malas_l=560,passageiros=5 WHERE slug='gwm-haval-h6-phev19';
-UPDATE versoes SET potencia_cv=393,torque_nm=787,zero_100_s=6.5,vel_max_kmh=180,peso_kg=1980,porta_malas_l=560,passageiros=5 WHERE slug='gwm-haval-h6-phev35';
-UPDATE versoes SET potencia_cv=393,torque_nm=787,zero_100_s=4.8,vel_max_kmh=180,peso_kg=1980,porta_malas_l=560,passageiros=5 WHERE slug='gwm-haval-h6-gt-coupe';
-
--- Tank 300 PHEV
-UPDATE modelos SET comprimento_mm=4755,largura_mm=1941,altura_mm=1828,entre_eixos_mm=2750,vao_livre_mm=224 WHERE slug='gwm-tank-300';
-UPDATE versoes SET potencia_cv=394,torque_nm=765,zero_100_s=NULL,vel_max_kmh=175,peso_kg=2370,porta_malas_l=660,passageiros=5 WHERE slug='gwm-tank-300-phev';
-
--- ══ GEELY ════════════════════════════════════════════════════
-
-UPDATE modelos SET comprimento_mm=4615,largura_mm=1901,altura_mm=1670,entre_eixos_mm=2750,vao_livre_mm=175 WHERE slug='geely-ex5';
-UPDATE versoes SET potencia_cv=218,torque_nm=320,zero_100_s=7.1,vel_max_kmh=180,peso_kg=1715,porta_malas_l=461,passageiros=5 WHERE slug='geely-ex5-pro';
-UPDATE versoes SET potencia_cv=218,torque_nm=320,zero_100_s=6.9,vel_max_kmh=180,peso_kg=1765,porta_malas_l=461,passageiros=5 WHERE slug='geely-ex5-max';
-UPDATE versoes SET potencia_cv=259,torque_nm=NULL,zero_100_s=NULL,vel_max_kmh=NULL,peso_kg=1780,porta_malas_l=461,passageiros=5 WHERE slug IN ('geely-ex5-emi-pro','geely-ex5-emi-max','geely-ex5-emi-ultra');
-
-UPDATE modelos SET comprimento_mm=4135,largura_mm=1805,altura_mm=1580,entre_eixos_mm=2650,vao_livre_mm=160 WHERE slug='geely-ex2';
-UPDATE versoes SET potencia_cv=116,torque_nm=150,zero_100_s=10.2,vel_max_kmh=140,peso_kg=1285,porta_malas_l=375,passageiros=5 WHERE slug='geely-ex2-pro';
-UPDATE versoes SET potencia_cv=116,torque_nm=150,zero_100_s=10.2,vel_max_kmh=140,peso_kg=1285,porta_malas_l=375,passageiros=5 WHERE slug='geely-ex2-max';
-
--- ══ MG ═══════════════════════════════════════════════════════
-
-UPDATE modelos SET comprimento_mm=4274,largura_mm=1848,altura_mm=1664,entre_eixos_mm=2734,vao_livre_mm=165 WHERE slug='mg-s5';
-UPDATE versoes SET potencia_cv=205,torque_nm=350,zero_100_s=6.3,vel_max_kmh=190,peso_kg=1685,porta_malas_l=453,passageiros=5 WHERE slug='mg-s5-comfort';
-UPDATE versoes SET potencia_cv=305,torque_nm=350,zero_100_s=6.0,vel_max_kmh=190,peso_kg=1791,porta_malas_l=453,passageiros=5 WHERE slug='mg-s5-luxury';
-
-UPDATE modelos SET comprimento_mm=4287,largura_mm=1836,altura_mm=1504,entre_eixos_mm=2705,vao_livre_mm=135 WHERE slug='mg-mg4';
-UPDATE versoes SET potencia_cv=190,torque_nm=350,zero_100_s=7.9,vel_max_kmh=180,peso_kg=1635,porta_malas_l=363,passageiros=5 WHERE slug='mg-mg4-comfort';
-UPDATE versoes SET potencia_cv=190,torque_nm=350,zero_100_s=7.9,vel_max_kmh=180,peso_kg=1660,porta_malas_l=363,passageiros=5 WHERE slug='mg-mg4-luxury';
-UPDATE versoes SET potencia_cv=435,torque_nm=600,zero_100_s=3.8,vel_max_kmh=200,peso_kg=1750,porta_malas_l=363,passageiros=5 WHERE slug='mg-mg4-xpower';
-UPDATE versoes SET potencia_cv=190,torque_nm=350,zero_100_s=7.9,vel_max_kmh=180,peso_kg=1580,porta_malas_l=363,passageiros=5 WHERE slug='mg-mg4-urban-comfort-54kwh';
-UPDATE versoes SET potencia_cv=190,torque_nm=350,zero_100_s=7.9,vel_max_kmh=180,peso_kg=1600,porta_malas_l=363,passageiros=5 WHERE slug='mg-mg4-urban-luxury-54kwh';
-
-UPDATE modelos SET comprimento_mm=4535,largura_mm=1913,altura_mm=1329,entre_eixos_mm=2690,vao_livre_mm=120 WHERE slug='mg-cyberster';
-UPDATE versoes SET potencia_cv=510,torque_nm=725,zero_100_s=3.2,vel_max_kmh=200,peso_kg=1984,porta_malas_l=120,passageiros=2 WHERE slug='mg-cyberster-gt';
-
--- ══ GAC AION ═════════════════════════════════════════════════
-
-UPDATE modelos SET comprimento_mm=4586,largura_mm=1920,altura_mm=1728,entre_eixos_mm=2830,vao_livre_mm=200 WHERE slug='gac-aion-v';
-UPDATE versoes SET potencia_cv=204,torque_nm=240,zero_100_s=7.9,vel_max_kmh=160,porta_malas_l=427,passageiros=5 WHERE slug='gac-aion-v-elite';
-UPDATE versoes SET potencia_cv=204,torque_nm=240,zero_100_s=7.9,vel_max_kmh=160,porta_malas_l=427,passageiros=5 WHERE slug='gac-aion-v-premium';
-
-UPDATE modelos SET comprimento_mm=4555,largura_mm=1905,altura_mm=1700,entre_eixos_mm=2830,vao_livre_mm=195 WHERE slug='gac-aion-y';
-UPDATE versoes SET potencia_cv=204,torque_nm=240,zero_100_s=7.0,vel_max_kmh=150,porta_malas_l=443,passageiros=5 WHERE slug IN ('gac-aion-y-elite','gac-aion-y-premium');
-
--- ══ OMODA / JAECOO ═══════════════════════════════════════════
-
-UPDATE modelos SET comprimento_mm=4424,largura_mm=1830,altura_mm=1588,entre_eixos_mm=2630,vao_livre_mm=185 WHERE slug='omoda-e5';
-UPDATE versoes SET potencia_cv=204,torque_nm=340,zero_100_s=7.6,vel_max_kmh=172,passageiros=5 WHERE slug IN ('omoda-e5-luxury','omoda-e5-prestige');
-
-UPDATE modelos SET comprimento_mm=4400,largura_mm=1831,altura_mm=1588,entre_eixos_mm=2630,vao_livre_mm=185 WHERE slug='omoda-5';
-UPDATE versoes SET potencia_cv=224,torque_nm=301,zero_100_s=7.9,vel_max_kmh=175,porta_malas_l=390,passageiros=5 WHERE slug IN ('omoda-5-hev-luxury','omoda-5-hev-prestige','omoda-5-hev-comfort');
-
-UPDATE modelos SET comprimento_mm=4780,largura_mm=1890,altura_mm=1680,entre_eixos_mm=2800,vao_livre_mm=195 WHERE slug='omoda-7';
-UPDATE versoes SET potencia_cv=279,torque_nm=372,zero_100_s=8.4,vel_max_kmh=NULL,porta_malas_l=570,passageiros=5 WHERE slug IN ('omoda-7-phev-luxury','omoda-7-phev-prestige');
-
-UPDATE modelos SET comprimento_mm=4500,largura_mm=1865,altura_mm=1670,entre_eixos_mm=2672,vao_livre_mm=195 WHERE slug='jaecoo-7';
-UPDATE versoes SET potencia_cv=339,torque_nm=516,porta_malas_l=500,passageiros=5 WHERE slug IN ('jaecoo-7-shsp-elite','jaecoo-7-shsp-luxury','jaecoo-7-shsp-prestige');
-
--- ══ CAOA CHERY ═══════════════════════════════════════════════
-UPDATE modelos SET comprimento_mm=4295,largura_mm=1850,altura_mm=1620,entre_eixos_mm=2680,vao_livre_mm=150 WHERE slug='caoa-chery-icar-03';
-UPDATE versoes SET potencia_cv=184,torque_nm=340,zero_100_s=NULL,vel_max_kmh=150,porta_malas_l=362,passageiros=5 WHERE slug IN ('caoa-chery-icar-03-luxury','caoa-chery-icar-03-prestige');
-
--- ══ CHEVROLET ════════════════════════════════════════════════
-UPDATE modelos SET comprimento_mm=4214,largura_mm=1767,altura_mm=1617,entre_eixos_mm=2600,vao_livre_mm=150 WHERE slug='chevrolet-spark-euv';
-UPDATE versoes SET potencia_cv=102,torque_nm=184,zero_100_s=NULL,vel_max_kmh=150,porta_malas_l=298,passageiros=5 WHERE slug='chevrolet-spark-euv-premier';
-
-UPDATE modelos SET comprimento_mm=4650,largura_mm=1880,altura_mm=1680,entre_eixos_mm=2750,vao_livre_mm=185 WHERE slug='chevrolet-captiva-ev';
-UPDATE versoes SET potencia_cv=201,torque_nm=316,zero_100_s=9.9,vel_max_kmh=NULL,porta_malas_l=490,passageiros=5 WHERE slug='chevrolet-captiva-ev-premier';
-
-UPDATE modelos SET comprimento_mm=4892,largura_mm=1922,altura_mm=1675,entre_eixos_mm=2870,vao_livre_mm=200 WHERE slug='chevrolet-blazer-ev';
-UPDATE versoes SET potencia_cv=290,torque_nm=450,zero_100_s=6.1,vel_max_kmh=210,porta_malas_l=498,passageiros=5 WHERE slug='chevrolet-blazer-ev-premier';
-UPDATE versoes SET potencia_cv=347,torque_nm=450,zero_100_s=5.8,vel_max_kmh=210,porta_malas_l=498,passageiros=5 WHERE slug='chevrolet-blazer-ev-rs';
-
--- ══ LEAPMOTOR ════════════════════════════════════════════════
-UPDATE modelos SET comprimento_mm=4739,largura_mm=1900,altura_mm=1680,entre_eixos_mm=2825,vao_livre_mm=180 WHERE slug='leapmotor-c10';
-UPDATE versoes SET potencia_cv=245,torque_nm=NULL,zero_100_s=NULL,vel_max_kmh=NULL,porta_malas_l=435,passageiros=5 WHERE slug='leapmotor-c10-reev';
-UPDATE versoes SET potencia_cv=245,torque_nm=NULL,zero_100_s=NULL,vel_max_kmh=NULL,porta_malas_l=435,passageiros=5 WHERE slug='leapmotor-c10-pure-ev';
-
--- ══ RENAULT ══════════════════════════════════════════════════
-UPDATE modelos SET comprimento_mm=3701,largura_mm=1579,altura_mm=1534,entre_eixos_mm=2423,vao_livre_mm=170 WHERE slug='renault-kwid-e-tech';
-UPDATE versoes SET potencia_cv=65,torque_nm=113,zero_100_s=19.1,vel_max_kmh=130,peso_kg=1041,porta_malas_l=290,passageiros=5 WHERE slug IN ('renault-kwid-e-tech-techno','renault-kwid-e-tech-techno-2026');
-
--- ══ TOYOTA ═══════════════════════════════════════════════════
-UPDATE modelos SET comprimento_mm=4620,largura_mm=1780,altura_mm=1435,entre_eixos_mm=2700,vao_livre_mm=130 WHERE slug='toyota-corolla';
-UPDATE versoes SET potencia_cv=122,torque_nm=142,zero_100_s=NULL,vel_max_kmh=180,peso_kg=1470,porta_malas_l=471,passageiros=5 WHERE slug IN ('toyota-corolla-altis-hybrid','toyota-corolla-altis-prem-hybrid');
-
-UPDATE modelos SET comprimento_mm=4460,largura_mm=1825,altura_mm=1620,entre_eixos_mm=2640,vao_livre_mm=162 WHERE slug='toyota-corolla-cross';
-UPDATE versoes SET potencia_cv=122,torque_nm=190,zero_100_s=NULL,vel_max_kmh=180,peso_kg=1620,porta_malas_l=440,passageiros=5 WHERE slug IN ('toyota-corolla-cross-xrx-hybrid','toyota-corolla-cross-xrxs-hybrid');
-
-UPDATE modelos SET comprimento_mm=4180,largura_mm=1765,altura_mm=1600,entre_eixos_mm=2560,vao_livre_mm=150 WHERE slug='toyota-yaris-cross';
-UPDATE versoes SET potencia_cv=116,torque_nm=141,zero_100_s=NULL,vel_max_kmh=170,peso_kg=1350,porta_malas_l=270,passageiros=5 WHERE slug='toyota-yaris-cross-xrx-hybrid';
-
-UPDATE modelos SET comprimento_mm=4600,largura_mm=1855,altura_mm=1685,entre_eixos_mm=2690,vao_livre_mm=200 WHERE slug='toyota-rav4';
-UPDATE versoes SET potencia_cv=222,torque_nm=NULL,zero_100_s=8.1,vel_max_kmh=180,peso_kg=1810,porta_malas_l=580,passageiros=5 WHERE slug='toyota-rav4-hybrid';
-
--- ══ HONDA ════════════════════════════════════════════════════
-UPDATE modelos SET comprimento_mm=4346,largura_mm=1790,altura_mm=1590,entre_eixos_mm=2610,vao_livre_mm=168 WHERE slug='honda-hrv';
-UPDATE versoes SET potencia_cv=131,torque_nm=253,zero_100_s=NULL,vel_max_kmh=172,peso_kg=1380,porta_malas_l=354,passageiros=5 WHERE slug='honda-hrv-ehev-exl';
-
-UPDATE modelos SET comprimento_mm=4553,largura_mm=1748,altura_mm=1467,entre_eixos_mm=2600,vao_livre_mm=120 WHERE slug='honda-city';
-UPDATE versoes SET potencia_cv=109,torque_nm=253,zero_100_s=NULL,vel_max_kmh=NULL,peso_kg=1320,porta_malas_l=519,passageiros=5 WHERE slug='honda-city-ehev-touring';
-
-UPDATE modelos SET comprimento_mm=4973,largura_mm=1862,altura_mm=1449,entre_eixos_mm=2830,vao_livre_mm=131 WHERE slug='honda-accord';
-UPDATE versoes SET potencia_cv=212,torque_nm=315,zero_100_s=6.7,vel_max_kmh=NULL,peso_kg=1640,porta_malas_l=473,passageiros=5 WHERE slug='honda-accord-ehev';
-
--- ══ VOLVO ════════════════════════════════════════════════════
-UPDATE modelos SET comprimento_mm=4233,largura_mm=1837,altura_mm=1550,entre_eixos_mm=2650,vao_livre_mm=175 WHERE slug='volvo-ex30';
-UPDATE versoes SET potencia_cv=272,torque_nm=343,zero_100_s=5.7,vel_max_kmh=180,peso_kg=1756,porta_malas_l=318,passageiros=5 WHERE slug='volvo-ex30-single-motor';
-
-UPDATE modelos SET comprimento_mm=4440,largura_mm=1863,altura_mm=1596,entre_eixos_mm=2702,vao_livre_mm=175 WHERE slug='volvo-ex40';
-UPDATE versoes SET potencia_cv=231,torque_nm=330,zero_100_s=7.4,vel_max_kmh=180,peso_kg=1966,porta_malas_l=419,passageiros=5 WHERE slug='volvo-ex40-plus-single';
-UPDATE versoes SET potencia_cv=408,torque_nm=540,zero_100_s=4.7,vel_max_kmh=180,peso_kg=2058,porta_malas_l=419,passageiros=5 WHERE slug='volvo-ex40-plus-twin';
-
-UPDATE modelos SET comprimento_mm=4440,largura_mm=1873,altura_mm=1596,entre_eixos_mm=2702,vao_livre_mm=175 WHERE slug='volvo-ec40';
-UPDATE versoes SET potencia_cv=252,torque_nm=330,zero_100_s=7.4,vel_max_kmh=180,peso_kg=1966,porta_malas_l=413,passageiros=5 WHERE slug='volvo-ec40-plus';
-UPDATE versoes SET potencia_cv=436,torque_nm=540,zero_100_s=4.4,vel_max_kmh=180,peso_kg=2100,porta_malas_l=413,passageiros=5 WHERE slug='volvo-ec40-ultra-twin';
-
--- ══ JEEP ════════════════════════════════════════════════════
-UPDATE modelos SET comprimento_mm=4240,largura_mm=1805,altura_mm=1702,entre_eixos_mm=2570,vao_livre_mm=200 WHERE slug='jeep-renegade';
-UPDATE versoes SET potencia_cv=240,torque_nm=270,zero_100_s=7.1,vel_max_kmh=NULL,peso_kg=1680,porta_malas_l=330,passageiros=5 WHERE slug='jeep-renegade-4xe';
-
-UPDATE modelos SET comprimento_mm=4395,largura_mm=1860,altura_mm=1651,entre_eixos_mm=2636,vao_livre_mm=196 WHERE slug='jeep-compass';
-UPDATE versoes SET potencia_cv=240,torque_nm=270,zero_100_s=6.7,vel_max_kmh=NULL,peso_kg=1760,porta_malas_l=438,passageiros=5 WHERE slug='jeep-compass-4xe';
-
--- ══ MITSUBISHI ═══════════════════════════════════════════════
-UPDATE modelos SET comprimento_mm=4710,largura_mm=1860,altura_mm=1745,entre_eixos_mm=2705,vao_livre_mm=200 WHERE slug='mitsubishi-outlander';
-UPDATE versoes SET potencia_cv=306,torque_nm=450,zero_100_s=NULL,vel_max_kmh=170,peso_kg=1975,porta_malas_l=477,passageiros=5 WHERE slug='mitsubishi-outlander-phev';
-
--- ══ VERIFICAÇÃO ══════════════════════════════════════════════
-SELECT
-  m.nome AS marca,
-  mo.nome AS modelo,
-  v.nome_versao AS versao,
-  v.potencia_cv AS cv,
-  v.torque_nm AS nm,
-  v.zero_100_s AS "0-100",
-  v.vel_max_kmh AS vmax,
-  v.peso_kg AS peso,
-  v.porta_malas_l AS pm,
-  mo.comprimento_mm AS comp,
-  mo.largura_mm AS larg
-FROM versoes v
-JOIN modelos mo ON v.modelo_id = mo.id
-JOIN marcas m ON mo.marca_id = m.id
-ORDER BY m.nome, mo.nome, v.nome_versao;
+fetchData()
+</script>
+</body>
+</html>
