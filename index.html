@@ -187,8 +187,8 @@ button{cursor:pointer;font-family:var(--font-body)}
 </footer>
 <script>
 const SB_URL='https://dbevcdmycekcqcpovphb.supabase.co'
-const SB_KEY='sb_publishable_UWxAg9DGwDid6DPMuSZNqw_HEVWQeg7'
-const H={'apikey':SB_KEY,'Accept':'application/json'}
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXZjZG15Y2VrY3FjcG92cGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNzg1MDIsImV4cCI6MjA5NTg1NDUwMn0.4DJhA8TB6TP5aLaHbG-HXC0tBsyF47_ctdCwRpIpFyA'
+const H={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'}
 let allData=[],filteredData=[],tipoAtivo='all',precoAtivo='all'
 
 async function fetchData(){
