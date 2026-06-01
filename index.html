@@ -218,13 +218,22 @@ async function fetchData(){
 function setTipo(btn){document.querySelectorAll('[data-tipo]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');tipoAtivo=btn.dataset.tipo;renderCards()}
 function setPreco(btn){document.querySelectorAll('[data-preco]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');precoAtivo=btn.dataset.preco;renderCards()}
 
+function getPreco(d){
+  // Usar melhor preço disponível: histórico FIPE ou preço base da versão
+  return d.preco_atual || d.preco_base || 0
+}
+
 function getFiltered(){
   const q=document.getElementById('search').value.toLowerCase()
   return allData.filter(d=>{
     const mt=tipoAtivo==='all'||d.tipo===tipoAtivo
-    const p=d.preco_atual||0
-    const mp=precoAtivo==='all'||(precoAtivo==='100'&&p<=100000)||(precoAtivo==='200'&&p<=200000)||(precoAtivo==='300'&&p<=300000)
-    const mq=!q||(d.marca+' '+d.modelo+' '+d.nome_versao).toLowerCase().includes(q)
+    const p=getPreco(d)
+    // Se não tem preço e filtro ativo, incluir apenas no "Todos"
+    const mp=precoAtivo==='all'||
+      (p>0 && precoAtivo==='100' && p<=100000)||
+      (p>0 && precoAtivo==='200' && p<=200000)||
+      (p>0 && precoAtivo==='300' && p<=300000)
+    const mq=!q||(d.marca+' '+d.modelo+' '+(d.versao||'')).toLowerCase().includes(q)
     return mt&&mp&&mq
   })
 }
@@ -251,7 +260,7 @@ function renderCards(){
     <div class="card-body">
       <div class="card-marca">${d.marca}</div>
       <div class="card-nome">${d.modelo}</div>
-      <div class="card-versao">${d.nome_versao||'—'}</div>
+      <div class="card-versao">${d.versao||'—'}</div>
       <div class="card-specs">
         <div class="spec"><span class="spec-v ${d.autonomia_pbev_km||d.consumo_hev_cidade?'green':''}">${d.autonomia_pbev_km?d.autonomia_pbev_km+'km':d.consumo_hev_cidade?d.consumo_hev_cidade+' km/l':'—'}</span><span class="spec-l">${d.tipo==='HEV'?'Consumo cidade':'Autonomia PBEV'}</span></div>
         <div class="spec"><span class="spec-v">${d.bateria_kwh?d.bateria_kwh+'kWh':'—'}</span><span class="spec-l">Bateria</span></div>
@@ -270,7 +279,7 @@ function openDetail(idx){
   const d=filteredData[idx];if(!d)return
   document.getElementById('d-marca').textContent=d.marca
   document.getElementById('d-nome').textContent=d.modelo
-  document.getElementById('d-versao').textContent=d.nome_versao||''
+  document.getElementById('d-versao').textContent=d.versao||''
   document.getElementById('d-img').innerHTML=d.foto_principal?`<img src="${d.foto_principal}" alt="${d.marca} ${d.modelo}" style="width:100%;height:100%;object-fit:cover">`:`<div class="detail-img-placeholder">${gi(d.marca,d.modelo)}</div>`
   const p=d.preco_atual,f=d.fonte_hist||d.fonte_preco||'Fabricante'
   document.getElementById('d-body').innerHTML=`
