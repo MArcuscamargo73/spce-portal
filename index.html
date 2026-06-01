@@ -188,7 +188,7 @@ button{cursor:pointer;font-family:var(--font-body)}
 <script>
 const SB_URL='https://dbevcdmycekcqcpovphb.supabase.co'
 const SB_KEY='sb_publishable_UWxAg9DGwDid6DPMuSZNqw_HEVWQeg7'
-const H={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+const H={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Accept':'application/json','Accept-Profile':'public'}
 let allData=[],filteredData=[],tipoAtivo='all',precoAtivo='all'
 
 async function fetchData(){
@@ -208,7 +208,7 @@ async function fetchData(){
         d.fonte_hist=pm[d.versao_id].fonte
       }
     })
-  }catch(e){console.error(e)}
+  }catch(e){console.error('Erro Supabase:',e);document.getElementById('count-label').textContent='Erro ao carregar dados'}
   document.getElementById('stat-total').textContent=allData.length
   document.getElementById('stat-bev').textContent=allData.filter(d=>d.tipo==='BEV').length
   document.getElementById('stat-phev').textContent=allData.filter(d=>d.tipo==='PHEV').length
