@@ -221,7 +221,7 @@ let allData=[],filteredData=[],tipoAtivo='all'
 async function fetchData(){
   try{
     const[r1,r2]=await Promise.all([
-      fetch(SB_URL+'/rest/v1/vw_catalogo?select=*&order=marca,modelo,versao',{headers:H}),
+      fetch(SB_URL+'/rest/v1/vw_catalogo?select=*&order=marca,modelo,nome_versao',{headers:H}),
       fetch(SB_URL+'/rest/v1/vw_preco_atual?select=*',{headers:H})
     ])
     allData=await r1.json()
@@ -265,7 +265,7 @@ function getFiltered(){
     const mp=!pFiltroAtivo||(p>0&&p<=pMax)
     // Autonomia: mostrar carros com pelo menos X km
     // Carros sem autonomia (HEVs): excluir apenas se filtro ativo
-    const a=d.autonomia_pbev_km||0
+    const a=d.autonomia_km||0
     const ma=!aFiltroAtivo||(a>=aMin)
     // Busca por texto
     const mq=!q||(d.marca+' '+d.modelo+' '+(d.versao||'')).toLowerCase().includes(q)
@@ -316,7 +316,7 @@ function renderCards(){
       <div class="card-nome">${d.modelo}</div>
       <div class="card-versao">${d.versao||'—'}</div>
       <div class="card-specs">
-        <div class="spec"><span class="spec-v ${d.autonomia_pbev_km||d.consumo_hev_cidade?'green':''}">${d.autonomia_pbev_km?d.autonomia_pbev_km+'km':d.consumo_hev_cidade?d.consumo_hev_cidade+' km/l':'—'}</span><span class="spec-l">${d.tipo==='HEV'?'Consumo cidade':'Autonomia PBEV'}</span></div>
+        <div class="spec"><span class="spec-v ${d.autonomia_km||d.consumo_hev_cidade?'green':''}">${d.autonomia_km?d.autonomia_km+'km':d.autonomia_hev_cidade?d.autonomia_hev_cidade+' km/l':'—'}</span><span class="spec-l">${d.tipo==='HEV'?'Consumo cidade':'Autonomia INMETRO'}</span></div>
         <div class="spec"><span class="spec-v">${d.bateria_kwh?d.bateria_kwh+'kWh':'—'}</span><span class="spec-l">Bateria</span></div>
         <div class="spec"><span class="spec-v">${d.potencia_cv?d.potencia_cv+'cv':'—'}</span><span class="spec-l">Potência</span></div>
         <div class="spec"><span class="spec-v">${d.tracao||'—'}</span><span class="spec-l">Tração</span></div>
@@ -340,18 +340,18 @@ function openDetail(idx){
     ${p?`<div class="detail-preco-wrap"><div><div class="detail-preco-label">Preço de referência</div><div class="detail-preco">${fp(p)}</div></div>${d.preco_usado?`<div><div class="detail-preco-label">Preço 1 ano</div><div style="font-family:var(--font-head);font-size:1.2rem;font-weight:600;color:var(--text2)">${fp(d.preco_usado)}</div></div>`:''}<span class="detail-preco-fonte">${f}</span></div>`:''}
     <div class="section-title">Autonomia e eficiência</div>
     <div class="specs-grid">
-      ${d.autonomia_pbev_km?sc(d.autonomia_pbev_km+' km','Autonomia PBEV INMETRO'):''} 
+      ${d.autonomia_km?sc(d.autonomia_km+' km','Autonomia PBEV INMETRO'):''} 
       ${d.consumo_kmkwh?sc(d.consumo_kmkwh+' km/kWh','Consumo elétrico'):''}
       ${d.consumo_hev_cidade?sc(d.consumo_hev_cidade+' km/l','Consumo cidade'):''}
       ${d.eficiencia_mj_km?sc(d.eficiencia_mj_km+' MJ/km','Eficiência INMETRO'):''}
       ${d.bateria_kwh?sc(d.bateria_kwh+' kWh','Bateria'):''}
-      ${d.recarga_ac_h?sc(d.recarga_ac_h+'h','Recarga AC'):''}
-      ${d.recarga_dc_min?sc(d.recarga_dc_min+' min','Recarga DC (30→80%)'):''}
+      ${d.recarga_ac_tempo_h?sc(d.recarga_ac_tempo_h+'h ('+d.recarga_ac_kw+'kW)','Recarga AC'):''}
+      ${d.recarga_dc_tempo_min?sc(d.recarga_dc_tempo_min+' min','Recarga DC (30→80%)'):''}
     </div>
     <div class="section-title">Desempenho</div>
     <div class="specs-grid">
       ${d.potencia_cv?sc(d.potencia_cv+' cv','Potência'):''}
-      ${d.torque_nm?sc(d.torque_nm+' Nm','Torque'):''}
+      ${d.torque_kgfm?sc(d.torque_kgfm+' Nm','Torque'):''}
       ${d.tracao?sc(d.tracao,'Tração'):''}
       ${d.zero_100_s?sc(d.zero_100_s+'s','0–100 km/h'):''}
       ${d.vel_max_kmh?sc(d.vel_max_kmh+' km/h','Vel. máxima'):''}
@@ -384,11 +384,11 @@ function openDetail(idx){
       ${d.preco_usado?`<div class="fipe-row"><span class="lbl">Preço 1 ano</span><span class="val">${fp(d.preco_usado)}</span></div>`:''}
       ${p&&d.preco_usado?`<div class="fipe-row"><span class="lbl">Desvalorização</span><span class="val" style="color:var(--red)">−${fp(p-d.preco_usado)}</span></div>`:''}
     </div>`:''}
-    ${d.garantia_bat_anos?`
-    <div class="section-title">Garantia bateria</div>
+    ${(d.garantia_veiculo_anos||d.garantia_bateria_anos)?`
+    <div class="section-title">Garantias</div>
     <div class="tags-row">
-      <span class="tag green">${d.garantia_bat_anos} anos</span>
-      ${d.garantia_bat_km?`<span class="tag">${fn(d.garantia_bat_km)} km</span>`:''}
+      ${d.garantia_veiculo_anos?`<span class="tag">${d.garantia_veiculo_anos} anos veículo${d.garantia_veiculo_km?' / '+fn(d.garantia_veiculo_km)+' km':''}</span>`:''}
+      ${d.garantia_bateria_anos?`<span class="tag green">${d.garantia_bateria_anos} anos bateria${d.garantia_bateria_km?' / '+fn(d.garantia_bateria_km)+' km':''}</span>`:''}
     </div>`:''}
     <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;gap:.6rem;flex-wrap:wrap">
       ${d.mes_ensaio_inmetro?`<span style="font-size:.75rem;color:var(--text3)">INMETRO: ${d.mes_ensaio_inmetro}</span>`:''}
