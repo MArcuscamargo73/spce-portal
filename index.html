@@ -309,7 +309,7 @@ function fn(v,u=''){return(v===null||v===undefined)?'—':v.toLocaleString('pt-B
 function bc(tipo,status){if(status==='Descontinuado')return'badge-desc';return tipo==='BEV'?'badge-bev':tipo==='PHEV'?'badge-phev':'badge-hev'}
 function tl(tipo){return tipo==='BEV'?'⚡ BEV':tipo==='PHEV'?'🔌 PHEV':'♻️ HEV'}
 function gi(m,mo){return(m[0]+(mo[0]||'')).toUpperCase()}
-function sc(v,u){return`<div class="spec-card"><div class="sv${u===true?' g':''}">${v}</div><div class="sl">${typeof u==='string'?u:''}</div></div>`}
+function sc(v,u,destaque){return`<div class="spec-card"><div class="sv${destaque?' g':''}">${v}</div><div class="sl">${typeof u==='string'?u:typeof u==='boolean'?'':u||''}</div></div>`}
 
 function renderCards(){
   filteredData=getFiltered()
