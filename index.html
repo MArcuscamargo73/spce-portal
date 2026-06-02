@@ -221,7 +221,7 @@ let allData=[],filteredData=[],tipoAtivo='all'
 async function fetchData(){
   try{
     const[r1,r2]=await Promise.all([
-      fetch(SB_URL+'/rest/v1/vw_catalogo?select=*&order=marca,modelo,nome_versao',{headers:H}),
+      fetch(SB_URL+'/rest/v1/vw_catalogo?select=*&order=marca,modelo,versao',{headers:H}),
       fetch(SB_URL+'/rest/v1/vw_preco_atual?select=*',{headers:H})
     ])
     allData=await r1.json()
