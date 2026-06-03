@@ -171,6 +171,12 @@ button{cursor:pointer;font-family:var(--font-body)}
 .fipe-cod{font-family:monospace;font-size:.8rem;color:var(--blue)}
 
 /* FOOTER */
+.video-thumb-wrap{display:block;position:relative;border-radius:var(--r);overflow:hidden;cursor:pointer;text-decoration:none}
+.video-thumb-img{width:100%;height:auto;display:block;aspect-ratio:16/9;object-fit:cover;border-radius:var(--r)}
+.video-play-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;opacity:0;transition:opacity .2s;border-radius:var(--r)}
+.video-thumb-wrap:hover .video-play-overlay{opacity:1}
+.video-play-btn{width:56px;height:56px;border-radius:50%;background:#ff0000;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;padding-left:4px}
+.video-play-overlay span{color:#fff;font-size:.85rem;font-weight:500}
 .footer{padding:2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;color:var(--text3);font-size:.82rem}
 .footer strong{color:var(--green)}
 
@@ -488,6 +494,20 @@ function openD(i){
         ${d.preco_usado?`<div class="fipe-row"><span class="lbl">Preço 1 ano</span><span class="val">${fp(d.preco_usado)}</span></div>`:''}
         ${p&&d.preco_usado?`<div class="fipe-row"><span class="lbl">Desvalorização</span><span class="val" style="color:var(--red)">−${fp(p-d.preco_usado)}</span></div>`:''}
       </div>
+    </div>`:''}
+
+    <!-- VÍDEO DO CANAL -->
+    ${d.video_youtube?`<div class="grupo">
+      <div class="grupo-titulo"><span class="grupo-num" style="background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.3);color:var(--red)">▶</span>Vídeo no Canal SPCE</div>
+      <a href="${d.video_youtube}" target="_blank" class="video-thumb-wrap">
+        <img src="https://img.youtube.com/vi/${d.video_youtube.match(/(?:youtu\.be\/|v=)([\w-]+)/)?.[1]}/maxresdefault.jpg"
+             onerror="this.src='https://img.youtube.com/vi/${d.video_youtube.match(/(?:youtu\.be\/|v=)([\w-]+)/)?.[1]}/hqdefault.jpg'"
+             alt="Assista no YouTube" class="video-thumb-img">
+        <div class="video-play-overlay">
+          <div class="video-play-btn">▶</div>
+          <span>Assistir no YouTube</span>
+        </div>
+      </a>
     </div>`:''}
   `
   $('overlay').classList.add('open')
