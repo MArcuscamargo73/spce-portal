@@ -114,6 +114,21 @@ button{cursor:pointer;font-family:var(--fb)}
 .cpreco small{font-size:.7rem;color:var(--text3);font-weight:400;font-family:var(--fb);margin-left:.2rem}
 .carr{color:var(--text3);font-size:1rem;transition:all .2s}
 .card:hover .carr{color:var(--green);transform:translateX(3px)}
+/* CARD PUBLICIDADE */
+.ad-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;position:relative;min-height:360px;display:flex;flex-direction:column}
+.ad-card .ad-label{position:absolute;top:.6rem;right:.6rem;font-size:.62rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;background:var(--bg3);border:1px solid var(--border);padding:.15rem .5rem;border-radius:100px;z-index:2}
+/* Publicidade própria */
+.ad-own{display:flex;flex-direction:column;flex:1;text-decoration:none;transition:all .22s}
+.ad-own:hover{opacity:.9}
+.ad-own-img{width:100%;height:160px;object-fit:cover;background:var(--bg3)}
+.ad-own-body{padding:1rem 1.1rem 1.1rem;flex:1;display:flex;flex-direction:column;gap:.4rem}
+.ad-own-tag{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber)}
+.ad-own-title{font-family:var(--fh);font-size:1.1rem;font-weight:800;line-height:1.2;color:var(--text)}
+.ad-own-desc{font-size:.82rem;color:var(--text2);flex:1}
+.ad-own-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--green);color:#000;font-weight:600;font-size:.82rem;padding:.4rem .9rem;border-radius:100px;margin-top:auto;width:fit-content;transition:background .18s}
+.ad-own:hover .ad-own-cta{background:var(--green2)}
+/* AdSense */
+.ad-sense{flex:1;display:flex;align-items:center;justify-content:center;min-height:300px;padding:1rem}
 /* EMPTY */
 .empty{padding:4rem;text-align:center;color:var(--text3)}
 .empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.3}
@@ -490,8 +505,20 @@ function render(){
   G('cnt').textContent=fd.length+' resultado'+(fd.length!==1?'s':'')
   if(!fd.length){grid.innerHTML='';empty.style.display='block';return}
   empty.style.display='none'
-  grid.innerHTML=fd.map((d,i)=>`
-  <div class="card" onclick="openD(${i})" style="animation:fi .3s ease ${(i%12)*.04}s both">
+  // Montar lista com ads a cada 6 cards
+  let items = []
+  let adCount = 0
+  fd.forEach((d,i) => {
+    items.push({tipo:'car', d, i})
+    if ((i+1) % 6 === 0) {
+      items.push({tipo:'ad', idx: adCount++})
+    }
+  })
+
+  grid.innerHTML=items.map(item => {
+    if(item.tipo==='ad') return renderAdCard(item.idx)
+    const d=item.d, i=item.i
+    return `<div class="card" onclick="openD(${i})" style="animation:fi .3s ease ${(i%12)*.04}s both">
     <span class="cbadge ${bc(d.tipo,d.status_venda)}">${tl(d.tipo)}</span>
     <button class="cmpbtn${cmp.includes(i)?' sel':''}" onclick="togCmp(event,${i})" id="cb${i}">${cmp.includes(i)?'✓ Selecionado':'＋ Comparar'}</button>
     <div class="cimg">
@@ -512,7 +539,8 @@ function render(){
         <span class="carr">→</span>
       </div>
     </div>
-  </div>`).join('')
+  </div>`
+  }).join('')
 }
 
 // ── MODAL DETALHE ─────────────────────────────────────────────
@@ -828,6 +856,67 @@ resetTimer()
     if(Math.abs(dx)>50) carMove(dx<0?1:-1)
   },{passive:true})
 })()
+
+// ── CONFIGURAÇÃO DE ANÚNCIOS ─────────────────────────────────
+// Para ativar AdSense: coloque seu client-id abaixo e mude ADSENSE_ATIVO para true
+const ADSENSE_ATIVO = false
+const ADSENSE_CLIENT = 'ca-pub-XXXXXXXXXXXXXXXX'  // substitua pelo seu ID
+const ADSENSE_SLOT = 'XXXXXXXXXX'                  // substitua pelo slot ID
+
+// Anúncios próprios — edite à vontade
+// Para desativar um anúncio, deixe o array vazio []
+const ADS_PROPRIOS = [
+  {
+    tag: 'Patrocinado',
+    titulo: 'Seu Anúncio Aqui',
+    descricao: 'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',
+    cta: 'Saiba mais →',
+    link: 'mailto:contato@spce.com.br',
+    imagem: 'https://placehold.co/600x320/052e16/22c55e?text=Anuncie+no+SPCE',
+    nova_aba: true
+  },
+  {
+    tag: 'Parceiro',
+    titulo: 'Seu Anúncio Aqui',
+    descricao: 'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',
+    cta: 'Saiba mais →',
+    link: 'mailto:contato@spce.com.br',
+    imagem: 'https://placehold.co/600x320/0a1628/38bdf8?text=Anuncie+no+SPCE',
+    nova_aba: true
+  }
+]
+
+function renderAdCard(idx) {
+  // Alternar entre AdSense e anúncio próprio
+  if (ADSENSE_ATIVO) {
+    return `<div class="ad-card">
+      <span class="ad-label">Publicidade</span>
+      <div class="ad-sense">
+        <ins class="adsbygoogle"
+          style="display:block;width:100%;height:280px"
+          data-ad-client="${ADSENSE_CLIENT}"
+          data-ad-slot="${ADSENSE_SLOT}"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      </div>
+    </div>`
+  }
+  // Anúncio próprio — alterna entre os cadastrados
+  if (!ADS_PROPRIOS.length) return ''
+  const ad = ADS_PROPRIOS[idx % ADS_PROPRIOS.length]
+  return `<div class="ad-card">
+    <span class="ad-label">Publicidade</span>
+    <a class="ad-own" href="${ad.link}" ${ad.nova_aba?'target="_blank"':''}>
+      <img class="ad-own-img" src="${ad.imagem}" alt="${ad.titulo}" onerror="this.style.display='none'">
+      <div class="ad-own-body">
+        <div class="ad-own-tag">${ad.tag}</div>
+        <div class="ad-own-title">${ad.titulo}</div>
+        <div class="ad-own-desc">${ad.descricao}</div>
+        <span class="ad-own-cta">${ad.cta}</span>
+      </div>
+    </a>
+  </div>`
+}
 
 // ── INICIAR ───────────────────────────────────────────────────
 load()
