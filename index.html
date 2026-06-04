@@ -366,7 +366,24 @@ const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6
 const H={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'}
 let all=[],fd=[],tipo='all'
 
-async function load()
+async function load(){
+  try{
+    const[r1,r2]=await Promise.all([
+      fetch(SB+'/rest/v1/vw_catalogo?select=*&order=marca,modelo,versao',{headers:H}),
+      fetch(SB+'/rest/v1/vw_preco_atual?select=*',{headers:H})
+    ])
+    all=await r1.json()
+    const pm={}
+    ;(await r2.json()).forEach(p=>{pm[p.versao_id]=p})
+    all.forEach(d=>{
+      if(pm[d.versao_id]){d.preco_atual=pm[d.versao_id].preco_0km;d.preco_usado=pm[d.versao_id].preco_usado;d.fonte_h=pm[d.versao_id].fonte}
+    })
+  }catch(e){console.error(e);$('count-label').textContent='Erro ao carregar dados';return}
+  $('stat-total').textContent=all.length
+  $('stat-bev').textContent=all.filter(d=>d.tipo==='BEV').length
+  $('stat-phev').textContent=all.filter(d=>d.tipo==='PHEV').length
+  updateRanges()
+}
 
 // ── COMPARADOR ────────────────────────────────────────────────
 let comparando = [] // array de índices de fd[]
@@ -966,27 +983,4 @@ function abrirComparador() {
         }
       }
       tbody += `<tr><td class="label-col">${campo.l}</td>`
-      vals.forEach((v, i) => {
-        let display = v === null || v === undefined || v === '' ? '—' :
-          campo.tipo === 'preco' ? fp(v) :
-          campo.tipo === 'numero' ? Number(v).toLocaleString('pt-BR') : v
-        const cls = i === bestIdx ? 'best' : i === worstIdx ? 'worst' : ''
-        tbody += `<td class="val-col ${cls}">${display}</td>`
-      })
-      tbody += `</tr>`
-    })
-  })
-
-  body.innerHTML = thead + tbody + '</tbody></table>'
-  overlay.classList.add('open')
-  document.body.style.overflow = 'hidden'
-}
-
-function fecharComparador(e) {
-  if (e && e.target !== document.getElementById('comp-overlay')) return
-  document.getElementById('comp-overlay').classList.remove('open')
-  document.body.style.overflow = ''
-}
-</script>
-</body>
-</html>
+      vals.forEach
