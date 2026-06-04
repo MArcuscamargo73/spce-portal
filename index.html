@@ -383,6 +383,7 @@ async function load(){
   $('stat-bev').textContent=all.filter(d=>d.tipo==='BEV').length
   $('stat-phev').textContent=all.filter(d=>d.tipo==='PHEV').length
   updateRanges()
+  render()
 }
 
 // ── COMPARADOR ────────────────────────────────────────────────
@@ -586,6 +587,7 @@ function fecharComparador(e) {
   $('stat-bev').textContent=all.filter(d=>d.tipo==='BEV').length
   $('stat-phev').textContent=all.filter(d=>d.tipo==='PHEV').length
   updateRanges()
+  render()
 }
 
 function $(id){return document.getElementById(id)}
@@ -982,5 +984,4 @@ function abrirComparador() {
           if (bestIdx === worstIdx) worstIdx = -1
         }
       }
-      tbody += `<tr><td class="label-col">${campo.l}</td>`
-      vals.forEach
+      tbody += `<tr><td class="label-col">${campo.l}</t
