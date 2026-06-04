@@ -177,6 +177,78 @@ button{cursor:pointer;font-family:var(--font-body)}
 .video-thumb-wrap:hover .video-play-overlay{opacity:1}
 .video-play-btn{width:56px;height:56px;border-radius:50%;background:#ff0000;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;padding-left:4px}
 .video-play-overlay span{color:#fff;font-size:.85rem;font-weight:500}
+/* COMPARADOR */
+.compare-btn{position:absolute;bottom:.7rem;left:.7rem;z-index:3;
+  background:rgba(10,15,13,.85);border:1px solid var(--border2);
+  color:var(--text2);font-size:.72rem;font-weight:500;
+  padding:.3rem .65rem;border-radius:100px;cursor:pointer;
+  transition:all .18s;backdrop-filter:blur(8px)}
+.compare-btn:hover{border-color:var(--green);color:var(--green)}
+.compare-btn.selected{background:var(--green);border-color:var(--green);color:#000}
+/* Barra flutuante */
+.compare-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:300;
+  background:rgba(17,24,16,.97);border-top:1px solid var(--border2);
+  backdrop-filter:blur(16px);
+  padding:.85rem 2rem;
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.compare-bar.visible{transform:translateY(0)}
+.compare-bar-title{font-size:.78rem;color:var(--text3);white-space:nowrap}
+.compare-slots{display:flex;gap:.6rem;flex:1}
+.compare-slot{
+  display:flex;align-items:center;gap:.5rem;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:var(--r);padding:.45rem .75rem;
+  min-width:160px;max-width:220px}
+.compare-slot.empty{border-style:dashed;color:var(--text3);font-size:.78rem;justify-content:center}
+.compare-slot-nome{font-size:.78rem;font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.compare-slot-remove{color:var(--text3);cursor:pointer;font-size:.9rem;flex-shrink:0;background:none;border:none;padding:0;line-height:1}
+.compare-slot-remove:hover{color:var(--red)}
+.compare-bar-btns{display:flex;gap:.6rem}
+.btn-comparar{background:var(--green);border:none;color:#000;
+  font-weight:600;font-size:.85rem;padding:.5rem 1.2rem;
+  border-radius:100px;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-comparar:hover{background:var(--green2)}
+.btn-comparar:disabled{background:var(--border2);color:var(--text3);cursor:not-allowed}
+.btn-limpar{background:none;border:1px solid var(--border2);color:var(--text2);
+  font-size:.82rem;padding:.45rem .9rem;border-radius:100px;cursor:pointer;transition:all .18s}
+.btn-limpar:hover{border-color:var(--red);color:var(--red)}
+/* Modal comparador */
+.comp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:400;
+  opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px);
+  overflow-y:auto;padding:1.5rem 1rem}
+.comp-overlay.open{opacity:1;pointer-events:all}
+.comp-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;
+  width:100%;max-width:1100px;margin:0 auto;overflow:hidden}
+.comp-header{display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.comp-header h2{font-family:var(--font-head);font-size:1.2rem;font-weight:800}
+/* Tabela comparativa */
+.comp-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.comp-table th{background:var(--bg3);padding:.75rem 1rem;text-align:left;
+  border-bottom:1px solid var(--border);font-family:var(--font-head)}
+.comp-table th.car-col{text-align:center;vertical-align:top}
+.comp-table td{padding:.6rem 1rem;border-bottom:1px solid var(--border);
+  font-size:.85rem;vertical-align:middle}
+.comp-table td.label-col{color:var(--text3);font-size:.78rem;
+  font-weight:500;white-space:nowrap;width:160px;background:var(--bg3)}
+.comp-table td.val-col{text-align:center;font-weight:500}
+.comp-table td.val-col.best{color:var(--green);font-weight:700}
+.comp-table td.val-col.worst{color:var(--red)}
+.comp-table tr.grupo-header td{
+  background:var(--greendim);color:var(--green);
+  font-family:var(--font-head);font-size:.72rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;padding:.5rem 1rem}
+.comp-car-header{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.5rem 0}
+.comp-car-foto{width:100%;height:80px;object-fit:cover;border-radius:var(--r);background:var(--bg4)}
+.comp-car-foto-placeholder{width:100%;height:80px;background:var(--bg4);border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-head);
+  font-size:1.5rem;font-weight:800;color:var(--border2)}
+.comp-car-marca{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.comp-car-nome{font-family:var(--font-head);font-size:.95rem;font-weight:800;text-align:center}
+.comp-car-versao{font-size:.75rem;color:var(--text2);text-align:center}
+.comp-car-preco{font-family:var(--font-head);font-size:.85rem;font-weight:700;color:var(--green)}
 .footer{padding:2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;color:var(--text3);font-size:.82rem}
 .footer strong{color:var(--green)}
 
@@ -262,6 +334,27 @@ button{cursor:pointer;font-family:var(--font-body)}
   </div>
 </div>
 
+<!-- BARRA COMPARADOR -->
+<div class="compare-bar" id="compare-bar">
+  <span class="compare-bar-title">Comparando:</span>
+  <div class="compare-slots" id="compare-slots"></div>
+  <div class="compare-bar-btns">
+    <button class="btn-limpar" onclick="limparComparacao()">Limpar</button>
+    <button class="btn-comparar" id="btn-comparar" onclick="abrirComparador()" disabled>Comparar</button>
+  </div>
+</div>
+
+<!-- MODAL COMPARADOR -->
+<div class="comp-overlay" id="comp-overlay" onclick="fecharComparador(event)">
+  <div class="comp-modal">
+    <div class="comp-header">
+      <h2>⚖️ Comparativo</h2>
+      <button class="close-btn" onclick="fecharComparador()">✕</button>
+    </div>
+    <div id="comp-body" style="overflow-x:auto"></div>
+  </div>
+</div>
+
 <footer class="footer">
   <span>© 2026 <strong>SPCE</strong> — Seu Primeiro Carro Elétrico</span>
   <span>Dados: INMETRO · ABVE · FIPE · Fabricantes</span>
@@ -273,7 +366,193 @@ const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6
 const H={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'}
 let all=[],fd=[],tipo='all'
 
-async function load(){
+async function load()
+
+// ── COMPARADOR ────────────────────────────────────────────────
+let comparando = [] // array de índices de fd[]
+
+function toggleCompare(e, idx) {
+  e.stopPropagation()
+  const btn = document.getElementById('cbtn-'+idx)
+  const jaEsta = comparando.indexOf(idx)
+  if (jaEsta > -1) {
+    comparando.splice(jaEsta, 1)
+    btn.textContent = '＋ Comparar'
+    btn.classList.remove('selected')
+  } else {
+    if (comparando.length >= 3) {
+      alert('Máximo 3 carros para comparar. Remova um antes de adicionar outro.')
+      return
+    }
+    comparando.push(idx)
+    btn.textContent = '✓ Selecionado'
+    btn.classList.add('selected')
+  }
+  atualizarBarra()
+}
+
+function atualizarBarra() {
+  const bar = document.getElementById('compare-bar')
+  const slots = document.getElementById('compare-slots')
+  const btn = document.getElementById('btn-comparar')
+  if (comparando.length === 0) { bar.classList.remove('visible'); return }
+  bar.classList.add('visible')
+  btn.disabled = comparando.length < 2
+  // Renderizar slots
+  let html = comparando.map((idx,i) => {
+    const d = fd[idx]
+    return `<div class="compare-slot">
+      <span class="compare-slot-nome">${d.marca} ${d.modelo} ${d.versao||''}</span>
+      <button class="compare-slot-remove" onclick="removerSlot(${idx})">✕</button>
+    </div>`
+  }).join('')
+  // Slots vazios
+  for (let i = comparando.length; i < 3; i++) {
+    html += `<div class="compare-slot empty">+ Adicionar carro</div>`
+  }
+  slots.innerHTML = html
+}
+
+function removerSlot(idx) {
+  comparando = comparando.filter(i => i !== idx)
+  const btn = document.getElementById('cbtn-'+idx)
+  if (btn) { btn.textContent = '＋ Comparar'; btn.classList.remove('selected') }
+  atualizarBarra()
+}
+
+function limparComparacao() {
+  comparando.forEach(idx => {
+    const btn = document.getElementById('cbtn-'+idx)
+    if (btn) { btn.textContent = '＋ Comparar'; btn.classList.remove('selected') }
+  })
+  comparando = []
+  atualizarBarra()
+}
+
+function abrirComparador() {
+  const carros = comparando.map(i => fd[i])
+  const overlay = document.getElementById('comp-overlay')
+  const body = document.getElementById('comp-body')
+
+  // Grupos de campos para comparação
+  const grupos = [
+    { num:'1', titulo:'Fabricante', campos:[
+      {l:'Fabricado em', k:'fabricado_em', tipo:'texto'},
+      {l:'Nota Reclame Aqui', k:'reclame_aqui_nota', tipo:'numero', melhor:'maior'},
+    ]},
+    { num:'2', titulo:'Bateria e Motor', campos:[
+      {l:'Bateria (kWh)', k:'bateria_kwh', tipo:'numero', melhor:'maior'},
+      {l:'Potência (cv)', k:'potencia_cv', tipo:'numero', melhor:'maior'},
+      {l:'Torque (kgf.m)', k:'torque_kgfm', tipo:'numero', melhor:'maior'},
+      {l:'0–100 km/h (s)', k:'zero_100_s', tipo:'numero', melhor:'menor'},
+      {l:'Vel. máxima (km/h)', k:'vel_max_kmh', tipo:'numero', melhor:'maior'},
+      {l:'Potência combinada (cv)', k:'potencia_combinada_cv', tipo:'numero', melhor:'maior'},
+      {l:'Tração', k:'tracao', tipo:'texto'},
+    ]},
+    { num:'3', titulo:'Autonomia INMETRO', campos:[
+      {l:'Autonomia elétrica (km)', k:'autonomia_km', tipo:'numero', melhor:'maior'},
+      {l:'Consumo (km/kWh)', k:'consumo_kmkwh', tipo:'numero', melhor:'maior'},
+      {l:'Consumo cidade (km/l)', k:'autonomia_hev_cidade', tipo:'numero', melhor:'maior'},
+      {l:'Eficiência (MJ/km)', k:'eficiencia_mj_km', tipo:'numero', melhor:'menor'},
+    ]},
+    { num:'4', titulo:'Velocidade de Recarga', campos:[
+      {l:'Recarga AC (kW)', k:'recarga_ac_kw', tipo:'numero', melhor:'maior'},
+      {l:'Recarga DC (kW)', k:'recarga_dc_kw', tipo:'numero', melhor:'maior'},
+      {l:'Recarga DC 30→80% (min)', k:'recarga_dc_tempo_min', tipo:'numero', melhor:'menor'},
+      {l:'Protocolo DC', k:'protocolo_dc', tipo:'texto'},
+    ]},
+    { num:'5', titulo:'Dimensões e Acessórios', campos:[
+      {l:'Comprimento (mm)', k:'comprimento_mm', tipo:'numero'},
+      {l:'Largura (mm)', k:'largura_mm', tipo:'numero'},
+      {l:'Altura (mm)', k:'altura_mm', tipo:'numero'},
+      {l:'Entre-eixos (mm)', k:'entre_eixos_mm', tipo:'numero'},
+      {l:'Porta-malas (L)', k:'porta_malas_l', tipo:'numero', melhor:'maior'},
+      {l:'Frunk (L)', k:'frunk_l', tipo:'numero', melhor:'maior'},
+      {l:'Peso (kg)', k:'peso_kg', tipo:'numero', melhor:'menor'},
+      {l:'Pneu', k:'pneu_medida', tipo:'texto'},
+      {l:'Estepe', k:'estepe_kit', tipo:'texto'},
+      {l:'Suspensão dianteira', k:'suspensao_diant', tipo:'texto'},
+      {l:'Suspensão traseira', k:'suspensao_tras', tipo:'texto'},
+    ]},
+    { num:'6', titulo:'Segurança e ADAS', campos:[
+      {l:'Airbags', k:'airbags_qtd', tipo:'numero', melhor:'maior'},
+      {l:'ADAS', k:'adas_nivel', tipo:'texto'},
+      {l:'HUD', k:'hud', tipo:'texto'},
+    ]},
+    { num:'7', titulo:'Garantias', campos:[
+      {l:'Garantia veículo (anos)', k:'garantia_veiculo_anos', tipo:'numero', melhor:'maior'},
+      {l:'Garantia bateria (anos)', k:'garantia_bateria_anos', tipo:'numero', melhor:'maior'},
+      {l:'Garantia bateria (km)', k:'garantia_bateria_km', tipo:'numero', melhor:'maior'},
+    ]},
+    { num:'$', titulo:'Preço', campos:[
+      {l:'Preço 0km', k:'preco_atual', tipo:'preco', melhor:'menor'},
+      {l:'Fonte', k:'fonte_preco', tipo:'texto'},
+    ]},
+  ]
+
+  // Cabeçalho com fotos
+  let thead = `<table class="comp-table"><thead><tr>
+    <th style="width:160px"></th>`
+  carros.forEach(d => {
+    thead += `<th class="car-col">
+      <div class="comp-car-header">
+        ${d.foto_principal
+          ? `<img src="${d.foto_principal}" class="comp-car-foto" onerror="this.style.display='none'">`
+          : `<div class="comp-car-foto-placeholder">${(d.marca[0]+(d.modelo[0]||'')).toUpperCase()}</div>`}
+        <div class="comp-car-marca">${d.marca}</div>
+        <div class="comp-car-nome">${d.modelo}</div>
+        <div class="comp-car-versao">${d.versao||''}</div>
+        <div class="comp-car-preco">${d.preco_atual?fp(d.preco_atual):'Consulte'}</div>
+      </div>
+    </th>`
+  })
+  thead += `</tr></thead><tbody>`
+
+  // Linhas por grupo
+  let tbody = ''
+  grupos.forEach(g => {
+    tbody += `<tr class="grupo-header"><td colspan="${carros.length+1}">
+      <span style="margin-right:.4rem">${g.num}</span>${g.titulo}
+    </td></tr>`
+    g.campos.forEach(campo => {
+      const vals = carros.map(d => d[campo.k])
+      const temAlgum = vals.some(v => v !== null && v !== undefined && v !== '')
+      if (!temAlgum) return
+      // Calcular melhor/pior para campos numéricos
+      let bestIdx = -1, worstIdx = -1
+      if (campo.tipo === 'numero' || campo.tipo === 'preco') {
+        const nums = vals.map(v => parseFloat(v)||null)
+        const validos = nums.filter(v => v !== null)
+        if (validos.length > 1) {
+          const melhorVal = campo.melhor === 'maior' ? Math.max(...validos) : Math.min(...validos)
+          const piorVal = campo.melhor === 'maior' ? Math.min(...validos) : Math.max(...validos)
+          bestIdx = nums.indexOf(melhorVal)
+          worstIdx = nums.indexOf(piorVal)
+          if (bestIdx === worstIdx) worstIdx = -1
+        }
+      }
+      tbody += `<tr><td class="label-col">${campo.l}</td>`
+      vals.forEach((v, i) => {
+        let display = v === null || v === undefined || v === '' ? '—' :
+          campo.tipo === 'preco' ? fp(v) :
+          campo.tipo === 'numero' ? Number(v).toLocaleString('pt-BR') : v
+        const cls = i === bestIdx ? 'best' : i === worstIdx ? 'worst' : ''
+        tbody += `<td class="val-col ${cls}">${display}</td>`
+      })
+      tbody += `</tr>`
+    })
+  })
+
+  body.innerHTML = thead + tbody + '</tbody></table>'
+  overlay.classList.add('open')
+  document.body.style.overflow = 'hidden'
+}
+
+function fecharComparador(e) {
+  if (e && e.target !== document.getElementById('comp-overlay')) return
+  document.getElementById('comp-overlay').classList.remove('open')
+  document.body.style.overflow = ''
+}{
   try{
     const[r1,r2]=await Promise.all([
       fetch(SB+'/rest/v1/vw_catalogo?select=*&order=marca,modelo,versao',{headers:H}),
@@ -338,6 +617,7 @@ function render(){
   grid.innerHTML=fd.map((d,i)=>`
   <div class="car-card" onclick="openD(${i})" style="animation:fadeIn .3s ease ${(i%12)*.04}s both">
     <span class="card-badge ${bc(d.tipo,d.status_venda)}">${tl(d.tipo)}</span>
+    <button class="compare-btn" onclick="toggleCompare(event,${i})" id="cbtn-${i}">＋ Comparar</button>
     <div class="card-img-wrap">
       ${d.foto_principal?`<img src="${d.foto_principal}" alt="${d.marca} ${d.modelo}" loading="lazy">`:`<div class="card-img-placeholder">${gi(d.marca,d.modelo)}</div>`}
     </div>
@@ -521,6 +801,192 @@ function closeDetail(e){
 }
 
 load()
+
+// ── COMPARADOR ────────────────────────────────────────────────
+let comparando = [] // array de índices de fd[]
+
+function toggleCompare(e, idx) {
+  e.stopPropagation()
+  const btn = document.getElementById('cbtn-'+idx)
+  const jaEsta = comparando.indexOf(idx)
+  if (jaEsta > -1) {
+    comparando.splice(jaEsta, 1)
+    btn.textContent = '＋ Comparar'
+    btn.classList.remove('selected')
+  } else {
+    if (comparando.length >= 3) {
+      alert('Máximo 3 carros para comparar. Remova um antes de adicionar outro.')
+      return
+    }
+    comparando.push(idx)
+    btn.textContent = '✓ Selecionado'
+    btn.classList.add('selected')
+  }
+  atualizarBarra()
+}
+
+function atualizarBarra() {
+  const bar = document.getElementById('compare-bar')
+  const slots = document.getElementById('compare-slots')
+  const btn = document.getElementById('btn-comparar')
+  if (comparando.length === 0) { bar.classList.remove('visible'); return }
+  bar.classList.add('visible')
+  btn.disabled = comparando.length < 2
+  // Renderizar slots
+  let html = comparando.map((idx,i) => {
+    const d = fd[idx]
+    return `<div class="compare-slot">
+      <span class="compare-slot-nome">${d.marca} ${d.modelo} ${d.versao||''}</span>
+      <button class="compare-slot-remove" onclick="removerSlot(${idx})">✕</button>
+    </div>`
+  }).join('')
+  // Slots vazios
+  for (let i = comparando.length; i < 3; i++) {
+    html += `<div class="compare-slot empty">+ Adicionar carro</div>`
+  }
+  slots.innerHTML = html
+}
+
+function removerSlot(idx) {
+  comparando = comparando.filter(i => i !== idx)
+  const btn = document.getElementById('cbtn-'+idx)
+  if (btn) { btn.textContent = '＋ Comparar'; btn.classList.remove('selected') }
+  atualizarBarra()
+}
+
+function limparComparacao() {
+  comparando.forEach(idx => {
+    const btn = document.getElementById('cbtn-'+idx)
+    if (btn) { btn.textContent = '＋ Comparar'; btn.classList.remove('selected') }
+  })
+  comparando = []
+  atualizarBarra()
+}
+
+function abrirComparador() {
+  const carros = comparando.map(i => fd[i])
+  const overlay = document.getElementById('comp-overlay')
+  const body = document.getElementById('comp-body')
+
+  // Grupos de campos para comparação
+  const grupos = [
+    { num:'1', titulo:'Fabricante', campos:[
+      {l:'Fabricado em', k:'fabricado_em', tipo:'texto'},
+      {l:'Nota Reclame Aqui', k:'reclame_aqui_nota', tipo:'numero', melhor:'maior'},
+    ]},
+    { num:'2', titulo:'Bateria e Motor', campos:[
+      {l:'Bateria (kWh)', k:'bateria_kwh', tipo:'numero', melhor:'maior'},
+      {l:'Potência (cv)', k:'potencia_cv', tipo:'numero', melhor:'maior'},
+      {l:'Torque (kgf.m)', k:'torque_kgfm', tipo:'numero', melhor:'maior'},
+      {l:'0–100 km/h (s)', k:'zero_100_s', tipo:'numero', melhor:'menor'},
+      {l:'Vel. máxima (km/h)', k:'vel_max_kmh', tipo:'numero', melhor:'maior'},
+      {l:'Potência combinada (cv)', k:'potencia_combinada_cv', tipo:'numero', melhor:'maior'},
+      {l:'Tração', k:'tracao', tipo:'texto'},
+    ]},
+    { num:'3', titulo:'Autonomia INMETRO', campos:[
+      {l:'Autonomia elétrica (km)', k:'autonomia_km', tipo:'numero', melhor:'maior'},
+      {l:'Consumo (km/kWh)', k:'consumo_kmkwh', tipo:'numero', melhor:'maior'},
+      {l:'Consumo cidade (km/l)', k:'autonomia_hev_cidade', tipo:'numero', melhor:'maior'},
+      {l:'Eficiência (MJ/km)', k:'eficiencia_mj_km', tipo:'numero', melhor:'menor'},
+    ]},
+    { num:'4', titulo:'Velocidade de Recarga', campos:[
+      {l:'Recarga AC (kW)', k:'recarga_ac_kw', tipo:'numero', melhor:'maior'},
+      {l:'Recarga DC (kW)', k:'recarga_dc_kw', tipo:'numero', melhor:'maior'},
+      {l:'Recarga DC 30→80% (min)', k:'recarga_dc_tempo_min', tipo:'numero', melhor:'menor'},
+      {l:'Protocolo DC', k:'protocolo_dc', tipo:'texto'},
+    ]},
+    { num:'5', titulo:'Dimensões e Acessórios', campos:[
+      {l:'Comprimento (mm)', k:'comprimento_mm', tipo:'numero'},
+      {l:'Largura (mm)', k:'largura_mm', tipo:'numero'},
+      {l:'Altura (mm)', k:'altura_mm', tipo:'numero'},
+      {l:'Entre-eixos (mm)', k:'entre_eixos_mm', tipo:'numero'},
+      {l:'Porta-malas (L)', k:'porta_malas_l', tipo:'numero', melhor:'maior'},
+      {l:'Frunk (L)', k:'frunk_l', tipo:'numero', melhor:'maior'},
+      {l:'Peso (kg)', k:'peso_kg', tipo:'numero', melhor:'menor'},
+      {l:'Pneu', k:'pneu_medida', tipo:'texto'},
+      {l:'Estepe', k:'estepe_kit', tipo:'texto'},
+      {l:'Suspensão dianteira', k:'suspensao_diant', tipo:'texto'},
+      {l:'Suspensão traseira', k:'suspensao_tras', tipo:'texto'},
+    ]},
+    { num:'6', titulo:'Segurança e ADAS', campos:[
+      {l:'Airbags', k:'airbags_qtd', tipo:'numero', melhor:'maior'},
+      {l:'ADAS', k:'adas_nivel', tipo:'texto'},
+      {l:'HUD', k:'hud', tipo:'texto'},
+    ]},
+    { num:'7', titulo:'Garantias', campos:[
+      {l:'Garantia veículo (anos)', k:'garantia_veiculo_anos', tipo:'numero', melhor:'maior'},
+      {l:'Garantia bateria (anos)', k:'garantia_bateria_anos', tipo:'numero', melhor:'maior'},
+      {l:'Garantia bateria (km)', k:'garantia_bateria_km', tipo:'numero', melhor:'maior'},
+    ]},
+    { num:'$', titulo:'Preço', campos:[
+      {l:'Preço 0km', k:'preco_atual', tipo:'preco', melhor:'menor'},
+      {l:'Fonte', k:'fonte_preco', tipo:'texto'},
+    ]},
+  ]
+
+  // Cabeçalho com fotos
+  let thead = `<table class="comp-table"><thead><tr>
+    <th style="width:160px"></th>`
+  carros.forEach(d => {
+    thead += `<th class="car-col">
+      <div class="comp-car-header">
+        ${d.foto_principal
+          ? `<img src="${d.foto_principal}" class="comp-car-foto" onerror="this.style.display='none'">`
+          : `<div class="comp-car-foto-placeholder">${(d.marca[0]+(d.modelo[0]||'')).toUpperCase()}</div>`}
+        <div class="comp-car-marca">${d.marca}</div>
+        <div class="comp-car-nome">${d.modelo}</div>
+        <div class="comp-car-versao">${d.versao||''}</div>
+        <div class="comp-car-preco">${d.preco_atual?fp(d.preco_atual):'Consulte'}</div>
+      </div>
+    </th>`
+  })
+  thead += `</tr></thead><tbody>`
+
+  // Linhas por grupo
+  let tbody = ''
+  grupos.forEach(g => {
+    tbody += `<tr class="grupo-header"><td colspan="${carros.length+1}">
+      <span style="margin-right:.4rem">${g.num}</span>${g.titulo}
+    </td></tr>`
+    g.campos.forEach(campo => {
+      const vals = carros.map(d => d[campo.k])
+      const temAlgum = vals.some(v => v !== null && v !== undefined && v !== '')
+      if (!temAlgum) return
+      // Calcular melhor/pior para campos numéricos
+      let bestIdx = -1, worstIdx = -1
+      if (campo.tipo === 'numero' || campo.tipo === 'preco') {
+        const nums = vals.map(v => parseFloat(v)||null)
+        const validos = nums.filter(v => v !== null)
+        if (validos.length > 1) {
+          const melhorVal = campo.melhor === 'maior' ? Math.max(...validos) : Math.min(...validos)
+          const piorVal = campo.melhor === 'maior' ? Math.min(...validos) : Math.max(...validos)
+          bestIdx = nums.indexOf(melhorVal)
+          worstIdx = nums.indexOf(piorVal)
+          if (bestIdx === worstIdx) worstIdx = -1
+        }
+      }
+      tbody += `<tr><td class="label-col">${campo.l}</td>`
+      vals.forEach((v, i) => {
+        let display = v === null || v === undefined || v === '' ? '—' :
+          campo.tipo === 'preco' ? fp(v) :
+          campo.tipo === 'numero' ? Number(v).toLocaleString('pt-BR') : v
+        const cls = i === bestIdx ? 'best' : i === worstIdx ? 'worst' : ''
+        tbody += `<td class="val-col ${cls}">${display}</td>`
+      })
+      tbody += `</tr>`
+    })
+  })
+
+  body.innerHTML = thead + tbody + '</tbody></table>'
+  overlay.classList.add('open')
+  document.body.style.overflow = 'hidden'
+}
+
+function fecharComparador(e) {
+  if (e && e.target !== document.getElementById('comp-overlay')) return
+  document.getElementById('comp-overlay').classList.remove('open')
+  document.body.style.overflow = ''
+}
 </script>
 </body>
 </html>
