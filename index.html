@@ -37,6 +37,28 @@ button{cursor:pointer;font-family:var(--fb)}
 .st{display:flex;flex-direction:column}
 .stn{font-family:var(--fh);font-size:1.8rem;font-weight:700;color:var(--green)}
 .stl{font-size:.8rem;color:var(--text3)}
+/* CARROSSEL */
+.carousel-section{position:relative;width:100%;overflow:hidden;background:var(--bg2)}
+.carousel{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1);height:420px}
+.slide{flex:0 0 100%;background-size:cover;background-position:center;position:relative;text-decoration:none;display:block}
+.slide-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.75) 0%,rgba(0,0,0,.3) 60%,transparent 100%);display:flex;align-items:flex-end;padding:2.5rem 3rem}
+.slide-content{max-width:560px}
+.slide-tag{display:inline-block;background:var(--green);color:#000;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .7rem;border-radius:100px;margin-bottom:.6rem}
+.slide-title{font-family:var(--fh);font-size:clamp(1.4rem,3vw,2.2rem);font-weight:800;color:#fff;line-height:1.15;margin-bottom:.4rem;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.slide-sub{font-size:.95rem;color:rgba(255,255,255,.8);font-weight:400}
+/* Setas */
+.car-prev,.car-next{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);color:#fff;width:44px;height:44px;border-radius:50%;font-size:1.4rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px)}
+.car-prev{left:1rem}
+.car-next{right:1rem}
+.car-prev:hover,.car-next:hover{background:var(--green);border-color:var(--green);color:#000}
+/* Dots */
+.car-dots{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:.5rem;z-index:10}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);border:none;cursor:pointer;transition:all .2s;padding:0}
+.dot.on{background:var(--green);width:24px;border-radius:4px}
+/* Stats sobre o carrossel */
+.car-stats{position:absolute;bottom:0;right:0;display:flex;gap:1.5rem;background:rgba(10,15,13,.85);backdrop-filter:blur(12px);padding:.75rem 1.5rem;border-radius:var(--r2) 0 0 0;z-index:10}
+.car-stats .stn{font-size:1.3rem}
+.car-stats .stl{font-size:.72rem}
 /* FILTERS */
 .filters{padding:1.5rem 2rem;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:.75rem;align-items:center}
 .flbl{font-size:.75rem;color:var(--text3);padding:.3rem 0}
@@ -205,11 +227,54 @@ button{cursor:pointer;font-family:var(--fb)}
 <header class="hdr">
   <div class="logo">SPCE <span>Seu Primeiro Carro Elétrico</span></div>
 </header>
-<section class="hero">
-  <div class="htag">Base atualizada Mai/2026</div>
-  <h1>Encontre seu próximo<br><em>carro elétrico</em></h1>
-  <p>O maior guia de veículos eletrificados do Brasil. Dados oficiais INMETRO, preços FIPE e fichas técnicas completas.</p>
-  <div class="stats">
+<!-- CARROSSEL -->
+<section class="carousel-section">
+  <div class="carousel" id="carousel">
+    <!-- SLIDE 1 — substitua a imagem e o link -->
+    <a class="slide" href="https://SEU-LINK-1.com" target="_blank" id="slide-0"
+       style="background-image:url('https://placehold.co/1200x400/052e16/22c55e?text=Banner+1+—+Seu+Link+Aqui')">
+      <div class="slide-overlay">
+        <div class="slide-content">
+          <div class="slide-tag">Novidade</div>
+          <div class="slide-title">Título do Banner 1</div>
+          <div class="slide-sub">Subtítulo ou descrição curta aqui</div>
+        </div>
+      </div>
+    </a>
+    <!-- SLIDE 2 — substitua a imagem e o link -->
+    <a class="slide" href="https://SEU-LINK-2.com" target="_blank" id="slide-1"
+       style="background-image:url('https://placehold.co/1200x400/0a1628/38bdf8?text=Banner+2+—+Seu+Link+Aqui')">
+      <div class="slide-overlay">
+        <div class="slide-content">
+          <div class="slide-tag">Destaque</div>
+          <div class="slide-title">Título do Banner 2</div>
+          <div class="slide-sub">Subtítulo ou descrição curta aqui</div>
+        </div>
+      </div>
+    </a>
+    <!-- SLIDE 3 — substitua a imagem e o link -->
+    <a class="slide" href="https://SEU-LINK-3.com" target="_blank" id="slide-2"
+       style="background-image:url('https://placehold.co/1200x400/1a0a00/fbbf24?text=Banner+3+—+Seu+Link+Aqui')">
+      <div class="slide-overlay">
+        <div class="slide-content">
+          <div class="slide-tag">Promoção</div>
+          <div class="slide-title">Título do Banner 3</div>
+          <div class="slide-sub">Subtítulo ou descrição curta aqui</div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <!-- Controles -->
+  <button class="car-prev" onclick="carMove(-1)">‹</button>
+  <button class="car-next" onclick="carMove(1)">›</button>
+  <!-- Dots -->
+  <div class="car-dots">
+    <button class="dot on" onclick="carGo(0)"></button>
+    <button class="dot" onclick="carGo(1)"></button>
+    <button class="dot" onclick="carGo(2)"></button>
+  </div>
+  <!-- Stats sobrepostos -->
+  <div class="car-stats">
     <div class="st"><span class="stn" id="s-tot">—</span><span class="stl">versões</span></div>
     <div class="st"><span class="stn" id="s-bev">—</span><span class="stl">elétricos puros</span></div>
     <div class="st"><span class="stn" id="s-phev">—</span><span class="stl">plug-in híbridos</span></div>
@@ -681,6 +746,29 @@ function closeCmp(e){
   G('cov').classList.remove('open')
   document.body.style.overflow=''
 }
+
+// ── CARROSSEL ────────────────────────────────────────────────
+let carIdx=0, carTimer=null
+const CAR_TOTAL=3
+
+function carMove(dir){
+  carGo((carIdx+dir+CAR_TOTAL)%CAR_TOTAL)
+}
+
+function carGo(i){
+  carIdx=i
+  document.getElementById('carousel').style.transform=`translateX(-${i*100}%)`
+  document.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('on',j===i))
+  resetTimer()
+}
+
+function resetTimer(){
+  clearInterval(carTimer)
+  carTimer=setInterval(()=>carMove(1),5000)
+}
+
+// Iniciar autoplay
+resetTimer()
 
 // ── INICIAR ───────────────────────────────────────────────────
 load()
