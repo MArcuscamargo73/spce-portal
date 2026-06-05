@@ -485,6 +485,10 @@ function filt(){
     const ma=!aon||(a>=amin)
     const mq=!q||(d.marca+' '+d.modelo+' '+(d.versao||'')).toLowerCase().includes(q)
     return mt&&mp&&ma&&mq
+  }).sort((a,b)=>{
+    const pa=a.preco_atual||Infinity
+    const pb=b.preco_atual||Infinity
+    return pa-pb
   })
 }
 
