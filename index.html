@@ -230,9 +230,7 @@ button{cursor:pointer;font-family:var(--fb)}
 .footer strong{color:var(--green)}
 @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(max-width:768px){
-  /* Header */
   .hdr{padding:0 1rem}
-  /* Carrossel mobile */
   .carousel{height:260px}
   .slide-overlay{padding:1.25rem 1.25rem}
   .slide-title{font-size:1.1rem}
@@ -242,16 +240,12 @@ button{cursor:pointer;font-family:var(--fb)}
   .car-stats{gap:.75rem;padding:.5rem .85rem;border-radius:var(--r) 0 0 0}
   .car-stats .stn{font-size:1rem}
   .car-stats .stl{font-size:.65rem}
-  /* Filtros */
   .filters{padding:1rem;gap:.5rem}
   .rwrap{min-width:140px;max-width:100%}
   .fcnt{width:100%;text-align:center}
-  /* Grid */
   .gwrap{padding:1rem 1rem 5rem}
   .grid{grid-template-columns:1fr}
-  /* Cards */
   .cimg{height:200px}
-  /* Modal detalhe */
   .detail{border-radius:16px 16px 0 0;max-height:95vh}
   .overlay{padding:0;align-items:flex-end}
   .dhead{padding:1rem}
@@ -259,15 +253,12 @@ button{cursor:pointer;font-family:var(--fb)}
   .dbody{padding:1rem}
   .sgrid{grid-template-columns:1fr 1fr}
   .pgrid{grid-template-columns:1fr}
-  /* Modal comparador */
   .cmod{border-radius:16px 16px 0 0}
   .cov{padding:0;align-items:flex-end}
-  /* Barra comparador */
   .cbar{padding:.75rem 1rem;gap:.5rem}
   .cslots{flex-wrap:wrap}
   .cslot{min-width:120px}
   .cbartit{display:none}
-  /* Footer */
   .footer{flex-direction:column;text-align:center}
 }
 @media(max-width:480px){
@@ -292,7 +283,6 @@ button{cursor:pointer;font-family:var(--fb)}
 <!-- CARROSSEL -->
 <section class="carousel-section">
   <div class="carousel" id="carousel">
-    <!-- SLIDE 1 — substitua a imagem e o link -->
     <a class="slide" href="https://SEU-LINK-1.com" target="_blank" id="slide-0"
        style="background-image:url('https://placehold.co/1200x400/052e16/22c55e?text=Banner+1+—+Seu+Link+Aqui')">
       <div class="slide-overlay">
@@ -303,7 +293,6 @@ button{cursor:pointer;font-family:var(--fb)}
         </div>
       </div>
     </a>
-    <!-- SLIDE 2 — substitua a imagem e o link -->
     <a class="slide" href="https://SEU-LINK-2.com" target="_blank" id="slide-1"
        style="background-image:url('https://placehold.co/1200x400/0a1628/38bdf8?text=Banner+2+—+Seu+Link+Aqui')">
       <div class="slide-overlay">
@@ -314,7 +303,6 @@ button{cursor:pointer;font-family:var(--fb)}
         </div>
       </div>
     </a>
-    <!-- SLIDE 3 — substitua a imagem e o link -->
     <a class="slide" href="https://SEU-LINK-3.com" target="_blank" id="slide-2"
        style="background-image:url('https://placehold.co/1200x400/1a0a00/fbbf24?text=Banner+3+—+Seu+Link+Aqui')">
       <div class="slide-overlay">
@@ -326,16 +314,13 @@ button{cursor:pointer;font-family:var(--fb)}
       </div>
     </a>
   </div>
-  <!-- Controles -->
   <button class="car-prev" onclick="carMove(-1)">‹</button>
   <button class="car-next" onclick="carMove(1)">›</button>
-  <!-- Dots -->
   <div class="car-dots">
     <button class="dot on" onclick="carGo(0)"></button>
     <button class="dot" onclick="carGo(1)"></button>
     <button class="dot" onclick="carGo(2)"></button>
   </div>
-  <!-- Stats sobrepostos -->
   <div class="car-stats">
     <div class="st"><span class="stn" id="s-tot">—</span><span class="stl">versões</span></div>
     <div class="st"><span class="stn" id="s-bev">—</span><span class="stl">elétricos puros</span></div>
@@ -425,21 +410,28 @@ const H={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/
 
 let all=[], fd=[], tipo='all', cmp=[]
 
-// ── CARREGAR DADOS ────────────────────────────────────────────
 async function load(){
   try{
     const[r1,r2]=await Promise.all([
-      fetch(SB+'/rest/v1/vw_catalogo?select=*&order=marca,modelo,versao',{headers:H}),
+      fetch(SB+'/rest/v1/vw_catalogo?select=*&order=marca_nome,modelo_nome,nome_versao',{headers:H}),
       fetch(SB+'/rest/v1/vw_preco_atual?select=*',{headers:H})
     ])
+    if(!r1.ok){const err=await r1.json();throw new Error(JSON.stringify(err))}
+    if(!r2.ok){const err=await r2.json();throw new Error(JSON.stringify(err))}
     all=await r1.json()
+    if(!Array.isArray(all)) throw new TypeError('vw_catalogo não retornou array: '+JSON.stringify(all))
     const pm={}
-    ;(await r2.json()).forEach(p=>{pm[p.versao_id]=p})
+    const precos=await r2.json()
+    if(Array.isArray(precos)) precos.forEach(p=>{pm[p.versao_id]=p})
     all.forEach(d=>{
-      if(pm[d.versao_id]){
-        d.preco_atual=pm[d.versao_id].preco_0km
-        d.preco_usado=pm[d.versao_id].preco_usado
-        d.fh=pm[d.versao_id].fonte
+      // normalizar nomes de colunas da view
+      d.marca = d.marca_nome || d.marca || ''
+      d.modelo = d.modelo_nome || d.modelo || ''
+      d.versao = d.nome_versao || d.versao || ''
+      if(pm[d.id]){
+        d.preco_atual=pm[d.id].preco_0km
+        d.preco_usado=pm[d.id].preco_usado
+        d.fh=pm[d.id].fonte
       }
     })
   }catch(e){
@@ -454,7 +446,6 @@ async function load(){
   render()
 }
 
-// ── UTILITÁRIOS ───────────────────────────────────────────────
 function G(id){return document.getElementById(id)}
 function fp(v){return v?'R$ '+Math.round(v).toLocaleString('pt-BR'):null}
 function fn(v){return(v===null||v===undefined)?'—':Number(v).toLocaleString('pt-BR')}
@@ -463,7 +454,6 @@ function bc(t,s){if(s==='Descontinuado')return'bdesc';return t==='BEV'?'bbev':t=
 function tl(t){return t==='BEV'?'⚡ BEV':t==='PHEV'?'🔌 PHEV':'♻️ HEV'}
 function sc(v,l,g){return`<div class="sc"><div class="sv${g?' g':''}">${v}</div><div class="sl">${l}</div></div>`}
 
-// ── FILTROS ───────────────────────────────────────────────────
 function setTipo(b){
   document.querySelectorAll('[data-t]').forEach(x=>x.classList.remove('on'))
   b.classList.add('on')
@@ -498,27 +488,22 @@ function filt(){
   })
 }
 
-// ── RENDERIZAR CARDS ──────────────────────────────────────────
 function render(){
   fd=filt()
   const grid=G('grid'),empty=G('empty')
   G('cnt').textContent=fd.length+' resultado'+(fd.length!==1?'s':'')
   if(!fd.length){grid.innerHTML='';empty.style.display='block';return}
   empty.style.display='none'
-  // Montar lista com ads a cada 6 cards
-  let items = []
-  let adCount = 0
-  fd.forEach((d,i) => {
-    items.push({tipo:'car', d, i})
-    if ((i+1) % 6 === 0) {
-      items.push({tipo:'ad', idx: adCount++})
-    }
+  let items=[]
+  let adCount=0
+  fd.forEach((d,i)=>{
+    items.push({tipo:'car',d,i})
+    if((i+1)%6===0) items.push({tipo:'ad',idx:adCount++})
   })
-
-  grid.innerHTML=items.map(item => {
+  grid.innerHTML=items.map(item=>{
     if(item.tipo==='ad') return renderAdCard(item.idx)
-    const d=item.d, i=item.i
-    return `<div class="card" onclick="openD(${i})" style="animation:fi .3s ease ${(i%12)*.04}s both">
+    const d=item.d,i=item.i
+    return`<div class="card" onclick="openD(${i})" style="animation:fi .3s ease ${(i%12)*.04}s both">
     <span class="cbadge ${bc(d.tipo,d.status_venda)}">${tl(d.tipo)}</span>
     <button class="cmpbtn${cmp.includes(i)?' sel':''}" onclick="togCmp(event,${i})" id="cb${i}">${cmp.includes(i)?'✓ Selecionado':'＋ Comparar'}</button>
     <div class="cimg">
@@ -543,7 +528,6 @@ function render(){
   }).join('')
 }
 
-// ── MODAL DETALHE ─────────────────────────────────────────────
 function openD(i){
   const d=fd[i];if(!d)return
   G('dm').textContent=d.marca
@@ -621,9 +605,9 @@ function openD(i){
     <div class="grupo">
       <div class="gtit"><span class="gnum">5</span>Dimensões e Acessórios</div>
       <div class="sgrid">
-        ${d.comprimento_mm?sc(fn(d.comprimento_mm)+' mm','Comprimento'):''}
-        ${d.altura_mm?sc(fn(d.altura_mm)+' mm','Altura'):''}
-        ${d.largura_mm?sc(fn(d.largura_mm)+' mm','Largura'):''}
+        ${d.comprimento_mm_v?sc(fn(d.comprimento_mm_v)+' mm','Comprimento'):''}
+        ${d.altura_mm_v?sc(fn(d.altura_mm_v)+' mm','Altura'):''}
+        ${d.largura_mm_v?sc(fn(d.largura_mm_v)+' mm','Largura'):''}
         ${d.entre_eixos_mm?sc(fn(d.entre_eixos_mm)+' mm','Entre-eixos'):''}
         ${d.vao_livre_mm?sc(d.vao_livre_mm+' mm','Vão livre'):''}
         ${d.porta_malas_l?sc(d.porta_malas_l+' L','Porta-malas',true):''}
@@ -681,13 +665,11 @@ function closeD(e){
   document.body.style.overflow=''
 }
 
-// ── COMPARADOR ────────────────────────────────────────────────
 function togCmp(e,i){
   e.stopPropagation()
   const j=cmp.indexOf(i)
-  if(j>-1){
-    cmp.splice(j,1)
-  }else{
+  if(j>-1){cmp.splice(j,1)}
+  else{
     if(cmp.length>=3){alert('Máximo 3 carros. Remova um antes de adicionar.');return}
     cmp.push(i)
   }
@@ -708,17 +690,8 @@ function upCbar(){
   slots.innerHTML=h
 }
 
-function remCmp(i){
-  cmp=cmp.filter(x=>x!==i)
-  render()
-  upCbar()
-}
-
-function clrCmp(){
-  cmp=[]
-  render()
-  upCbar()
-}
+function remCmp(i){cmp=cmp.filter(x=>x!==i);render();upCbar()}
+function clrCmp(){cmp=[];render();upCbar()}
 
 function openCmp(){
   const carros=cmp.map(i=>fd[i])
@@ -749,9 +722,9 @@ function openCmp(){
       {l:'Protocolo DC',k:'protocolo_dc',tp:'txt'},
     ]},
     {n:'5',t:'Dimensões e Acessórios',c:[
-      {l:'Comprimento (mm)',k:'comprimento_mm',tp:'num'},
-      {l:'Largura (mm)',k:'largura_mm',tp:'num'},
-      {l:'Altura (mm)',k:'altura_mm',tp:'num'},
+      {l:'Comprimento (mm)',k:'comprimento_mm_v',tp:'num'},
+      {l:'Largura (mm)',k:'largura_mm_v',tp:'num'},
+      {l:'Altura (mm)',k:'altura_mm_v',tp:'num'},
       {l:'Entre-eixos (mm)',k:'entre_eixos_mm',tp:'num'},
       {l:'Porta-malas (L)',k:'porta_malas_l',tp:'num',m:'maior'},
       {l:'Frunk (L)',k:'frunk_l',tp:'num',m:'maior'},
@@ -822,103 +795,39 @@ function closeCmp(e){
   document.body.style.overflow=''
 }
 
-// ── CARROSSEL ────────────────────────────────────────────────
-let carIdx=0, carTimer=null
+let carIdx=0,carTimer=null
 const CAR_TOTAL=3
-
-function carMove(dir){
-  carGo((carIdx+dir+CAR_TOTAL)%CAR_TOTAL)
-}
-
+function carMove(dir){carGo((carIdx+dir+CAR_TOTAL)%CAR_TOTAL)}
 function carGo(i){
   carIdx=i
   document.getElementById('carousel').style.transform=`translateX(-${i*100}%)`
   document.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('on',j===i))
   resetTimer()
 }
-
-function resetTimer(){
-  clearInterval(carTimer)
-  carTimer=setInterval(()=>carMove(1),5000)
-}
-
-// Iniciar autoplay
+function resetTimer(){clearInterval(carTimer);carTimer=setInterval(()=>carMove(1),5000)}
 resetTimer()
-
-// Swipe no mobile
 ;(function(){
   let sx=0
   const el=document.getElementById('carousel')
   if(!el)return
   el.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true})
-  el.addEventListener('touchend',e=>{
-    const dx=e.changedTouches[0].clientX-sx
-    if(Math.abs(dx)>50) carMove(dx<0?1:-1)
-  },{passive:true})
+  el.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)carMove(dx<0?1:-1)},{passive:true})
 })()
 
-// ── CONFIGURAÇÃO DE ANÚNCIOS ─────────────────────────────────
-// Para ativar AdSense: coloque seu client-id abaixo e mude ADSENSE_ATIVO para true
-const ADSENSE_ATIVO = false
-const ADSENSE_CLIENT = 'ca-pub-XXXXXXXXXXXXXXXX'  // substitua pelo seu ID
-const ADSENSE_SLOT = 'XXXXXXXXXX'                  // substitua pelo slot ID
-
-// Anúncios próprios — edite à vontade
-// Para desativar um anúncio, deixe o array vazio []
-const ADS_PROPRIOS = [
-  {
-    tag: 'Patrocinado',
-    titulo: 'Seu Anúncio Aqui',
-    descricao: 'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',
-    cta: 'Saiba mais →',
-    link: 'mailto:contato@spce.com.br',
-    imagem: 'https://placehold.co/600x320/052e16/22c55e?text=Anuncie+no+SPCE',
-    nova_aba: true
-  },
-  {
-    tag: 'Parceiro',
-    titulo: 'Seu Anúncio Aqui',
-    descricao: 'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',
-    cta: 'Saiba mais →',
-    link: 'mailto:contato@spce.com.br',
-    imagem: 'https://placehold.co/600x320/0a1628/38bdf8?text=Anuncie+no+SPCE',
-    nova_aba: true
-  }
+const ADSENSE_ATIVO=false
+const ADSENSE_CLIENT='ca-pub-XXXXXXXXXXXXXXXX'
+const ADSENSE_SLOT='XXXXXXXXXX'
+const ADS_PROPRIOS=[
+  {tag:'Patrocinado',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x320/052e16/22c55e?text=Anuncie+no+SPCE',nova_aba:true},
+  {tag:'Parceiro',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x320/0a1628/38bdf8?text=Anuncie+no+SPCE',nova_aba:true}
 ]
-
-function renderAdCard(idx) {
-  // Alternar entre AdSense e anúncio próprio
-  if (ADSENSE_ATIVO) {
-    return `<div class="ad-card">
-      <span class="ad-label">Publicidade</span>
-      <div class="ad-sense">
-        <ins class="adsbygoogle"
-          style="display:block;width:100%;height:280px"
-          data-ad-client="${ADSENSE_CLIENT}"
-          data-ad-slot="${ADSENSE_SLOT}"
-          data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
-      </div>
-    </div>`
-  }
-  // Anúncio próprio — alterna entre os cadastrados
-  if (!ADS_PROPRIOS.length) return ''
-  const ad = ADS_PROPRIOS[idx % ADS_PROPRIOS.length]
-  return `<div class="ad-card">
-    <span class="ad-label">Publicidade</span>
-    <a class="ad-own" href="${ad.link}" ${ad.nova_aba?'target="_blank"':''}>
-      <img class="ad-own-img" src="${ad.imagem}" alt="${ad.titulo}" onerror="this.style.display='none'">
-      <div class="ad-own-body">
-        <div class="ad-own-tag">${ad.tag}</div>
-        <div class="ad-own-title">${ad.titulo}</div>
-        <div class="ad-own-desc">${ad.descricao}</div>
-        <span class="ad-own-cta">${ad.cta}</span>
-      </div>
-    </a>
-  </div>`
+function renderAdCard(idx){
+  if(ADSENSE_ATIVO){return`<div class="ad-card"><span class="ad-label">Publicidade</span><div class="ad-sense"><ins class="adsbygoogle" style="display:block;width:100%;height:280px" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>`}
+  if(!ADS_PROPRIOS.length)return''
+  const ad=ADS_PROPRIOS[idx%ADS_PROPRIOS.length]
+  return`<div class="ad-card"><span class="ad-label">Publicidade</span><a class="ad-own" href="${ad.link}" ${ad.nova_aba?'target="_blank"':''}><img class="ad-own-img" src="${ad.imagem}" alt="${ad.titulo}" onerror="this.style.display='none'"><div class="ad-own-body"><div class="ad-own-tag">${ad.tag}</div><div class="ad-own-title">${ad.titulo}</div><div class="ad-own-desc">${ad.descricao}</div><span class="ad-own-cta">${ad.cta}</span></div></a></div>`
 }
 
-// ── INICIAR ───────────────────────────────────────────────────
 load()
 </script>
 </body>
