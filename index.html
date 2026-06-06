@@ -5,271 +5,264 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SPCE — Seu Primeiro Carro Elétrico</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#0a0f0d;--bg2:#111810;--bg3:#16201a;--bg4:#1c2a22;
-  --green:#22c55e;--green2:#16a34a;--green3:#15803d;--greendim:#052e16;
-  --teal:#2dd4bf;--blue:#38bdf8;
-  --text:#f0fdf4;--text2:#a7c4b0;--text3:#6b9078;
-  --border:#1e3328;--border2:#2a4a37;
-  --card:#111810;--red:#f87171;--amber:#fbbf24;
-  --fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
-  --r:10px;--r2:16px;
+  --bg:#f7f9f7;--bg2:#ffffff;--bg3:#f0f4f1;--bg4:#e8efe9;
+  --green:#16a34a;--green2:#15803d;--green3:#dcfce7;--green4:#bbf7d0;--greenbright:#22c55e;
+  --text:#0f1f14;--text2:#3d6349;--text3:#7a9e82;
+  --border:#e2ede4;--border2:#c8deca;
+  --card:#ffffff;--red:#dc2626;--amber:#d97706;--blue:#0284c7;
+  --fh:'Outfit',sans-serif;--fm:'JetBrains Mono',monospace;
+  --r:10px;--r2:16px;--r3:20px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+  --shadow2:0 2px 8px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.06);
 }
-body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:15px;line-height:1.6;min-height:100vh}
+body{background:var(--bg);color:var(--text);font-family:var(--fh);font-size:15px;line-height:1.6;min-height:100vh}
 a{color:inherit;text-decoration:none}
-button{cursor:pointer;font-family:var(--fb)}
+button{cursor:pointer;font-family:var(--fh)}
+
 /* HEADER */
-.hdr{position:sticky;top:0;z-index:100;background:rgba(10,15,13,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;height:64px}
-.logo{font-family:var(--fh);font-weight:800;font-size:1.3rem;background:linear-gradient(135deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.logo span{font-weight:400;font-size:.9rem;-webkit-text-fill-color:var(--text3);margin-left:.5rem}
-/* HERO */
-.hero{padding:4rem 2rem 2rem;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(34,197,94,.08),transparent)}
-.htag{display:inline-flex;align-items:center;gap:.4rem;background:var(--greendim);border:1px solid var(--green3);color:var(--green);font-size:.78rem;font-weight:500;padding:.3rem .8rem;border-radius:100px;margin-bottom:1.2rem}
-.htag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.hero h1{font-family:var(--fh);font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;margin-bottom:.8rem}
-.hero h1 em{font-style:normal;color:var(--green)}
-.hero p{color:var(--text2);font-size:1.05rem;max-width:520px;margin-bottom:2rem}
-.stats{display:flex;gap:2rem;flex-wrap:wrap}
-.st{display:flex;flex-direction:column}
-.stn{font-family:var(--fh);font-size:1.8rem;font-weight:700;color:var(--green)}
-.stl{font-size:.8rem;color:var(--text3)}
+.hdr{position:sticky;top:0;z-index:100;background:rgba(247,249,247,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;height:60px;gap:1.5rem}
+.logo{font-family:var(--fh);font-weight:800;font-size:1.2rem;color:var(--green);letter-spacing:-.02em;display:flex;align-items:center;gap:.4rem}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--greenbright);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.logo-sub{font-weight:400;font-size:.82rem;color:var(--text3);letter-spacing:0}
+.hdr-line{flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent)}
+
 /* CARROSSEL */
-.carousel-section{position:relative;width:100%;overflow:hidden;background:var(--bg2)}
-.carousel{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1);height:420px}
-.slide{flex:0 0 100%;background-size:cover;background-position:center center;position:relative;text-decoration:none;display:block}
-.slide-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.4) 50%,rgba(0,0,0,.1) 100%),linear-gradient(to right,rgba(0,0,0,.6) 0%,transparent 60%);display:flex;align-items:flex-end;padding:2.5rem 3rem}
-.slide-content{max-width:560px}
-.slide-tag{display:inline-block;background:var(--green);color:#000;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .7rem;border-radius:100px;margin-bottom:.6rem}
-.slide-title{font-family:var(--fh);font-size:clamp(1.4rem,3vw,2.2rem);font-weight:800;color:#fff;line-height:1.15;margin-bottom:.4rem;text-shadow:0 2px 8px rgba(0,0,0,.4)}
-.slide-sub{font-size:.95rem;color:rgba(255,255,255,.8);font-weight:400}
-/* Setas */
-.car-prev,.car-next{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);color:#fff;width:44px;height:44px;border-radius:50%;font-size:1.4rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px)}
-.car-prev{left:1rem}
-.car-next{right:1rem}
-.car-prev:hover,.car-next:hover{background:var(--green);border-color:var(--green);color:#000}
-/* Dots */
-.car-dots{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:.5rem;z-index:10}
-.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);border:none;cursor:pointer;transition:all .2s;padding:0}
-.dot.on{background:var(--green);width:24px;border-radius:4px}
-/* Stats sobre o carrossel */
-.car-stats{position:absolute;bottom:0;right:0;display:flex;gap:1.5rem;background:rgba(10,15,13,.85);backdrop-filter:blur(12px);padding:.75rem 1.5rem;border-radius:var(--r2) 0 0 0;z-index:10}
-.car-stats .stn{font-size:1.3rem}
-.car-stats .stl{font-size:.72rem}
+.carousel-section{position:relative;overflow:hidden;background:var(--bg2);border-bottom:1px solid var(--border)}
+.carousel{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1);height:380px}
+.slide{flex:0 0 100%;background-size:cover;background-position:center;position:relative;display:block}
+.slide-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(255,255,255,.95) 0%,rgba(255,255,255,.7) 40%,rgba(255,255,255,.1) 100%);display:flex;align-items:center;padding:3rem}
+.slide-content{max-width:480px}
+.slide-tag{display:inline-flex;align-items:center;gap:.3rem;background:var(--green3);color:var(--green2);font-family:var(--fm);font-size:.7rem;font-weight:500;padding:.25rem .7rem;border-radius:100px;margin-bottom:.8rem;border:1px solid var(--green4)}
+.slide-title{font-family:var(--fh);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:var(--text);line-height:1.1;margin-bottom:.5rem;letter-spacing:-.03em}
+.slide-sub{font-size:.95rem;color:var(--text2);font-weight:400}
+.car-prev,.car-next{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:var(--bg2);border:1px solid var(--border2);color:var(--text2);width:40px;height:40px;border-radius:50%;font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.car-prev{left:1rem}.car-next{right:1rem}
+.car-prev:hover,.car-next:hover{background:var(--green);border-color:var(--green);color:#fff}
+.car-dots{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:.4rem;z-index:10}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--border2);border:none;cursor:pointer;transition:all .2s;padding:0}
+.dot.on{background:var(--green);width:20px;border-radius:3px}
+.car-stats{position:absolute;bottom:0;right:0;display:flex;gap:0;background:var(--bg2);border-left:1px solid var(--border);border-top:1px solid var(--border);border-radius:var(--r2) 0 0 0;z-index:10}
+.cs-item{padding:.6rem 1.1rem;border-right:1px solid var(--border);display:flex;flex-direction:column}
+.cs-item:last-child{border-right:none}
+.cs-num{font-family:var(--fm);font-size:1.1rem;font-weight:500;color:var(--green);line-height:1}
+.cs-lbl{font-size:.68rem;color:var(--text3);margin-top:.1rem}
+
 /* FILTERS */
-.filters{padding:1.5rem 2rem;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:.75rem;align-items:center}
-.flbl{font-size:.75rem;color:var(--text3);padding:.3rem 0}
-.chip{background:none;border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:100px;font-size:.82rem;transition:all .18s;white-space:nowrap}
-.chip:hover{border-color:var(--green);color:var(--green)}
-.chip.on{background:var(--green);border-color:var(--green);color:#000;font-weight:500}
-.srch{flex:1;min-width:200px;position:relative;max-width:320px}
-.srch input{width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:.45rem .9rem .45rem 2.2rem;border-radius:var(--r);font-size:.9rem;font-family:var(--fb);outline:none;transition:border-color .2s}
-.srch input:focus{border-color:var(--green)}
+.filters{padding:1rem 2rem;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;background:var(--bg2);position:sticky;top:60px;z-index:50}
+.flbl{font-size:.72rem;color:var(--text3);font-family:var(--fm);letter-spacing:.04em}
+.chip{background:none;border:1px solid var(--border2);color:var(--text2);padding:.3rem .8rem;border-radius:100px;font-size:.8rem;transition:all .18s;white-space:nowrap;font-family:var(--fh)}
+.chip:hover{border-color:var(--green);color:var(--green);background:var(--green3)}
+.chip.on{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
+.srch{flex:1;min-width:200px;position:relative;max-width:280px}
+.srch input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.38rem .9rem .38rem 2rem;border-radius:var(--r);font-size:.88rem;font-family:var(--fh);outline:none;transition:all .2s}
+.srch input:focus{border-color:var(--green);background:var(--bg2);box-shadow:0 0 0 3px rgba(22,163,74,.1)}
 .srch input::placeholder{color:var(--text3)}
-.srch-icon{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:var(--text3);font-size:1rem;pointer-events:none}
-.fcnt{margin-left:auto;font-size:.82rem;color:var(--text3)}
-/* Sliders */
-.rwrap{display:flex;flex-direction:column;gap:.25rem;min-width:180px;max-width:220px}
-.rlbls{display:flex;justify-content:space-between;font-size:.73rem;color:var(--text3)}
-.rval{color:var(--green);font-weight:600}
-.srange{position:relative;height:32px;display:flex;align-items:center}
-.srange input[type=range]{position:absolute;width:100%;height:4px;background:none;outline:none;cursor:pointer;-webkit-appearance:none;z-index:2}
-.srange input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--green);border:2px solid var(--bg);cursor:pointer;box-shadow:0 2px 8px rgba(34,197,94,.4)}
-.srange input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--green);border:2px solid var(--bg);cursor:pointer}
-.rtrack{position:absolute;width:100%;height:4px;background:var(--border2);border-radius:2px;z-index:1}
+.srch-icon{position:absolute;left:.65rem;top:50%;transform:translateY(-50%);color:var(--text3);font-size:.9rem;pointer-events:none}
+.fcnt{margin-left:auto;font-size:.78rem;color:var(--text3);font-family:var(--fm)}
+.rwrap{display:flex;flex-direction:column;gap:.2rem;min-width:160px;max-width:200px}
+.rlbls{display:flex;justify-content:space-between;font-size:.7rem;color:var(--text3);font-family:var(--fm)}
+.rval{color:var(--green);font-weight:500}
+.srange{position:relative;height:28px;display:flex;align-items:center}
+.srange input[type=range]{position:absolute;width:100%;height:3px;background:none;outline:none;cursor:pointer;-webkit-appearance:none;z-index:2}
+.srange input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--green);border:2px solid #fff;cursor:pointer;box-shadow:0 1px 4px rgba(22,163,74,.4)}
+.srange input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--green);border:2px solid #fff;cursor:pointer}
+.rtrack{position:absolute;width:100%;height:3px;background:var(--border2);border-radius:2px;z-index:1}
 .rfill{position:absolute;height:100%;background:var(--green);border-radius:2px}
+
 /* GRID */
 .gwrap{padding:1.5rem 2rem 4rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem}
+
 /* CARD */
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:all .22s;cursor:pointer;position:relative}
-.card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
-.cbadge{position:absolute;top:.75rem;right:.75rem;z-index:2;font-size:.7rem;font-weight:600;letter-spacing:.06em;padding:.25rem .6rem;border-radius:100px}
-.bbev{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
-.bphev{background:rgba(56,189,248,.12);color:var(--blue);border:1px solid rgba(56,189,248,.25)}
-.bhev{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.2)}
-.bdesc{background:rgba(107,144,120,.1);color:var(--text3);border:1px solid var(--border)}
-.cmpbtn{position:absolute;top:.75rem;left:.75rem;z-index:3;background:rgba(10,15,13,.85);border:1px solid var(--border2);color:var(--text2);font-size:.7rem;font-weight:500;padding:.28rem .6rem;border-radius:100px;cursor:pointer;transition:all .18s;backdrop-filter:blur(8px)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;transition:all .22s;cursor:pointer;position:relative;box-shadow:var(--shadow)}
+.card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:var(--shadow2)}
+.cbadge{position:absolute;top:.75rem;right:.75rem;z-index:2;font-family:var(--fm);font-size:.65rem;font-weight:500;letter-spacing:.04em;padding:.2rem .55rem;border-radius:100px}
+.bbev{background:var(--green3);color:var(--green2);border:1px solid var(--green4)}
+.bphev{background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd}
+.bhev{background:#fef3c7;color:#b45309;border:1px solid #fde68a}
+.bdesc{background:var(--bg3);color:var(--text3);border:1px solid var(--border)}
+.cmpbtn{position:absolute;top:.75rem;left:.75rem;z-index:3;background:rgba(255,255,255,.9);border:1px solid var(--border2);color:var(--text2);font-size:.68rem;font-weight:500;padding:.25rem .55rem;border-radius:100px;cursor:pointer;transition:all .18s;backdrop-filter:blur(8px)}
 .cmpbtn:hover{border-color:var(--green);color:var(--green)}
-.cmpbtn.sel{background:var(--green);border-color:var(--green);color:#000}
-.cimg{height:160px;background:var(--bg3);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:background .22s}
+.cmpbtn.sel{background:var(--green);border-color:var(--green);color:#fff}
+.cimg{height:150px;background:var(--bg3);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:background .22s;position:relative}
 .card:hover .cimg{background:var(--bg4)}
 .cimg img{width:100%;height:100%;object-fit:cover}
-.cph{font-family:var(--fh);font-size:2rem;font-weight:800;color:var(--border2)}
-.cbody{padding:1rem 1.1rem 1.1rem}
-.cmarca{font-size:.72rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem}
-.cano{color:var(--green);font-weight:600;letter-spacing:0}
-.cnome{font-family:var(--fh);font-size:1.2rem;font-weight:800;margin-bottom:.1rem;line-height:1.15}
-.cver{font-size:.85rem;color:var(--text2);margin-bottom:.9rem;font-weight:500}
-.cspecs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem .6rem;margin-bottom:1rem}
+.cph{font-family:var(--fh);font-size:2.5rem;font-weight:800;color:var(--border2);letter-spacing:-.04em}
+/* linha tech decorativa */
+.cimg::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--green4),transparent)}
+.cbody{padding:.9rem 1rem 1rem}
+.cmarca{font-family:var(--fm);font-size:.65rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.15rem;display:flex;align-items:center;gap:.4rem}
+.cano{color:var(--green);font-weight:500}
+.cnome{font-family:var(--fh);font-size:1.1rem;font-weight:700;margin-bottom:.08rem;line-height:1.15;letter-spacing:-.02em}
+.cver{font-size:.8rem;color:var(--text2);margin-bottom:.75rem;font-weight:400}
+.cspecs{display:grid;grid-template-columns:1fr 1fr;gap:.3rem .5rem;margin-bottom:.85rem}
 .sp{display:flex;flex-direction:column}
-.spv{font-size:.92rem;font-weight:500;color:var(--text)}
+.spv{font-size:.88rem;font-weight:600;color:var(--text)}
 .spv.g{color:var(--green)}
-.spl{font-size:.72rem;color:var(--text3)}
-.cfoot{display:flex;align-items:center;justify-content:space-between;padding-top:.8rem;border-top:1px solid var(--border)}
-.cpreco{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--green)}
-.cpreco small{font-size:.7rem;color:var(--text3);font-weight:400;font-family:var(--fb);margin-left:.2rem}
-.carr{color:var(--text3);font-size:1rem;transition:all .2s}
-.card:hover .carr{color:var(--green);transform:translateX(3px)}
-/* CARD PUBLICIDADE */
-.ad-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;position:relative;min-height:360px;display:flex;flex-direction:column}
-.ad-card .ad-label{position:absolute;top:.6rem;right:.6rem;font-size:.62rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;background:var(--bg3);border:1px solid var(--border);padding:.15rem .5rem;border-radius:100px;z-index:2}
-/* Publicidade própria */
+.spl{font-family:var(--fm);font-size:.62rem;color:var(--text3)}
+.cfoot{display:flex;align-items:center;justify-content:space-between;padding-top:.75rem;border-top:1px solid var(--border)}
+.cpreco{font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--green)}
+.cpreco small{font-family:var(--fm);font-size:.62rem;color:var(--text3);font-weight:400;margin-left:.2rem}
+.carr{color:var(--text3);font-size:.9rem;transition:all .2s;width:24px;height:24px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.card:hover .carr{background:var(--green);border-color:var(--green);color:#fff;transform:translateX(2px)}
+
+/* CARD AD */
+.ad-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;position:relative;min-height:340px;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.ad-card .ad-label{position:absolute;top:.6rem;right:.6rem;font-family:var(--fm);font-size:.6rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;background:var(--bg3);border:1px solid var(--border);padding:.12rem .45rem;border-radius:100px;z-index:2}
 .ad-own{display:flex;flex-direction:column;flex:1;text-decoration:none;transition:all .22s}
-.ad-own:hover{opacity:.9}
-.ad-own-img{width:100%;height:160px;object-fit:cover;background:var(--bg3)}
-.ad-own-body{padding:1rem 1.1rem 1.1rem;flex:1;display:flex;flex-direction:column;gap:.4rem}
-.ad-own-tag{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber)}
-.ad-own-title{font-family:var(--fh);font-size:1.1rem;font-weight:800;line-height:1.2;color:var(--text)}
-.ad-own-desc{font-size:.82rem;color:var(--text2);flex:1}
-.ad-own-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--green);color:#000;font-weight:600;font-size:.82rem;padding:.4rem .9rem;border-radius:100px;margin-top:auto;width:fit-content;transition:background .18s}
+.ad-own:hover{opacity:.92}
+.ad-own-img{width:100%;height:150px;object-fit:cover;background:var(--bg3)}
+.ad-own-body{padding:.9rem 1rem 1rem;flex:1;display:flex;flex-direction:column;gap:.35rem}
+.ad-own-tag{font-family:var(--fm);font-size:.63rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--amber)}
+.ad-own-title{font-family:var(--fh);font-size:1rem;font-weight:700;line-height:1.2;color:var(--text);letter-spacing:-.02em}
+.ad-own-desc{font-size:.8rem;color:var(--text2);flex:1}
+.ad-own-cta{display:inline-flex;align-items:center;gap:.35rem;background:var(--green);color:#fff;font-weight:600;font-size:.78rem;padding:.35rem .85rem;border-radius:100px;margin-top:auto;width:fit-content;transition:background .18s}
 .ad-own:hover .ad-own-cta{background:var(--green2)}
-/* AdSense */
-.ad-sense{flex:1;display:flex;align-items:center;justify-content:center;min-height:300px;padding:1rem}
+
 /* EMPTY */
 .empty{padding:4rem;text-align:center;color:var(--text3)}
-.empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.3}
-.empty h3{font-family:var(--fh);font-size:1.1rem;color:var(--text2);margin-bottom:.4rem}
+.empty-icon{font-size:2.5rem;margin-bottom:1rem;opacity:.4}
+.empty h3{font-family:var(--fh);font-size:1rem;color:var(--text2);margin-bottom:.3rem;font-weight:600}
+
 /* BARRA COMPARADOR */
-.cbar{position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(17,24,16,.97);border-top:1px solid var(--border2);backdrop-filter:blur(16px);padding:.85rem 2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;transform:translateY(100%);transition:transform .3s}
+.cbar{position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(255,255,255,.97);border-top:1px solid var(--border2);backdrop-filter:blur(16px);padding:.75rem 2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;transform:translateY(100%);transition:transform .3s;box-shadow:0 -4px 24px rgba(0,0,0,.08)}
 .cbar.vis{transform:translateY(0)}
-.cbartit{font-size:.78rem;color:var(--text3);white-space:nowrap}
-.cslots{display:flex;gap:.6rem;flex:1}
-.cslot{display:flex;align-items:center;gap:.5rem;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:.45rem .75rem;min-width:160px;max-width:220px}
-.cslot.emp{border-style:dashed;color:var(--text3);font-size:.78rem;justify-content:center}
-.csnome{font-size:.78rem;font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.csrem{color:var(--text3);cursor:pointer;font-size:.9rem;flex-shrink:0;background:none;border:none;padding:0;line-height:1}
+.cbartit{font-family:var(--fm);font-size:.7rem;color:var(--text3);white-space:nowrap;letter-spacing:.04em}
+.cslots{display:flex;gap:.5rem;flex:1}
+.cslot{display:flex;align-items:center;gap:.45rem;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:.38rem .65rem;min-width:150px;max-width:210px}
+.cslot.emp{border-style:dashed;color:var(--text3);font-size:.75rem;justify-content:center}
+.csnome{font-size:.75rem;font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.csrem{color:var(--text3);cursor:pointer;font-size:.85rem;flex-shrink:0;background:none;border:none;padding:0;line-height:1}
 .csrem:hover{color:var(--red)}
-.cbarbtns{display:flex;gap:.6rem}
-.bcmp{background:var(--green);border:none;color:#000;font-weight:600;font-size:.85rem;padding:.5rem 1.2rem;border-radius:100px;cursor:pointer;transition:all .18s;white-space:nowrap}
+.cbarbtns{display:flex;gap:.5rem}
+.bcmp{background:var(--green);border:none;color:#fff;font-weight:600;font-size:.82rem;padding:.45rem 1.1rem;border-radius:100px;cursor:pointer;transition:all .18s;white-space:nowrap}
 .bcmp:hover{background:var(--green2)}
 .bcmp:disabled{background:var(--border2);color:var(--text3);cursor:not-allowed}
-.bclr{background:none;border:1px solid var(--border2);color:var(--text2);font-size:.82rem;padding:.45rem .9rem;border-radius:100px;cursor:pointer;transition:all .18s}
+.bclr{background:none;border:1px solid var(--border2);color:var(--text2);font-size:.78rem;padding:.4rem .85rem;border-radius:100px;cursor:pointer;transition:all .18s}
 .bclr:hover{border-color:var(--red);color:var(--red)}
+
 /* MODAL DETALHE */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:center;justify-content:center;padding:1.5rem 1rem;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200;display:flex;align-items:center;justify-content:center;padding:1.5rem 1rem;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px)}
 .overlay.open{opacity:1;pointer-events:all}
-.detail{background:var(--bg2);border:1px solid var(--border2);border-radius:24px;width:100%;max-width:900px;transform:scale(.96) translateY(12px);transition:transform .28s cubic-bezier(.34,1.56,.64,1);overflow:hidden;max-height:90vh;display:flex;flex-direction:column}
+.detail{background:var(--bg2);border:1px solid var(--border2);border-radius:24px;width:100%;max-width:860px;transform:scale(.97) translateY(10px);transition:transform .28s cubic-bezier(.34,1.56,.64,1);overflow:hidden;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.15)}
 .overlay.open .detail{transform:scale(1) translateY(0)}
 .dhead{display:flex;align-items:flex-start;justify-content:space-between;padding:1.25rem 1.5rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0}
-.dtbadge{display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;font-weight:700;letter-spacing:.06em;padding:.2rem .6rem;border-radius:100px;margin-bottom:.3rem;width:fit-content}
-.dmarca{font-size:.72rem;color:var(--text3);letter-spacing:.07em;text-transform:uppercase}
-.dnome{font-family:var(--fh);font-size:1.5rem;font-weight:800;line-height:1.1}
-.dver{font-size:.88rem;color:var(--text2);font-weight:500}
-.xbtn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:38px;height:38px;border-radius:50%;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;margin-left:1rem;cursor:pointer}
-.xbtn:hover{border-color:var(--red);color:var(--red)}
-.dimg{height:200px;background:linear-gradient(135deg,var(--bg3),var(--bg4));overflow:hidden;flex-shrink:0}
+.dtbadge{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--fm);font-size:.65rem;font-weight:500;padding:.2rem .55rem;border-radius:100px;margin-bottom:.3rem;width:fit-content;letter-spacing:.04em}
+.dmarca{font-family:var(--fm);font-size:.68rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+.dnome{font-family:var(--fh);font-size:1.4rem;font-weight:800;line-height:1.1;letter-spacing:-.03em}
+.dver{font-size:.85rem;color:var(--text2);font-weight:400}
+.xbtn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:36px;height:36px;border-radius:50%;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;margin-left:1rem;cursor:pointer}
+.xbtn:hover{border-color:var(--red);color:var(--red);background:#fff5f5}
+.dimg{height:190px;background:var(--bg3);overflow:hidden;flex-shrink:0}
 .dimg img{width:100%;height:100%;object-fit:cover}
 .dimgph{height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:4rem;font-weight:800;color:var(--border2)}
 .dbody{padding:1.25rem 1.5rem 1.5rem;overflow-y:auto;flex:1}
-.pbox{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;background:var(--greendim);border:1px solid var(--green3);border-radius:var(--r2);padding:.9rem 1.1rem;margin-bottom:1.25rem}
-.pval{font-family:var(--fh);font-size:1.8rem;font-weight:800;color:var(--green)}
-.plbl{font-size:.78rem;color:var(--text3)}
-.pfonte{font-size:.72rem;color:var(--green);background:rgba(34,197,94,.1);padding:.2rem .6rem;border-radius:100px;margin-left:auto}
+.pbox{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;background:var(--green3);border:1px solid var(--green4);border-radius:var(--r2);padding:.85rem 1.1rem;margin-bottom:1.25rem}
+.pval{font-family:var(--fh);font-size:1.7rem;font-weight:800;color:var(--green);letter-spacing:-.03em}
+.plbl{font-size:.75rem;color:var(--green2)}
+.pfonte{font-family:var(--fm);font-size:.65rem;color:var(--green2);background:rgba(22,163,74,.1);padding:.18rem .5rem;border-radius:100px;margin-left:auto;letter-spacing:.04em}
 .grupo{margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
 .grupo:last-child{border-bottom:none;margin-bottom:0}
-.gtit{display:flex;align-items:center;gap:.5rem;font-family:var(--fh);font-size:.74rem;font-weight:700;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.8rem}
-.gnum{min-width:22px;height:22px;border-radius:50%;background:var(--greendim);border:1px solid var(--green3);color:var(--green);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.6rem}
-.sc{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem .9rem}
-.sc .sv{font-size:.95rem;font-weight:500;color:var(--text);margin-bottom:.15rem}
+.gtit{display:flex;align-items:center;gap:.45rem;font-family:var(--fm);font-size:.68rem;font-weight:500;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.75rem}
+.gnum{min-width:20px;height:20px;border-radius:50%;background:var(--green3);border:1px solid var(--green4);color:var(--green);font-size:.62rem;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--fm)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.5rem}
+.sc{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.65rem .85rem}
+.sc .sv{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.12rem}
 .sc .sv.g{color:var(--green)}
-.sc .sl{font-size:.7rem;color:var(--text3)}
-.ibox{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;margin-top:.6rem;display:flex;flex-direction:column;gap:.35rem}
-.irow{display:flex;justify-content:space-between;align-items:center;font-size:.85rem}
-.irow .lbl{color:var(--text3)}
+.sc .sl{font-family:var(--fm);font-size:.62rem;color:var(--text3)}
+.ibox{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.65rem .9rem;margin-top:.5rem;display:flex;flex-direction:column;gap:.3rem}
+.irow{display:flex;justify-content:space-between;align-items:center;font-size:.82rem}
+.irow .lbl{color:var(--text3);font-family:var(--fm);font-size:.72rem}
 .irow .val{font-weight:500;color:var(--text)}
-.irow a{color:var(--blue);font-size:.82rem}
-.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.6rem}
-.pbox2{border-radius:var(--r);padding:.75rem}
-.pbox2.pos{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.2)}
-.pbox2.neg{background:rgba(248,113,113,.05);border:1px solid rgba(248,113,113,.15)}
-.ptit{font-size:.68rem;font-weight:700;letter-spacing:.06em;margin-bottom:.35rem}
+.irow a{color:var(--green);font-size:.78rem}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.5rem}
+.pbox2{border-radius:var(--r);padding:.7rem}
+.pbox2.pos{background:#f0fdf4;border:1px solid var(--green4)}
+.pbox2.neg{background:#fff5f5;border:1px solid #fecaca}
+.ptit{font-family:var(--fm);font-size:.62rem;font-weight:500;letter-spacing:.06em;margin-bottom:.3rem}
 .pbox2.pos .ptit{color:var(--green)}
 .pbox2.neg .ptit{color:var(--red)}
-.pitem{font-size:.78rem;color:var(--text2);padding:.1rem 0}
-.fbox{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;margin-top:.4rem;display:flex;flex-direction:column;gap:.3rem}
-.frow{display:flex;justify-content:space-between;align-items:center;font-size:.85rem}
-.frow .lbl{color:var(--text3)}
+.pitem{font-size:.76rem;color:var(--text2);padding:.08rem 0}
+.fbox{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.65rem .9rem;margin-top:.4rem;display:flex;flex-direction:column;gap:.28rem}
+.frow{display:flex;justify-content:space-between;align-items:center;font-size:.82rem}
+.frow .lbl{color:var(--text3);font-family:var(--fm);font-size:.72rem}
 .frow .val{font-weight:500;color:var(--text)}
 .frow .val.g{color:var(--green)}
-.fcod{font-family:monospace;font-size:.8rem;color:var(--blue)}
+.fcod{font-family:var(--fm);font-size:.78rem;color:var(--blue)}
 .vwrap{display:block;position:relative;border-radius:var(--r);overflow:hidden;cursor:pointer;margin-top:.4rem}
-.vimg{width:100%;height:auto;display:block;aspect-ratio:16/9;object-fit:cover;border-radius:var(--r)}
-.vov{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;opacity:0;transition:opacity .2s;border-radius:var(--r)}
+.vimg{width:100%;height:auto;display:block;aspect-ratio:16/9;object-fit:cover}
+.vov{position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;opacity:0;transition:opacity .2s}
 .vwrap:hover .vov{opacity:1}
-.vplay{width:56px;height:56px;border-radius:50%;background:#ff0000;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;padding-left:4px}
-.vov span{color:#fff;font-size:.85rem;font-weight:500}
+.vplay{width:50px;height:50px;border-radius:50%;background:#ff0000;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fff;padding-left:3px}
+.vov span{color:#fff;font-size:.82rem;font-weight:500}
+
 /* MODAL COMPARADOR */
-.cov{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:400;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px);overflow-y:auto;padding:1.5rem 1rem}
+.cov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:400;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(6px);overflow-y:auto;padding:1.5rem 1rem}
 .cov.open{opacity:1;pointer-events:all}
-.cmod{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:1100px;margin:0 auto;overflow:hidden}
-.cmodhead{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
-.cmodhead h2{font-family:var(--fh);font-size:1.2rem;font-weight:800}
+.cmod{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:1060px;margin:0 auto;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.15)}
+.cmodhead{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.5rem;border-bottom:1px solid var(--border)}
+.cmodhead h2{font-family:var(--fh);font-size:1.1rem;font-weight:700;letter-spacing:-.02em}
 .ctable{width:100%;border-collapse:collapse;table-layout:fixed}
-.ctable th{background:var(--bg3);padding:.75rem 1rem;text-align:center;border-bottom:1px solid var(--border);font-family:var(--fh);vertical-align:top}
-.ctable th.lcol{text-align:left;width:160px}
-.ctable td{padding:.6rem 1rem;border-bottom:1px solid var(--border);font-size:.85rem;vertical-align:middle}
-.ctable td.lcol{color:var(--text3);font-size:.78rem;font-weight:500;white-space:nowrap;background:var(--bg3)}
+.ctable th{background:var(--bg3);padding:.65rem 1rem;text-align:center;border-bottom:1px solid var(--border);font-family:var(--fh);vertical-align:top}
+.ctable th.lcol{text-align:left;width:150px}
+.ctable td{padding:.55rem 1rem;border-bottom:1px solid var(--border);font-size:.82rem;vertical-align:middle}
+.ctable td.lcol{font-family:var(--fm);color:var(--text3);font-size:.7rem;font-weight:400;white-space:nowrap;background:var(--bg3)}
 .ctable td.vcol{text-align:center;font-weight:500}
 .ctable td.vcol.best{color:var(--green);font-weight:700}
 .ctable td.vcol.worst{color:var(--red)}
-.ctable tr.ghdr td{background:var(--greendim);color:var(--green);font-family:var(--fh);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.5rem 1rem}
-.ccarhead{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.5rem 0}
-.ccfoto{width:100%;height:80px;object-fit:cover;border-radius:var(--r);background:var(--bg4)}
-.ccph{width:100%;height:80px;background:var(--bg4);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.5rem;font-weight:800;color:var(--border2)}
-.ccmarca{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
-.ccnome{font-family:var(--fh);font-size:.95rem;font-weight:800;text-align:center}
-.ccver{font-size:.75rem;color:var(--text2);text-align:center}
-.ccpreco{font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--green)}
+.ctable tr.ghdr td{background:var(--green3);color:var(--green2);font-family:var(--fm);font-size:.65rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem}
+.ccarhead{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.4rem 0}
+.ccfoto{width:100%;height:72px;object-fit:cover;border-radius:var(--r);background:var(--bg4)}
+.ccph{width:100%;height:72px;background:var(--bg4);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.4rem;font-weight:800;color:var(--border2)}
+.ccmarca{font-family:var(--fm);font-size:.62rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.ccnome{font-family:var(--fh);font-size:.88rem;font-weight:700;text-align:center;letter-spacing:-.02em}
+.ccver{font-size:.72rem;color:var(--text2);text-align:center}
+.ccpreco{font-family:var(--fh);font-size:.8rem;font-weight:700;color:var(--green)}
+
 /* FOOTER */
-.footer{padding:2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;color:var(--text3);font-size:.82rem}
+.footer{padding:1.5rem 2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;color:var(--text3);font-family:var(--fm);font-size:.72rem;background:var(--bg2)}
 .footer strong{color:var(--green)}
-@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
 @media(max-width:768px){
   .hdr{padding:0 1rem}
-  .carousel{height:260px}
-  .slide-overlay{padding:1.25rem 1.25rem}
+  .carousel{height:240px}
+  .slide-overlay{padding:1.25rem}
   .slide-title{font-size:1.1rem}
-  .slide-sub{font-size:.82rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .slide-tag{font-size:.65rem}
-  .car-prev,.car-next{width:34px;height:34px;font-size:1.1rem}
-  .car-stats{gap:.75rem;padding:.5rem .85rem;border-radius:var(--r) 0 0 0}
-  .car-stats .stn{font-size:1rem}
-  .car-stats .stl{font-size:.65rem}
-  .filters{padding:1rem;gap:.5rem}
-  .rwrap{min-width:140px;max-width:100%}
-  .fcnt{width:100%;text-align:center}
+  .slide-sub{font-size:.8rem}
+  .car-stats{display:none}
+  .filters{padding:.75rem 1rem;top:60px}
   .gwrap{padding:1rem 1rem 5rem}
   .grid{grid-template-columns:1fr}
-  .cimg{height:200px}
+  .cimg{height:180px}
   .detail{border-radius:16px 16px 0 0;max-height:95vh}
   .overlay{padding:0;align-items:flex-end}
-  .dhead{padding:1rem}
-  .dnome{font-size:1.2rem}
-  .dbody{padding:1rem}
+  .dhead{padding:.9rem 1rem}
+  .dnome{font-size:1.15rem}
+  .dbody{padding:.9rem 1rem}
   .sgrid{grid-template-columns:1fr 1fr}
   .pgrid{grid-template-columns:1fr}
   .cmod{border-radius:16px 16px 0 0}
   .cov{padding:0;align-items:flex-end}
-  .cbar{padding:.75rem 1rem;gap:.5rem}
+  .cbar{padding:.65rem 1rem}
   .cslots{flex-wrap:wrap}
-  .cslot{min-width:120px}
+  .cslot{min-width:110px}
   .cbartit{display:none}
   .footer{flex-direction:column;text-align:center}
 }
 @media(max-width:480px){
-  .carousel{height:220px}
+  .carousel{height:200px}
   .slide-title{font-size:.95rem}
   .slide-sub{display:none}
-  .car-stats{display:none}
   .filters{flex-direction:column;align-items:stretch}
   .srch{max-width:100%}
   .rwrap{max-width:100%}
-  .chip{font-size:.78rem;padding:.3rem .7rem}
   .sgrid{grid-template-columns:1fr}
   .cbarbtns{width:100%;justify-content:space-between}
   .bcmp,.bclr{flex:1;text-align:center}
@@ -278,36 +271,42 @@ button{cursor:pointer;font-family:var(--fb)}
 </head>
 <body>
 <header class="hdr">
-  <div class="logo">SPCE <span>Seu Primeiro Carro Elétrico</span></div>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    SPCE
+    <span class="logo-sub">Seu Primeiro Carro Elétrico</span>
+  </div>
+  <div class="hdr-line"></div>
 </header>
+
 <!-- CARROSSEL -->
 <section class="carousel-section">
   <div class="carousel" id="carousel">
-    <a class="slide" href="https://SEU-LINK-1.com" target="_blank" id="slide-0"
-       style="background-image:url('https://placehold.co/1200x400/052e16/22c55e?text=Banner+1+—+Seu+Link+Aqui')">
+    <a class="slide" href="https://SEU-LINK-1.com" target="_blank"
+       style="background-image:url('https://placehold.co/1200x380/e8f5e9/16a34a?text=Banner+1')">
       <div class="slide-overlay">
         <div class="slide-content">
-          <div class="slide-tag">Novidade</div>
+          <div class="slide-tag">⚡ Novidade</div>
           <div class="slide-title">Título do Banner 1</div>
           <div class="slide-sub">Subtítulo ou descrição curta aqui</div>
         </div>
       </div>
     </a>
-    <a class="slide" href="https://SEU-LINK-2.com" target="_blank" id="slide-1"
-       style="background-image:url('https://placehold.co/1200x400/0a1628/38bdf8?text=Banner+2+—+Seu+Link+Aqui')">
+    <a class="slide" href="https://SEU-LINK-2.com" target="_blank"
+       style="background-image:url('https://placehold.co/1200x380/e0f2fe/0284c7?text=Banner+2')">
       <div class="slide-overlay">
         <div class="slide-content">
-          <div class="slide-tag">Destaque</div>
+          <div class="slide-tag">📊 Destaque</div>
           <div class="slide-title">Título do Banner 2</div>
           <div class="slide-sub">Subtítulo ou descrição curta aqui</div>
         </div>
       </div>
     </a>
-    <a class="slide" href="https://SEU-LINK-3.com" target="_blank" id="slide-2"
-       style="background-image:url('https://placehold.co/1200x400/1a0a00/fbbf24?text=Banner+3+—+Seu+Link+Aqui')">
+    <a class="slide" href="https://SEU-LINK-3.com" target="_blank"
+       style="background-image:url('https://placehold.co/1200x380/fef9c3/b45309?text=Banner+3')">
       <div class="slide-overlay">
         <div class="slide-content">
-          <div class="slide-tag">Promoção</div>
+          <div class="slide-tag">🔌 Promoção</div>
           <div class="slide-title">Título do Banner 3</div>
           <div class="slide-sub">Subtítulo ou descrição curta aqui</div>
         </div>
@@ -322,33 +321,35 @@ button{cursor:pointer;font-family:var(--fb)}
     <button class="dot" onclick="carGo(2)"></button>
   </div>
   <div class="car-stats">
-    <div class="st"><span class="stn" id="s-tot">—</span><span class="stl">versões</span></div>
-    <div class="st"><span class="stn" id="s-bev">—</span><span class="stl">elétricos puros</span></div>
-    <div class="st"><span class="stn" id="s-phev">—</span><span class="stl">plug-in híbridos</span></div>
-    <div class="st"><span class="stn">20</span><span class="stl">marcas</span></div>
+    <div class="cs-item"><span class="cs-num" id="s-tot">—</span><span class="cs-lbl">versões</span></div>
+    <div class="cs-item"><span class="cs-num" id="s-bev">—</span><span class="cs-lbl">elétricos puros</span></div>
+    <div class="cs-item"><span class="cs-num" id="s-phev">—</span><span class="cs-lbl">plug-in híbridos</span></div>
+    <div class="cs-item"><span class="cs-num">20</span><span class="cs-lbl">marcas</span></div>
   </div>
 </section>
+
+<!-- FILTROS -->
 <div class="filters">
   <div class="srch">
     <span class="srch-icon">🔍</span>
     <input type="text" id="q" placeholder="Buscar marca ou modelo..." oninput="render()">
   </div>
-  <span class="flbl">Tipo:</span>
+  <span class="flbl">TIPO</span>
   <button class="chip on" data-t="all" onclick="setTipo(this)">Todos</button>
   <button class="chip" data-t="BEV" onclick="setTipo(this)">⚡ BEV</button>
   <button class="chip" data-t="PHEV" onclick="setTipo(this)">🔌 PHEV</button>
   <button class="chip" data-t="HEV" onclick="setTipo(this)">♻️ HEV</button>
-  <span class="flbl">Preço máximo:</span>
+  <span class="flbl">PREÇO MÁX</span>
   <div class="rwrap">
-    <div class="rlbls"><span>Qualquer</span><span class="rval" id="lp">Qualquer</span></div>
+    <div class="rlbls"><span>qualquer</span><span class="rval" id="lp">qualquer</span></div>
     <div class="srange">
       <input type="range" id="pmax" min="0" max="1000000" step="50000" value="1000000" oninput="upRanges()">
       <div class="rtrack"><div class="rfill" id="pf"></div></div>
     </div>
   </div>
-  <span class="flbl">Autonomia mínima:</span>
+  <span class="flbl">AUTONOMIA MÍN</span>
   <div class="rwrap">
-    <div class="rlbls"><span>Qualquer</span><span class="rval" id="la">Qualquer</span></div>
+    <div class="rlbls"><span>qualquer</span><span class="rval" id="la">qualquer</span></div>
     <div class="srange">
       <input type="range" id="amin" min="0" max="600" step="50" value="0" oninput="upRanges()">
       <div class="rtrack"><div class="rfill" id="af"></div></div>
@@ -356,6 +357,7 @@ button{cursor:pointer;font-family:var(--fb)}
   </div>
   <span class="fcnt" id="cnt"></span>
 </div>
+
 <div class="gwrap">
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" style="display:none">
@@ -364,15 +366,17 @@ button{cursor:pointer;font-family:var(--fb)}
     <p>Tente ajustar os filtros</p>
   </div>
 </div>
+
 <!-- BARRA COMPARADOR -->
 <div class="cbar" id="cbar">
-  <span class="cbartit">Comparando:</span>
+  <span class="cbartit">COMPARANDO</span>
   <div class="cslots" id="cslots"></div>
   <div class="cbarbtns">
     <button class="bclr" onclick="clrCmp()">Limpar</button>
     <button class="bcmp" id="bcmp" onclick="openCmp()" disabled>Comparar</button>
   </div>
 </div>
+
 <!-- MODAL DETALHE -->
 <div class="overlay" id="overlay" onclick="closeD(event)">
   <div class="detail">
@@ -389,6 +393,7 @@ button{cursor:pointer;font-family:var(--fb)}
     <div class="dbody" id="dbody"></div>
   </div>
 </div>
+
 <!-- MODAL COMPARADOR -->
 <div class="cov" id="cov" onclick="closeCmp(event)">
   <div class="cmod">
@@ -399,10 +404,12 @@ button{cursor:pointer;font-family:var(--fb)}
     <div id="ctbl" style="overflow-x:auto"></div>
   </div>
 </div>
+
 <footer class="footer">
   <span>© 2026 <strong>SPCE</strong> — Seu Primeiro Carro Elétrico</span>
   <span>Dados: INMETRO · ABVE · FIPE · Fabricantes</span>
 </footer>
+
 <script>
 const SB='https://dbevcdmycekcqcpovphb.supabase.co'
 const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXZjZG15Y2VrY3FjcG92cGhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNzg1MDIsImV4cCI6MjA5NTg1NDUwMn0.4DJhA8TB6TP5aLaHbG-HXC0tBsyF47_ctdCwRpIpFyA'
@@ -419,15 +426,14 @@ async function load(){
     if(!r1.ok){const err=await r1.json();throw new Error(JSON.stringify(err))}
     if(!r2.ok){const err=await r2.json();throw new Error(JSON.stringify(err))}
     all=await r1.json()
-    if(!Array.isArray(all)) throw new TypeError('vw_catalogo não retornou array: '+JSON.stringify(all))
+    if(!Array.isArray(all)) throw new TypeError('vw_catalogo não retornou array')
     const pm={}
     const precos=await r2.json()
     if(Array.isArray(precos)) precos.forEach(p=>{pm[p.versao_id]=p})
     all.forEach(d=>{
-      // normalizar nomes de colunas da view
-      d.marca = d.marca_nome || d.marca || ''
-      d.modelo = d.modelo_nome || d.modelo || ''
-      d.versao = d.nome_versao || d.versao || ''
+      d.marca=d.marca_nome||d.marca||''
+      d.modelo=d.modelo_nome||d.modelo||''
+      d.versao=d.nome_versao||d.versao||''
       if(pm[d.id]){
         d.preco_atual=pm[d.id].preco_0km
         d.preco_usado=pm[d.id].preco_usado
@@ -449,23 +455,20 @@ async function load(){
 function G(id){return document.getElementById(id)}
 function fp(v){return v?'R$ '+Math.round(v).toLocaleString('pt-BR'):null}
 function fn(v){return(v===null||v===undefined)?'—':Number(v).toLocaleString('pt-BR')}
-function gi(m,mo){return(m[0]+(mo[0]||'')).toUpperCase()}
+function gi(m,mo){return((m||'')[0]+((mo||'')[0]||'')).toUpperCase()}
 function bc(t,s){if(s==='Descontinuado')return'bdesc';return t==='BEV'?'bbev':t==='PHEV'?'bphev':'bhev'}
 function tl(t){return t==='BEV'?'⚡ BEV':t==='PHEV'?'🔌 PHEV':'♻️ HEV'}
 function sc(v,l,g){return`<div class="sc"><div class="sv${g?' g':''}">${v}</div><div class="sl">${l}</div></div>`}
 
 function setTipo(b){
   document.querySelectorAll('[data-t]').forEach(x=>x.classList.remove('on'))
-  b.classList.add('on')
-  tipo=b.dataset.t
-  render()
+  b.classList.add('on');tipo=b.dataset.t;render()
 }
 
 function upRanges(){
-  const pmax=parseInt(G('pmax').value)
-  const amin=parseInt(G('amin').value)
-  G('lp').textContent=pmax>=1000000?'Qualquer':'Até R$ '+pmax.toLocaleString('pt-BR')
-  G('la').textContent=amin===0?'Qualquer':'Mín. '+amin+' km'
+  const pmax=parseInt(G('pmax').value),amin=parseInt(G('amin').value)
+  G('lp').textContent=pmax>=1000000?'qualquer':'R$ '+pmax.toLocaleString('pt-BR')
+  G('la').textContent=amin===0?'qualquer':amin+' km'
   const pf=G('pf'),af=G('af')
   if(pf){pf.style.left='0%';pf.style.width=(pmax/1000000*100)+'%'}
   if(af){const p=amin/600*100;af.style.left=p+'%';af.style.width=(100-p)+'%'}
@@ -474,9 +477,8 @@ function upRanges(){
 
 function filt(){
   const q=G('q').value.toLowerCase()
-  const pmax=parseInt(G('pmax').value)
-  const amin=parseInt(G('amin').value)
-  const pon=pmax<1000000, aon=amin>0
+  const pmax=parseInt(G('pmax').value),amin=parseInt(G('amin').value)
+  const pon=pmax<1000000,aon=amin>0
   return all.filter(d=>{
     const mt=tipo==='all'||d.tipo===tipo
     const p=d.preco_atual||0
@@ -498,8 +500,7 @@ function render(){
   G('cnt').textContent=fd.length+' resultado'+(fd.length!==1?'s':'')
   if(!fd.length){grid.innerHTML='';empty.style.display='block';return}
   empty.style.display='none'
-  let items=[]
-  let adCount=0
+  let items=[],adCount=0
   fd.forEach((d,i)=>{
     items.push({tipo:'car',d,i})
     if((i+1)%6===0) items.push({tipo:'ad',idx:adCount++})
@@ -509,22 +510,22 @@ function render(){
     const d=item.d,i=item.i
     return`<div class="card" onclick="openD(${i})" style="animation:fi .3s ease ${(i%12)*.04}s both">
     <span class="cbadge ${bc(d.tipo,d.status_venda)}">${tl(d.tipo)}</span>
-    <button class="cmpbtn${cmp.includes(i)?' sel':''}" onclick="togCmp(event,${i})" id="cb${i}">${cmp.includes(i)?'✓ Selecionado':'＋ Comparar'}</button>
+    <button class="cmpbtn${cmp.includes(i)?' sel':''}" onclick="togCmp(event,${i})" id="cb${i}">${cmp.includes(i)?'✓ sel':'＋ comp'}</button>
     <div class="cimg">
       ${d.foto_principal?`<img src="${d.foto_principal}" alt="${d.marca} ${d.modelo}" loading="lazy">`:`<div class="cph">${gi(d.marca,d.modelo)}</div>`}
     </div>
     <div class="cbody">
-      <div class="cmarca">${d.marca} · <span class="cano">${d.ano_fabricacao||d.ano_modelo||''}</span></div>
+      <div class="cmarca">${d.marca} <span style="color:var(--border2)">·</span> <span class="cano">${d.ano_fabricacao||d.ano_modelo||''}</span></div>
       <div class="cnome">${d.modelo}</div>
       <div class="cver">${d.versao||'—'}</div>
       <div class="cspecs">
-        <div class="sp"><span class="spv g">${d.bateria_kwh?d.bateria_kwh+' kWh':'—'}</span><span class="spl">Bateria</span></div>
-        <div class="sp"><span class="spv g">${d.autonomia_km?d.autonomia_km+' km':d.autonomia_hev_cidade?d.autonomia_hev_cidade+' km/l':'—'}</span><span class="spl">${d.tipo==='HEV'?'Consumo':'Autonomia'}</span></div>
-        <div class="sp"><span class="spv">${d.potencia_cv?d.potencia_cv+' cv':d.potencia_combinada_cv?d.potencia_combinada_cv+' cv':'—'}</span><span class="spl">Potência</span></div>
-        <div class="sp"><span class="spv">${d.tracao||d.tipo}</span><span class="spl">${d.tracao?'Tração':'Tipo'}</span></div>
+        <div class="sp"><span class="spv g">${d.bateria_kwh?d.bateria_kwh+' kWh':'—'}</span><span class="spl">bateria</span></div>
+        <div class="sp"><span class="spv g">${d.autonomia_km?d.autonomia_km+' km':d.autonomia_hev_cidade?d.autonomia_hev_cidade+' km/l':'—'}</span><span class="spl">${d.tipo==='HEV'?'consumo':'autonomia'}</span></div>
+        <div class="sp"><span class="spv">${d.potencia_cv?d.potencia_cv+' cv':d.potencia_combinada_cv?d.potencia_combinada_cv+' cv':'—'}</span><span class="spl">potência</span></div>
+        <div class="sp"><span class="spv">${d.tracao||d.tipo}</span><span class="spl">${d.tracao?'tração':'tipo'}</span></div>
       </div>
       <div class="cfoot">
-        <div class="cpreco">${d.preco_atual?fp(d.preco_atual)+'<small>'+(d.fh||d.fonte_preco||'Fab.')+'</small>':`<span style="color:var(--text3)">Consulte</span>`}</div>
+        <div class="cpreco">${d.preco_atual?fp(d.preco_atual)+'<small>'+(d.fh||d.fonte_preco||'fab.')+'</small>':`<span style="color:var(--text3)">Consulte</span>`}</div>
         <span class="carr">→</span>
       </div>
     </div>
@@ -547,114 +548,99 @@ function openD(i){
   const vid=d.video_youtube
   const vidId=vid?vid.match(/(?:youtu\.be\/|v=)([\w-]+)/)?.[1]:null
   G('dbody').innerHTML=`
-    ${p?`<div class="pbox">
-      <div><div class="plbl">Preço de referência</div><div class="pval">${fp(p)}</div></div>
-      ${d.preco_usado?`<div><div class="plbl">Preço 1 ano</div><div style="font-family:var(--fh);font-size:1.2rem;font-weight:600;color:var(--text2)">${fp(d.preco_usado)}</div></div>`:''}
-      <span class="pfonte">${f}</span>
-    </div>`:''}
-    <div class="grupo">
-      <div class="gtit"><span class="gnum">1</span>Fabricante</div>
+    ${p?`<div class="pbox"><div><div class="plbl">Preço de referência</div><div class="pval">${fp(p)}</div></div>${d.preco_usado?`<div><div class="plbl">Preço 1 ano</div><div style="font-family:var(--fh);font-size:1.1rem;font-weight:600;color:var(--text2)">${fp(d.preco_usado)}</div></div>`:''}<span class="pfonte">${f}</span></div>`:''}
+    <div class="grupo"><div class="gtit"><span class="gnum">1</span>Fabricante</div>
       <div class="sgrid">
-        ${d.fabricado_em?sc(d.fabricado_em,'Fabricado em'):''}
-        ${d.ano_fabricacao?sc(d.ano_fabricacao,'Ano fabricação'):''}
-        ${d.ano_modelo?sc(d.ano_modelo,'Ano modelo'):''}
-        ${d.status_venda?sc(d.status_venda,'Status'):''}
-        ${d.pcd_isencao?sc('✓ Sim','Isenção PcD',true):''}
+        ${d.fabricado_em?sc(d.fabricado_em,'fabricado em'):''}
+        ${d.ano_fabricacao?sc(d.ano_fabricacao,'ano fabricação'):''}
+        ${d.ano_modelo?sc(d.ano_modelo,'ano modelo'):''}
+        ${d.status_venda?sc(d.status_venda,'status'):''}
+        ${d.pcd_isencao?sc('✓ Sim','isenção PcD',true):''}
       </div>
       <div class="ibox">
-        ${d.site_br?`<div class="irow"><span class="lbl">Site oficial</span><a href="${d.site_br}" target="_blank">Visitar →</a></div>`:''}
-        ${d.reclame_aqui_nota?`<div class="irow"><span class="lbl">Nota Reclame Aqui</span><span class="val" style="color:${d.reclame_aqui_nota>=7?'var(--green)':d.reclame_aqui_nota>=5?'var(--amber)':'var(--red)'}">${d.reclame_aqui_nota}/10</span></div>`:''}
-        ${d.reclame_aqui_url?`<div class="irow"><span class="lbl">Ver reclamações</span><a href="${d.reclame_aqui_url}" target="_blank">Acessar →</a></div>`:''}
+        ${d.site_br?`<div class="irow"><span class="lbl">site oficial</span><a href="${d.site_br}" target="_blank">visitar →</a></div>`:''}
+        ${d.reclame_aqui_nota?`<div class="irow"><span class="lbl">nota reclame aqui</span><span class="val" style="color:${d.reclame_aqui_nota>=7?'var(--green)':d.reclame_aqui_nota>=5?'var(--amber)':'var(--red)'}">${d.reclame_aqui_nota}/10</span></div>`:''}
+        ${d.reclame_aqui_url?`<div class="irow"><span class="lbl">ver reclamações</span><a href="${d.reclame_aqui_url}" target="_blank">acessar →</a></div>`:''}
       </div>
       ${(d.pontos_positivos?.length||d.pontos_negativos?.length)?`<div class="pgrid">
         ${d.pontos_positivos?.length?`<div class="pbox2 pos"><div class="ptit">✓ PONTOS POSITIVOS</div>${d.pontos_positivos.map(x=>`<div class="pitem">• ${x}</div>`).join('')}</div>`:''}
         ${d.pontos_negativos?.length?`<div class="pbox2 neg"><div class="ptit">✗ PONTOS DE ATENÇÃO</div>${d.pontos_negativos.map(x=>`<div class="pitem">• ${x}</div>`).join('')}</div>`:''}
       </div>`:''}
     </div>
-    <div class="grupo">
-      <div class="gtit"><span class="gnum">2</span>Capacidade da Bateria e Motor</div>
+    <div class="grupo"><div class="gtit"><span class="gnum">2</span>Bateria e Motor</div>
       <div class="sgrid">
-        ${d.bateria_kwh?sc(d.bateria_kwh+' kWh','Bateria',true):''}
-        ${d.potencia_cv?sc(d.potencia_cv+' cv','Potência elétrica'):''}
-        ${d.torque_kgfm?sc(d.torque_kgfm+' kgf.m','Torque elétrico'):''}
+        ${d.bateria_kwh?sc(d.bateria_kwh+' kWh','bateria',true):''}
+        ${d.potencia_cv?sc(d.potencia_cv+' cv','potência elétrica'):''}
+        ${d.torque_kgfm?sc(d.torque_kgfm+' kgf.m','torque elétrico'):''}
         ${d.zero_100_s?sc(d.zero_100_s+'s','0–100 km/h',true):''}
-        ${d.vel_max_kmh?sc(d.vel_max_kmh+' km/h','Vel. máxima'):''}
-        ${d.motor_comb_cv?sc(d.motor_comb_cv+' cv','Motor combustão'):''}
-        ${d.motor_comb_kgfm?sc(d.motor_comb_kgfm+' kgf.m','Torque combustão'):''}
-        ${d.potencia_combinada_cv?sc(d.potencia_combinada_cv+' cv','Potência combinada',true):''}
-        ${d.tracao?sc(d.tracao,'Tração'):''}
+        ${d.vel_max_kmh?sc(d.vel_max_kmh+' km/h','vel. máxima'):''}
+        ${d.motor_comb_cv?sc(d.motor_comb_cv+' cv','motor combustão'):''}
+        ${d.motor_comb_kgfm?sc(d.motor_comb_kgfm+' kgf.m','torque combustão'):''}
+        ${d.potencia_combinada_cv?sc(d.potencia_combinada_cv+' cv','potência combinada',true):''}
+        ${d.tracao?sc(d.tracao,'tração'):''}
       </div>
     </div>
-    <div class="grupo">
-      <div class="gtit"><span class="gnum">3</span>Autonomia INMETRO</div>
+    <div class="grupo"><div class="gtit"><span class="gnum">3</span>Autonomia INMETRO</div>
       <div class="sgrid">
-        ${d.autonomia_km?sc(d.autonomia_km+' km','Autonomia elétrica',true):''}
-        ${d.consumo_kmkwh?sc(d.consumo_kmkwh+' km/kWh','Consumo elétrico'):''}
-        ${d.autonomia_hev_cidade?sc(d.autonomia_hev_cidade+' km/l','Consumo cidade',true):''}
-        ${d.autonomia_hev_estrada?sc(d.autonomia_hev_estrada+' km/l','Consumo estrada'):''}
-        ${d.eficiencia_mj_km?sc(d.eficiencia_mj_km+' MJ/km','Eficiência INMETRO'):''}
-        ${d.mes_ensaio_inmetro?sc(d.mes_ensaio_inmetro,'Mês do ensaio'):''}
+        ${d.autonomia_km?sc(d.autonomia_km+' km','autonomia elétrica',true):''}
+        ${d.consumo_kmkwh?sc(d.consumo_kmkwh+' km/kWh','consumo elétrico'):''}
+        ${d.autonomia_hev_cidade?sc(d.autonomia_hev_cidade+' km/l','consumo cidade',true):''}
+        ${d.autonomia_hev_estrada?sc(d.autonomia_hev_estrada+' km/l','consumo estrada'):''}
+        ${d.eficiencia_mj_km?sc(d.eficiencia_mj_km+' MJ/km','eficiência INMETRO'):''}
+        ${d.mes_ensaio_inmetro?sc(d.mes_ensaio_inmetro,'mês do ensaio'):''}
       </div>
     </div>
-    <div class="grupo">
-      <div class="gtit"><span class="gnum">4</span>Velocidade de Recarga</div>
+    <div class="grupo"><div class="gtit"><span class="gnum">4</span>Recarga</div>
       <div class="sgrid">
-        ${d.recarga_ac_kw?sc(d.recarga_ac_kw+' kW','Recarga AC — Potência',true):''}
-        ${d.recarga_ac_tempo_h?sc(d.recarga_ac_tempo_h+'h','Recarga AC — Tempo'):''}
-        ${d.recarga_dc_kw?sc(d.recarga_dc_kw+' kW','Recarga DC — Potência',true):''}
-        ${d.recarga_dc_tempo_min?sc(d.recarga_dc_tempo_min+' min','Recarga DC 30→80%'):''}
-        ${d.protocolo_dc?sc(d.protocolo_dc,'Protocolo DC'):''}
+        ${d.recarga_ac_kw?sc(d.recarga_ac_kw+' kW','recarga AC — potência',true):''}
+        ${d.recarga_ac_tempo_h?sc(d.recarga_ac_tempo_h+'h','recarga AC — tempo'):''}
+        ${d.recarga_dc_kw?sc(d.recarga_dc_kw+' kW','recarga DC — potência',true):''}
+        ${d.recarga_dc_tempo_min?sc(d.recarga_dc_tempo_min+' min','DC 30→80%'):''}
+        ${d.protocolo_dc?sc(d.protocolo_dc,'protocolo DC'):''}
       </div>
     </div>
-    <div class="grupo">
-      <div class="gtit"><span class="gnum">5</span>Dimensões e Acessórios</div>
+    <div class="grupo"><div class="gtit"><span class="gnum">5</span>Dimensões e Acessórios</div>
       <div class="sgrid">
-        ${d.comprimento_mm_v?sc(fn(d.comprimento_mm_v)+' mm','Comprimento'):''}
-        ${d.altura_mm_v?sc(fn(d.altura_mm_v)+' mm','Altura'):''}
-        ${d.largura_mm_v?sc(fn(d.largura_mm_v)+' mm','Largura'):''}
-        ${d.entre_eixos_mm?sc(fn(d.entre_eixos_mm)+' mm','Entre-eixos'):''}
-        ${d.vao_livre_mm?sc(d.vao_livre_mm+' mm','Vão livre'):''}
-        ${d.porta_malas_l?sc(d.porta_malas_l+' L','Porta-malas',true):''}
-        ${d.estepe_kit?sc(d.estepe_kit,'Estepe / Kit reparo'):''}
-        ${d.frunk_l?sc(d.frunk_l+' L','Frunk',true):''}
-        ${d.pneu_medida?sc(d.pneu_medida,'Medida dos pneus'):''}
-        ${d.peso_kg?sc(fn(d.peso_kg)+' kg','Peso bruto'):''}
-        ${d.passageiros?sc(d.passageiros+' pessoas','Passageiros'):''}
-        ${d.suspensao_diant?sc(d.suspensao_diant,'Suspensão dianteira'):''}
-        ${d.suspensao_tras?sc(d.suspensao_tras,'Suspensão traseira'):''}
+        ${d.comprimento_mm_v?sc(fn(d.comprimento_mm_v)+' mm','comprimento'):''}
+        ${d.altura_mm_v?sc(fn(d.altura_mm_v)+' mm','altura'):''}
+        ${d.largura_mm_v?sc(fn(d.largura_mm_v)+' mm','largura'):''}
+        ${d.entre_eixos_mm?sc(fn(d.entre_eixos_mm)+' mm','entre-eixos'):''}
+        ${d.vao_livre_mm?sc(d.vao_livre_mm+' mm','vão livre'):''}
+        ${d.porta_malas_l?sc(d.porta_malas_l+' L','porta-malas',true):''}
+        ${d.estepe_kit?sc(d.estepe_kit,'estepe / kit reparo'):''}
+        ${d.frunk_l?sc(d.frunk_l+' L','frunk',true):''}
+        ${d.pneu_medida?sc(d.pneu_medida,'medida dos pneus'):''}
+        ${d.peso_kg?sc(fn(d.peso_kg)+' kg','peso bruto'):''}
+        ${d.passageiros?sc(d.passageiros+' pessoas','passageiros'):''}
+        ${d.suspensao_diant?sc(d.suspensao_diant,'suspensão dianteira'):''}
+        ${d.suspensao_tras?sc(d.suspensao_tras,'suspensão traseira'):''}
       </div>
     </div>
-    <div class="grupo">
-      <div class="gtit"><span class="gnum">6</span>Segurança e Assistência à Condução</div>
+    <div class="grupo"><div class="gtit"><span class="gnum">6</span>Segurança</div>
       <div class="sgrid">
-        ${d.airbags_qtd?sc(d.airbags_qtd+' airbags','Airbags'):''}
-        ${d.adas!==null&&d.adas!==undefined?sc(d.adas?'Sim':'Não','Possui ADAS?',d.adas):''}
-        ${d.adas_nivel?sc(d.adas_nivel,'Nível ADAS'):''}
+        ${d.airbags_qtd?sc(d.airbags_qtd+' airbags','airbags'):''}
+        ${d.adas!==null&&d.adas!==undefined?sc(d.adas?'Sim':'Não','possui ADAS?',d.adas):''}
+        ${d.adas_nivel?sc(d.adas_nivel,'nível ADAS'):''}
         ${d.hud?sc(d.hud,'HUD',d.hud==='Sim'):''}
       </div>
     </div>
-    <div class="grupo">
-      <div class="gtit"><span class="gnum">7</span>Garantias</div>
+    <div class="grupo"><div class="gtit"><span class="gnum">7</span>Garantias</div>
       <div class="sgrid">
-        ${d.garantia_veiculo_anos?sc(d.garantia_veiculo_anos+' anos'+(d.garantia_veiculo_km?' / '+fn(d.garantia_veiculo_km)+' km':''),'Garantia do veículo'):''}
-        ${d.garantia_bateria_anos?sc(d.garantia_bateria_anos+' anos'+(d.garantia_bateria_km?' / '+fn(d.garantia_bateria_km)+' km':''),'Garantia da bateria',true):''}
+        ${d.garantia_veiculo_anos?sc(d.garantia_veiculo_anos+' anos'+(d.garantia_veiculo_km?' / '+fn(d.garantia_veiculo_km)+' km':''),'garantia do veículo'):''}
+        ${d.garantia_bateria_anos?sc(d.garantia_bateria_anos+' anos'+(d.garantia_bateria_km?' / '+fn(d.garantia_bateria_km)+' km':''),'garantia da bateria',true):''}
       </div>
     </div>
-    ${d.codigo_fipe?`<div class="grupo">
-      <div class="gtit"><span class="gnum" style="background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.3);color:var(--blue)">$</span>Tabela FIPE</div>
+    ${d.codigo_fipe?`<div class="grupo"><div class="gtit"><span class="gnum" style="background:#eff6ff;border-color:#bfdbfe;color:var(--blue)">$</span>Tabela FIPE</div>
       <div class="fbox">
-        <div class="frow"><span class="lbl">Código FIPE</span><span class="val fcod">${d.codigo_fipe}</span></div>
-        ${p?`<div class="frow"><span class="lbl">Preço 0km</span><span class="val g">${fp(p)}</span></div>`:''}
-        ${d.preco_usado?`<div class="frow"><span class="lbl">Preço 1 ano</span><span class="val">${fp(d.preco_usado)}</span></div>`:''}
-        ${p&&d.preco_usado?`<div class="frow"><span class="lbl">Desvalorização</span><span class="val" style="color:var(--red)">−${fp(p-d.preco_usado)}</span></div>`:''}
+        <div class="frow"><span class="lbl">código FIPE</span><span class="val fcod">${d.codigo_fipe}</span></div>
+        ${p?`<div class="frow"><span class="lbl">preço 0km</span><span class="val g">${fp(p)}</span></div>`:''}
+        ${d.preco_usado?`<div class="frow"><span class="lbl">preço 1 ano</span><span class="val">${fp(d.preco_usado)}</span></div>`:''}
+        ${p&&d.preco_usado?`<div class="frow"><span class="lbl">desvalorização</span><span class="val" style="color:var(--red)">−${fp(p-d.preco_usado)}</span></div>`:''}
       </div>
     </div>`:''}
-    ${vidId?`<div class="grupo">
-      <div class="gtit"><span class="gnum" style="background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.3);color:var(--red)">▶</span>Vídeo no Canal SPCE</div>
+    ${vidId?`<div class="grupo"><div class="gtit"><span class="gnum" style="background:#fff5f5;border-color:#fecaca;color:var(--red)">▶</span>Vídeo no Canal SPCE</div>
       <a href="${vid}" target="_blank" class="vwrap">
-        <img src="https://img.youtube.com/vi/${vidId}/maxresdefault.jpg"
-             onerror="this.src='https://img.youtube.com/vi/${vidId}/hqdefault.jpg'"
-             alt="Assista no YouTube" class="vimg">
+        <img src="https://img.youtube.com/vi/${vidId}/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/${vidId}/hqdefault.jpg'" alt="Assistir no YouTube" class="vimg">
         <div class="vov"><div class="vplay">▶</div><span>Assistir no YouTube</span></div>
       </a>
     </div>`:''}
@@ -673,24 +659,16 @@ function togCmp(e,i){
   e.stopPropagation()
   const j=cmp.indexOf(i)
   if(j>-1){cmp.splice(j,1)}
-  else{
-    if(cmp.length>=3){alert('Máximo 3 carros. Remova um antes de adicionar.');return}
-    cmp.push(i)
-  }
-  render()
-  upCbar()
+  else{if(cmp.length>=3){alert('Máximo 3 carros.');return};cmp.push(i)}
+  render();upCbar()
 }
 
 function upCbar(){
   const bar=G('cbar'),slots=G('cslots'),btn=G('bcmp')
   if(!cmp.length){bar.classList.remove('vis');return}
-  bar.classList.add('vis')
-  btn.disabled=cmp.length<2
-  let h=cmp.map(i=>{
-    const d=fd[i]
-    return`<div class="cslot"><span class="csnome">${d.marca} ${d.modelo} ${d.versao||''}</span><button class="csrem" onclick="remCmp(${i})">✕</button></div>`
-  }).join('')
-  for(let i=cmp.length;i<3;i++) h+=`<div class="cslot emp">+ Adicionar carro</div>`
+  bar.classList.add('vis');btn.disabled=cmp.length<2
+  let h=cmp.map(i=>{const d=fd[i];return`<div class="cslot"><span class="csnome">${d.marca} ${d.modelo} ${d.versao||''}</span><button class="csrem" onclick="remCmp(${i})">✕</button></div>`}).join('')
+  for(let i=cmp.length;i<3;i++) h+=`<div class="cslot emp">+ adicionar</div>`
   slots.innerHTML=h
 }
 
@@ -700,63 +678,21 @@ function clrCmp(){cmp=[];render();upCbar()}
 function openCmp(){
   const carros=cmp.map(i=>fd[i])
   const grupos=[
-    {n:'1',t:'Fabricante',c:[
-      {l:'Fabricado em',k:'fabricado_em',tp:'txt'},
-      {l:'Nota Reclame Aqui',k:'reclame_aqui_nota',tp:'num',m:'maior'},
-    ]},
-    {n:'2',t:'Bateria e Motor',c:[
-      {l:'Bateria (kWh)',k:'bateria_kwh',tp:'num',m:'maior'},
-      {l:'Potência (cv)',k:'potencia_cv',tp:'num',m:'maior'},
-      {l:'Torque (kgf.m)',k:'torque_kgfm',tp:'num',m:'maior'},
-      {l:'0–100 km/h (s)',k:'zero_100_s',tp:'num',m:'menor'},
-      {l:'Vel. máxima (km/h)',k:'vel_max_kmh',tp:'num',m:'maior'},
-      {l:'Pot. combinada (cv)',k:'potencia_combinada_cv',tp:'num',m:'maior'},
-      {l:'Tração',k:'tracao',tp:'txt'},
-    ]},
-    {n:'3',t:'Autonomia INMETRO',c:[
-      {l:'Autonomia elétrica (km)',k:'autonomia_km',tp:'num',m:'maior'},
-      {l:'Consumo (km/kWh)',k:'consumo_kmkwh',tp:'num',m:'maior'},
-      {l:'Consumo cidade (km/l)',k:'autonomia_hev_cidade',tp:'num',m:'maior'},
-      {l:'Eficiência (MJ/km)',k:'eficiencia_mj_km',tp:'num',m:'menor'},
-    ]},
-    {n:'4',t:'Recarga',c:[
-      {l:'Recarga AC (kW)',k:'recarga_ac_kw',tp:'num',m:'maior'},
-      {l:'Recarga DC (kW)',k:'recarga_dc_kw',tp:'num',m:'maior'},
-      {l:'DC 30→80% (min)',k:'recarga_dc_tempo_min',tp:'num',m:'menor'},
-      {l:'Protocolo DC',k:'protocolo_dc',tp:'txt'},
-    ]},
-    {n:'5',t:'Dimensões e Acessórios',c:[
-      {l:'Comprimento (mm)',k:'comprimento_mm_v',tp:'num'},
-      {l:'Largura (mm)',k:'largura_mm_v',tp:'num'},
-      {l:'Altura (mm)',k:'altura_mm_v',tp:'num'},
-      {l:'Entre-eixos (mm)',k:'entre_eixos_mm',tp:'num'},
-      {l:'Porta-malas (L)',k:'porta_malas_l',tp:'num',m:'maior'},
-      {l:'Frunk (L)',k:'frunk_l',tp:'num',m:'maior'},
-      {l:'Peso (kg)',k:'peso_kg',tp:'num',m:'menor'},
-      {l:'Pneu',k:'pneu_medida',tp:'txt'},
-      {l:'Suspensão dianteira',k:'suspensao_diant',tp:'txt'},
-      {l:'Suspensão traseira',k:'suspensao_tras',tp:'txt'},
-    ]},
-    {n:'6',t:'Segurança',c:[
-      {l:'Airbags',k:'airbags_qtd',tp:'num',m:'maior'},
-      {l:'ADAS',k:'adas_nivel',tp:'txt'},
-      {l:'HUD',k:'hud',tp:'txt'},
-    ]},
-    {n:'7',t:'Garantias',c:[
-      {l:'Garantia veículo (anos)',k:'garantia_veiculo_anos',tp:'num',m:'maior'},
-      {l:'Garantia bateria (anos)',k:'garantia_bateria_anos',tp:'num',m:'maior'},
-    ]},
-    {n:'$',t:'Preço',c:[
-      {l:'Preço 0km',k:'preco_atual',tp:'preco',m:'menor'},
-    ]},
+    {n:'1',t:'Fabricante',c:[{l:'Fabricado em',k:'fabricado_em',tp:'txt'},{l:'Nota Reclame Aqui',k:'reclame_aqui_nota',tp:'num',m:'maior'}]},
+    {n:'2',t:'Bateria e Motor',c:[{l:'Bateria (kWh)',k:'bateria_kwh',tp:'num',m:'maior'},{l:'Potência (cv)',k:'potencia_cv',tp:'num',m:'maior'},{l:'Torque (kgf.m)',k:'torque_kgfm',tp:'num',m:'maior'},{l:'0–100 km/h (s)',k:'zero_100_s',tp:'num',m:'menor'},{l:'Vel. máxima (km/h)',k:'vel_max_kmh',tp:'num',m:'maior'},{l:'Pot. combinada (cv)',k:'potencia_combinada_cv',tp:'num',m:'maior'},{l:'Tração',k:'tracao',tp:'txt'}]},
+    {n:'3',t:'Autonomia INMETRO',c:[{l:'Autonomia elétrica (km)',k:'autonomia_km',tp:'num',m:'maior'},{l:'Consumo (km/kWh)',k:'consumo_kmkwh',tp:'num',m:'maior'},{l:'Consumo cidade (km/l)',k:'autonomia_hev_cidade',tp:'num',m:'maior'},{l:'Eficiência (MJ/km)',k:'eficiencia_mj_km',tp:'num',m:'menor'}]},
+    {n:'4',t:'Recarga',c:[{l:'Recarga AC (kW)',k:'recarga_ac_kw',tp:'num',m:'maior'},{l:'Recarga DC (kW)',k:'recarga_dc_kw',tp:'num',m:'maior'},{l:'DC 30→80% (min)',k:'recarga_dc_tempo_min',tp:'num',m:'menor'},{l:'Protocolo DC',k:'protocolo_dc',tp:'txt'}]},
+    {n:'5',t:'Dimensões',c:[{l:'Comprimento (mm)',k:'comprimento_mm_v',tp:'num'},{l:'Largura (mm)',k:'largura_mm_v',tp:'num'},{l:'Porta-malas (L)',k:'porta_malas_l',tp:'num',m:'maior'},{l:'Frunk (L)',k:'frunk_l',tp:'num',m:'maior'},{l:'Peso (kg)',k:'peso_kg',tp:'num',m:'menor'},{l:'Suspensão dianteira',k:'suspensao_diant',tp:'txt'},{l:'Suspensão traseira',k:'suspensao_tras',tp:'txt'}]},
+    {n:'6',t:'Segurança',c:[{l:'Airbags',k:'airbags_qtd',tp:'num',m:'maior'},{l:'ADAS',k:'adas_nivel',tp:'txt'},{l:'HUD',k:'hud',tp:'txt'}]},
+    {n:'7',t:'Garantias',c:[{l:'Garantia veículo (anos)',k:'garantia_veiculo_anos',tp:'num',m:'maior'},{l:'Garantia bateria (anos)',k:'garantia_bateria_anos',tp:'num',m:'maior'}]},
+    {n:'$',t:'Preço',c:[{l:'Preço 0km',k:'preco_atual',tp:'preco',m:'menor'}]},
   ]
   const nc=carros.length
   let h=`<table class="ctable"><thead><tr><th class="lcol"></th>`
   carros.forEach(d=>{
     h+=`<th><div class="ccarhead">
       ${d.foto_principal?`<img src="${d.foto_principal}" class="ccfoto" onerror="this.style.display='none'">`:`<div class="ccph">${gi(d.marca,d.modelo)}</div>`}
-      <div class="ccmarca">${d.marca}</div>
-      <div class="ccnome">${d.modelo}</div>
+      <div class="ccmarca">${d.marca}</div><div class="ccnome">${d.modelo}</div>
       <div class="ccver">${d.versao||''}</div>
       <div class="ccpreco">${d.preco_atual?fp(d.preco_atual):'Consulte'}</div>
     </div></th>`
@@ -822,14 +758,14 @@ const ADSENSE_ATIVO=false
 const ADSENSE_CLIENT='ca-pub-XXXXXXXXXXXXXXXX'
 const ADSENSE_SLOT='XXXXXXXXXX'
 const ADS_PROPRIOS=[
-  {tag:'Patrocinado',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x320/052e16/22c55e?text=Anuncie+no+SPCE',nova_aba:true},
-  {tag:'Parceiro',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x320/0a1628/38bdf8?text=Anuncie+no+SPCE',nova_aba:true}
+  {tag:'Patrocinado',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x300/f0fdf4/16a34a?text=Anuncie+no+SPCE',nova_aba:true},
+  {tag:'Parceiro',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x300/eff6ff/0284c7?text=Anuncie+no+SPCE',nova_aba:true}
 ]
 function renderAdCard(idx){
-  if(ADSENSE_ATIVO){return`<div class="ad-card"><span class="ad-label">Publicidade</span><div class="ad-sense"><ins class="adsbygoogle" style="display:block;width:100%;height:280px" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>`}
+  if(ADSENSE_ATIVO){return`<div class="ad-card"><span class="ad-label">publicidade</span><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:1rem"><ins class="adsbygoogle" style="display:block;width:100%;height:280px" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>`}
   if(!ADS_PROPRIOS.length)return''
   const ad=ADS_PROPRIOS[idx%ADS_PROPRIOS.length]
-  return`<div class="ad-card"><span class="ad-label">Publicidade</span><a class="ad-own" href="${ad.link}" ${ad.nova_aba?'target="_blank"':''}><img class="ad-own-img" src="${ad.imagem}" alt="${ad.titulo}" onerror="this.style.display='none'"><div class="ad-own-body"><div class="ad-own-tag">${ad.tag}</div><div class="ad-own-title">${ad.titulo}</div><div class="ad-own-desc">${ad.descricao}</div><span class="ad-own-cta">${ad.cta}</span></div></a></div>`
+  return`<div class="ad-card"><span class="ad-label">publicidade</span><a class="ad-own" href="${ad.link}" ${ad.nova_aba?'target="_blank"':''}><img class="ad-own-img" src="${ad.imagem}" alt="${ad.titulo}" onerror="this.style.display='none'"><div class="ad-own-body"><div class="ad-own-tag">${ad.tag}</div><div class="ad-own-title">${ad.titulo}</div><div class="ad-own-desc">${ad.descricao}</div><span class="ad-own-cta">${ad.cta}</span></div></a></div>`
 }
 
 load()
