@@ -763,4 +763,57 @@ function openCmp(){
           :f.tp==='bool'?(v?'✓ Sim':'Não')
           :f.tp==='num'?Number(v).toLocaleString('pt-BR')
           :v
-        const cls=i
+        const cls=i===bi?'best':i===wi?'worst':''
+        body+=`<div class="cmod-val ${cls}">${disp}</div>`
+      })
+      body+=`</div>`
+    })
+  })
+  G('cmod-body').innerHTML=body
+  G('cov').classList.add('open')
+  document.body.style.overflow='hidden'
+}
+
+function closeCmp(e){
+  if(e&&e.target!==G('cov'))return
+  G('cov').classList.remove('open')
+  document.body.style.overflow=''
+}
+
+let carIdx=0,carTimer=null
+const CAR_TOTAL=3
+function carMove(dir){carGo((carIdx+dir+CAR_TOTAL)%CAR_TOTAL)}
+function carGo(i){
+  carIdx=i
+  document.getElementById('carousel').style.transform=`translateX(-${i*100}%)`
+  document.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('on',j===i))
+  resetTimer()
+}
+function resetTimer(){clearInterval(carTimer);carTimer=setInterval(()=>carMove(1),5000)}
+resetTimer()
+;(function(){
+  let sx=0
+  const el=document.getElementById('carousel')
+  if(!el)return
+  el.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true})
+  el.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)carMove(dx<0?1:-1)},{passive:true})
+})()
+
+const ADSENSE_ATIVO=false
+const ADSENSE_CLIENT='ca-pub-XXXXXXXXXXXXXXXX'
+const ADSENSE_SLOT='XXXXXXXXXX'
+const ADS_PROPRIOS=[
+  {tag:'Patrocinado',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x300/f0fdf4/16a34a?text=Anuncie+no+SPCE',nova_aba:true},
+  {tag:'Parceiro',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x300/eff6ff/0284c7?text=Anuncie+no+SPCE',nova_aba:true}
+]
+function renderAdCard(idx){
+  if(ADSENSE_ATIVO){return`<div class="ad-card"><span class="ad-label">publicidade</span><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:1rem"><ins class="adsbygoogle" style="display:block;width:100%;height:280px" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>`}
+  if(!ADS_PROPRIOS.length)return''
+  const ad=ADS_PROPRIOS[idx%ADS_PROPRIOS.length]
+  return`<div class="ad-card"><span class="ad-label">publicidade</span><a class="ad-own" href="${ad.link}" ${ad.nova_aba?'target="_blank"':''}><img class="ad-own-img" src="${ad.imagem}" alt="${ad.titulo}" onerror="this.style.display='none'"><div class="ad-own-body"><div class="ad-own-tag">${ad.tag}</div><div class="ad-own-title">${ad.titulo}</div><div class="ad-own-desc">${ad.descricao}</div><span class="ad-own-cta">${ad.cta}</span></div></a></div>`
+}
+
+load()
+</script>
+</body>
+</html>
