@@ -208,18 +208,23 @@ button{cursor:pointer;font-family:var(--fh)}
 .cov.open .cmod{transform:scale(1) translateY(0)}
 .cmod-fechar{position:absolute;top:.9rem;right:1rem;z-index:10;background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:32px;height:32px;border-radius:50%;font-size:.85rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
 .cmod-fechar:hover{border-color:var(--red);color:var(--red);background:#fff5f5}
-.cmod-head{flex-shrink:0;display:grid;border-bottom:2px solid var(--border)}
-.cmod-lbl-col{padding:.85rem 1rem;border-right:1px solid var(--border);display:flex;align-items:center}
-.cmod-lbl-col span{font-family:var(--fm);font-size:.62rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
-.cmod-car-col{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.75rem 1rem;border-right:1px solid var(--border);text-align:center;position:relative}
-.cmod-car-col:last-child{border-right:none;padding-right:3rem}
-.cmod-car-foto{height:80px;max-width:160px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.1))}
-.cmod-car-foto-ph{height:80px;width:130px;background:var(--green3);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.8rem;font-weight:800;color:var(--green2)}
-.cmod-car-marca{font-family:var(--fm);font-size:.6rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
-.cmod-car-nome{font-family:var(--fh);font-size:.92rem;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1.1}
-.cmod-car-ver{font-size:.7rem;color:var(--text2)}
-.cmod-car-preco{font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--green)}
-.cmod-pts{background:var(--green3);border:1px solid var(--green4);border-radius:100px;padding:.12rem .45rem;font-family:var(--fm);font-size:.58rem;font-weight:500;color:var(--green);margin-top:.1rem}
+.cmod-head{flex-shrink:0;display:flex;border-bottom:2px solid var(--border);min-height:180px}
+.cmod-car-col{flex:1;position:relative;overflow:hidden;border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:flex-end;min-height:180px}
+.cmod-car-col:last-child{border-right:none;padding-right:0}
+.cmod-car-bg{position:absolute;inset:0;background:linear-gradient(135deg,var(--green3),var(--bg4));display:flex;align-items:center;justify-content:center;overflow:hidden}
+.cmod-car-bg img{width:100%;height:100%;object-fit:cover;opacity:.9}
+.cmod-car-bg-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.cmod-car-foto{width:85%;max-height:150px;object-fit:contain;filter:drop-shadow(0 8px 24px rgba(0,0,0,.2));position:absolute;top:50%;left:50%;transform:translate(-50%,-55%)}
+.cmod-car-foto-ph{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);font-family:var(--fh);font-size:3.5rem;font-weight:900;color:var(--green2);opacity:.3}
+.cmod-car-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,rgba(0,0,0,.2) 50%,transparent 100%)}
+.cmod-car-info{position:relative;z-index:2;padding:.9rem 1.1rem;display:flex;flex-direction:column;gap:.15rem}
+.cmod-car-marca{font-family:var(--fm);font-size:.62rem;color:rgba(255,255,255,.7);letter-spacing:.1em;text-transform:uppercase}
+.cmod-car-nome{font-family:var(--fh);font-size:1.2rem;font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.1;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.cmod-car-ver{font-size:.72rem;color:rgba(255,255,255,.65)}
+.cmod-car-preco{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--greenbright);margin-top:.2rem}
+.cmod-pts{display:inline-flex;align-items:center;gap:.25rem;background:rgba(34,197,94,.25);border:1px solid rgba(34,197,94,.4);border-radius:100px;padding:.18rem .55rem;font-family:var(--fm);font-size:.62rem;font-weight:600;color:#fff;margin-top:.2rem;width:fit-content}
+.cmod-fechar-over{position:absolute;top:.7rem;right:.7rem;z-index:20;background:rgba(255,255,255,.9);border:1px solid rgba(0,0,0,.1);color:var(--text2);width:30px;height:30px;border-radius:50%;font-size:.8rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px)}
+.cmod-fechar-over:hover{border-color:var(--red);color:var(--red)}
 .cmod-body{flex:1;overflow-y:auto}
 .cmod-grupo-hdr{display:grid;background:var(--green3);border-bottom:1px solid var(--green4);position:sticky;top:0;z-index:2}
 .cmod-grupo-lbl{padding:.45rem 1rem;display:flex;align-items:center;gap:.35rem;border-right:1px solid var(--green4)}
@@ -429,7 +434,7 @@ button{cursor:pointer;font-family:var(--fh)}
 <!-- MODAL COMPARADOR -->
 <div class="cov" id="cov" onclick="closeCmp(event)">
   <div class="cmod" id="cmod-inner">
-    <button class="cmod-fechar" onclick="closeCmp()">✕</button>
+    <button class="cmod-fechar-over" onclick="closeCmp()">✕</button>
     <div class="cmod-head" id="cmod-head"></div>
     <div class="cmod-resumo" id="cmod-resumo"></div>
     <div class="cmod-body" id="cmod-body"></div>
@@ -733,22 +738,32 @@ function openCmp(){
     if(bi>=0) pts[bi]++
   }))
 
-  // Header
+  // Header — fotos grandes com overlay
   const gridCols=`160px ${Array(nc).fill('1fr').join(' ')}`
-  let head=`<div class="cmod-lbl-col"><span>critério</span></div>`
+  let head=''
   carros.forEach((d,i)=>{
+    const maxPtsVal=Math.max(...pts)
+    const isLider=pts[i]===maxPtsVal
     head+=`<div class="cmod-car-col">
+      <div class="cmod-car-bg">
+        ${d.foto_principal
+          ?`<img src="${d.foto_principal}" onerror="this.style.display='none'">`
+          :`<div class="cmod-car-bg-ph"></div>`}
+      </div>
       ${d.foto_principal
         ?`<img class="cmod-car-foto" src="${d.foto_principal}" onerror="this.style.display='none'">`
         :`<div class="cmod-car-foto-ph">${gi(d.marca,d.modelo)}</div>`}
-      <div class="cmod-car-marca">${d.marca}</div>
-      <div class="cmod-car-nome">${d.modelo}</div>
-      <div class="cmod-car-ver">${d.versao||''}</div>
-      ${d.preco_atual?`<div class="cmod-car-preco">${fp(d.preco_atual)}</div>`:''}
-      <div class="cmod-pts">${pts[i]} pts</div>
+      <div class="cmod-car-overlay"></div>
+      <div class="cmod-car-info">
+        <div class="cmod-car-marca">${d.marca}</div>
+        <div class="cmod-car-nome">${d.modelo}</div>
+        <div class="cmod-car-ver">${d.versao||''}</div>
+        ${d.preco_atual?`<div class="cmod-car-preco">${fp(d.preco_atual)}</div>`:''}
+        <div class="cmod-pts">${isLider?'👑 ':''}${pts[i]} critérios</div>
+      </div>
     </div>`
   })
-  G('cmod-head').style.gridTemplateColumns=gridCols
+  G('cmod-head').style.display='flex'
   G('cmod-head').innerHTML=head
 
   // Resumo rápido — preço, autonomia, potência
@@ -779,7 +794,8 @@ function openCmp(){
     })
     resumo+=`</div>`
   })
-  G('cmod-resumo').style.gridTemplateColumns=gridCols
+  const resumoCols=`160px ${Array(nc).fill('1fr').join(' ')}`
+  G('cmod-resumo').style.gridTemplateColumns=resumoCols
   G('cmod-resumo').innerHTML=resumo
 
   // Body
@@ -899,17 +915,4 @@ const ADSENSE_ATIVO=false
 const ADSENSE_CLIENT='ca-pub-XXXXXXXXXXXXXXXX'
 const ADSENSE_SLOT='XXXXXXXXXX'
 const ADS_PROPRIOS=[
-  {tag:'Patrocinado',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x300/f0fdf4/16a34a?text=Anuncie+no+SPCE',nova_aba:true},
-  {tag:'Parceiro',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x300/eff6ff/0284c7?text=Anuncie+no+SPCE',nova_aba:true}
-]
-function renderAdCard(idx){
-  if(ADSENSE_ATIVO){return`<div class="ad-card"><span class="ad-label">publicidade</span><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:1rem"><ins class="adsbygoogle" style="display:block;width:100%;height:280px" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>`}
-  if(!ADS_PROPRIOS.length)return''
-  const ad=ADS_PROPRIOS[idx%ADS_PROPRIOS.length]
-  return`<div class="ad-card"><span class="ad-label">publicidade</span><a class="ad-own" href="${ad.link}" ${ad.nova_aba?'target="_blank"':''}><img class="ad-own-img" src="${ad.imagem}" alt="${ad.titulo}" onerror="this.style.display='none'"><div class="ad-own-body"><div class="ad-own-tag">${ad.tag}</div><div class="ad-own-title">${ad.titulo}</div><div class="ad-own-desc">${ad.descricao}</div><span class="ad-own-cta">${ad.cta}</span></div></a></div>`
-}
-
-load()
-</script>
-</body>
-</html>
+  {tag:'Patrocinado',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://p
