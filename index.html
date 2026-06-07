@@ -234,6 +234,27 @@ button{cursor:pointer;font-family:var(--fh)}
 .cmod-val:last-child{border-right:none}
 .cmod-val.best{color:var(--green);font-weight:700;background:rgba(34,197,94,.05)}
 .cmod-val.worst{color:var(--red)}
+/* Resumo rápido */
+.cmod-resumo{display:grid;border-bottom:2px solid var(--border);background:var(--bg3);flex-shrink:0}
+.cmod-resumo-lbl{padding:.6rem 1rem;display:flex;align-items:center;border-right:1px solid var(--border)}
+.cmod-resumo-lbl span{font-family:var(--fm);font-size:.6rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.cmod-resumo-val{padding:.6rem 1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;border-right:1px solid var(--border);text-align:center;gap:.1rem}
+.cmod-resumo-val:last-child{border-right:none}
+.cmod-resumo-num{font-family:var(--fh);font-size:1.3rem;font-weight:800;color:var(--text);letter-spacing:-.03em;line-height:1}
+.cmod-resumo-num.best{color:var(--green)}
+.cmod-resumo-num.worst{color:var(--red)}
+.cmod-resumo-sub{font-family:var(--fm);font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.04em}
+/* Barra de progresso */
+.cmod-val-wrap{display:flex;flex-direction:column;align-items:center;gap:.3rem;width:100%}
+.cmod-barra-wrap{width:80%;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.cmod-barra{height:100%;border-radius:2px;background:var(--border2);transition:width .6s ease}
+.cmod-barra.best{background:var(--green)}
+.cmod-barra.worst{background:#fecaca}
+/* Badge vencedor por grupo */
+.cmod-grupo-venc{display:flex;align-items:center;justify-content:center;padding:.3rem 1rem;border-right:1px solid var(--green4)}
+.cmod-grupo-venc:last-child{border-right:none}
+.cmod-venc-badge{background:var(--green);color:#fff;font-family:var(--fm);font-size:.58rem;font-weight:600;padding:.15rem .5rem;border-radius:100px;letter-spacing:.04em;white-space:nowrap}
+.cmod-venc-empty{height:18px}
 
 /* FOOTER */
 .footer{padding:1.5rem 2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;color:var(--text3);font-family:var(--fm);font-size:.72rem;background:var(--bg2)}
@@ -410,6 +431,7 @@ button{cursor:pointer;font-family:var(--fh)}
   <div class="cmod" id="cmod-inner">
     <button class="cmod-fechar" onclick="closeCmp()">✕</button>
     <div class="cmod-head" id="cmod-head"></div>
+    <div class="cmod-resumo" id="cmod-resumo"></div>
     <div class="cmod-body" id="cmod-body"></div>
   </div>
 </div>
@@ -729,24 +751,74 @@ function openCmp(){
   G('cmod-head').style.gridTemplateColumns=gridCols
   G('cmod-head').innerHTML=head
 
+  // Resumo rápido — preço, autonomia, potência
+  const RESUMO=[
+    {l:'Preço 0km',k:'preco_atual',tp:'preco',m:'menor'},
+    {l:'Autonomia',k:'autonomia_km',tp:'num',m:'maior',suf:' km'},
+    {l:'Potência',k:'potencia_cv',tp:'num',m:'maior',suf:' cv',alt:'potencia_combinada_cv'},
+    {l:'Bateria',k:'bateria_kwh',tp:'num',m:'maior',suf:' kWh'},
+  ]
+  let resumo=`<div class="cmod-resumo-lbl"><span>resumo</span></div>`
+  carros.forEach((d,ci)=>{
+    resumo+=`<div class="cmod-resumo-val">`
+    RESUMO.forEach(r=>{
+      const v=d[r.k]||(r.alt?d[r.alt]:null)
+      if(!v){resumo+=`<div class="cmod-resumo-num" style="font-size:.8rem;color:var(--text3)">—</div>`;return}
+      // calc best
+      const ns=carros.map(dx=>parseFloat(dx[r.k]||(r.alt?dx[r.alt]:0))||null)
+      const vl=ns.filter(x=>x!==null)
+      let cls=''
+      if(vl.length>1){
+        const bv=r.m==='maior'?Math.max(...vl):Math.min(...vl)
+        const wv=r.m==='maior'?Math.min(...vl):Math.max(...vl)
+        if(parseFloat(v)===bv) cls='best'
+        else if(parseFloat(v)===wv) cls='worst'
+      }
+      const disp=r.tp==='preco'?fp(v):(Number(v).toLocaleString('pt-BR')+(r.suf||''))
+      resumo+=`<div class="cmod-resumo-num ${cls}">${disp}</div><div class="cmod-resumo-sub">${r.l}</div>`
+    })
+    resumo+=`</div>`
+  })
+  G('cmod-resumo').style.gridTemplateColumns=gridCols
+  G('cmod-resumo').innerHTML=resumo
+
   // Body
   let body=''
   GRUPOS.forEach(g=>{
     const temDados=g.c.some(f=>carros.some(d=>{const v=d[f.k];return v!==null&&v!==undefined&&v!==''}))
     if(!temDados) return
+
+    // Calcular quem vence este grupo
+    const ptsGrupo=carros.map(()=>0)
+    g.c.forEach(f=>{
+      if(!(f.tp==='num'||f.tp==='preco')||!f.m) return
+      const ns=carros.map(d=>parseFloat(d[f.k])||null)
+      const vl=ns.filter(v=>v!==null)
+      if(vl.length<2) return
+      const bv=f.m==='maior'?Math.max(...vl):Math.min(...vl)
+      const bi=ns.indexOf(bv)
+      if(bi>=0) ptsGrupo[bi]++
+    })
+    const maxGrupo=Math.max(...ptsGrupo)
+
     body+=`<div class="cmod-grupo-hdr" style="grid-template-columns:${gridCols}">
       <div class="cmod-grupo-lbl">
         <div class="cmod-grupo-num">${g.n}</div>
         <div class="cmod-grupo-nome">${g.nome}</div>
       </div>
-      ${carros.map(()=>'<div class="cmod-grupo-spacer"></div>').join('')}
+      ${carros.map((_,ci)=>`<div class="cmod-grupo-venc">
+        ${ptsGrupo[ci]===maxGrupo&&maxGrupo>0
+          ?`<div class="cmod-venc-badge">✓ vence aqui</div>`
+          :`<div class="cmod-venc-empty"></div>`}
+      </div>`).join('')}
     </div>`
+
     g.c.forEach(f=>{
       const vals=carros.map(d=>d[f.k])
       if(!vals.some(v=>v!==null&&v!==undefined&&v!=='')) return
       let bi=-1,wi=-1
+      const ns=vals.map(v=>parseFloat(v)||null)
       if((f.tp==='num'||f.tp==='preco')&&f.m){
-        const ns=vals.map(v=>parseFloat(v)||null)
         const vl=ns.filter(v=>v!==null)
         if(vl.length>1){
           const bv=f.m==='maior'?Math.max(...vl):Math.min(...vl)
@@ -755,6 +827,11 @@ function openCmp(){
           if(bi===wi)wi=-1
         }
       }
+      // Calcular max para barras
+      const maxVal=Math.max(...ns.filter(v=>v!==null))
+      const minVal=Math.min(...ns.filter(v=>v!==null))
+      const range=maxVal-minVal
+
       body+=`<div class="cmod-row" style="grid-template-columns:${gridCols}">
         <div class="cmod-row-lbl"><span>${f.l}</span></div>`
       vals.forEach((v,i)=>{
@@ -764,7 +841,26 @@ function openCmp(){
           :f.tp==='num'?Number(v).toLocaleString('pt-BR')
           :v
         const cls=i===bi?'best':i===wi?'worst':''
-        body+=`<div class="cmod-val ${cls}">${disp}</div>`
+        // Barra proporcional só para números com diferença
+        const numV=parseFloat(v)||null
+        const mostraBarra=(f.tp==='num'||f.tp==='preco')&&numV!==null&&range>0&&ns.filter(v=>v!==null).length>1
+        let pct=100
+        if(mostraBarra){
+          pct=f.m==='menor'
+            ?(maxVal===0?100:Math.round((minVal/numV)*100))
+            :(maxVal===0?100:Math.round((numV/maxVal)*100))
+          pct=Math.max(15,Math.min(100,pct))
+        }
+        body+=`<div class="cmod-val ${cls}">`
+        if(mostraBarra){
+          body+=`<div class="cmod-val-wrap">
+            <span>${disp}</span>
+            <div class="cmod-barra-wrap"><div class="cmod-barra ${cls}" style="width:${pct}%"></div></div>
+          </div>`
+        } else {
+          body+=disp
+        }
+        body+=`</div>`
       })
       body+=`</div>`
     })
