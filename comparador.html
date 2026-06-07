@@ -5,195 +5,293 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SPCE — Comparador</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f7f9f7;--bg2:#ffffff;--bg3:#f0f4f1;--bg4:#e8efe9;
+  --bg:#f4f7f5;
   --green:#16a34a;--green2:#15803d;--green3:#dcfce7;--green4:#bbf7d0;--greenbright:#22c55e;
-  --text:#0f1f14;--text2:#3d6349;--text3:#7a9e82;
-  --border:#e2ede4;--border2:#c8deca;
-  --red:#dc2626;--amber:#d97706;--blue:#0284c7;
+  --text:#0a1a0f;--text2:#2d5a3a;--text3:#7a9e82;
+  --border:#d4e8d8;
+  --red:#dc2626;--amber:#d97706;
   --fh:'Outfit',sans-serif;--fm:'JetBrains Mono',monospace;
-  --r:10px;--r2:16px;
-  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
-  --shadow2:0 2px 8px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.06);
 }
-body{background:var(--bg);color:var(--text);font-family:var(--fh);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+html,body{width:100%;height:100%;overflow:hidden}
+body{
+  background:var(--bg);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% 0%,rgba(34,197,94,.08) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 100%,rgba(45,212,191,.06) 0%,transparent 60%);
+  font-family:var(--fh);
+  display:flex;flex-direction:column;
+}
 
-/* TOPO */
-.top{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:.65rem 2rem;border-bottom:1px solid var(--border);background:var(--bg2);box-shadow:var(--shadow)}
-.logo{font-family:var(--fh);font-weight:800;font-size:1.1rem;color:var(--green);display:flex;align-items:center;gap:.4rem}
-.logo-dot{width:7px;height:7px;border-radius:50%;background:var(--greenbright);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-.grupo-nav{display:flex;align-items:center;gap:.6rem}
-.gnav-btn{background:none;border:1px solid var(--border2);color:var(--text2);width:30px;height:30px;border-radius:50%;font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
-.gnav-btn:hover:not(:disabled){border-color:var(--green);color:var(--green);background:var(--green3)}
-.gnav-btn:disabled{opacity:.3;cursor:not-allowed}
-.grupo-info{text-align:center}
-.grupo-num{font-family:var(--fm);font-size:.65rem;color:var(--text3);letter-spacing:.06em}
-.grupo-nome{font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--text);letter-spacing:-.02em}
-.top-right{display:flex;align-items:center;gap:.75rem}
-.progresso{display:flex;gap:.25rem}
-.pdot{width:24px;height:3px;border-radius:2px;background:var(--border2);transition:all .3s}
-.pdot.on{background:var(--green)}
-.fechar{background:none;border:1px solid var(--border);color:var(--text3);width:30px;height:30px;border-radius:50%;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.fechar:hover{border-color:var(--red);color:var(--red);background:#fff5f5}
+/* ── SLIDE ENGINE ─────────────────────────────────── */
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  opacity:0;transform:translateX(60px);
+  transition:opacity .4s ease,transform .4s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all}
+.slide.exit{opacity:0;transform:translateX(-60px)}
 
-/* CARROS HEADER */
-.carros-header{flex-shrink:0;display:grid;border-bottom:1px solid var(--border);background:var(--bg2)}
-.carro-col{padding:.75rem 1.25rem;display:flex;align-items:center;gap:.85rem;border-right:1px solid var(--border)}
-.carro-col:last-child{border-right:none}
-.cfoto-wrap{width:80px;height:52px;border-radius:var(--r);overflow:hidden;background:var(--bg3);flex-shrink:0;border:1px solid var(--border)}
-.cfoto-wrap img{width:100%;height:100%;object-fit:cover}
-.cfoto-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.2rem;font-weight:800;color:var(--border2)}
-.cinfo{flex:1;min-width:0}
-.cmarca-tag{font-family:var(--fm);font-size:.62rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.1rem}
-.cmodelo{font-family:var(--fh);font-size:.95rem;font-weight:700;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.02em}
-.cversao{font-size:.72rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cpreco-tag{font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--green);margin-top:.15rem}
-.vplacar{background:var(--green3);border:1px solid var(--green4);border-radius:100px;padding:.18rem .55rem;font-family:var(--fm);font-size:.7rem;font-weight:500;color:var(--green);margin-left:auto;flex-shrink:0}
+/* ── SLIDE CAPA ───────────────────────────────────── */
+.capa{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:2rem;text-align:center;gap:1.5rem;
+}
+.capa-vs{
+  font-family:var(--fh);font-size:1rem;font-weight:700;
+  color:var(--text3);letter-spacing:.3em;text-transform:uppercase;
+}
+.capa-carros{
+  display:flex;align-items:flex-end;justify-content:center;gap:0;width:100%;max-width:900px;
+}
+.capa-carro{flex:1;display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:0 1rem}
+.capa-foto{width:100%;max-width:340px;height:180px;object-fit:contain;filter:drop-shadow(0 8px 24px rgba(0,0,0,.12))}
+.capa-foto-ph{width:280px;height:180px;background:var(--green3);border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:3rem;font-weight:900;color:var(--green2)}
+.capa-marca{font-family:var(--fm);font-size:.7rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase}
+.capa-modelo{font-family:var(--fh);font-size:1.6rem;font-weight:900;color:var(--text);letter-spacing:-.03em;line-height:1}
+.capa-versao{font-size:.85rem;color:var(--text3);font-weight:400}
+.capa-preco{font-family:var(--fh);font-size:1.1rem;font-weight:700;color:var(--green);margin-top:.2rem}
+.vs-divider{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:0 1rem;flex-shrink:0}
+.vs-text{font-family:var(--fh);font-size:2rem;font-weight:900;color:var(--green);letter-spacing:-.04em}
+.capa-titulo{font-family:var(--fh);font-size:1.1rem;font-weight:500;color:var(--text2);max-width:600px;line-height:1.4}
+.capa-hint{font-family:var(--fm);font-size:.7rem;color:var(--text3);display:flex;align-items:center;gap:.5rem}
+.kbd{background:#fff;border:1px solid var(--border);border-radius:5px;padding:.15rem .4rem;font-size:.65rem}
 
-/* CONTEÚDO */
-.content{flex:1;overflow:hidden;position:relative}
-.grupo-slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:1.25rem 2rem;opacity:0;transform:translateX(40px);transition:all .35s cubic-bezier(.4,0,.2,1);pointer-events:none}
-.grupo-slide.active{opacity:1;transform:translateX(0);pointer-events:all}
-.grupo-slide.saindo{opacity:0;transform:translateX(-40px)}
+/* ── SLIDE CRITÉRIO ───────────────────────────────── */
+.criterio-slide{
+  flex:1;display:grid;
+  grid-template-rows:auto 1fr auto;
+}
 
-/* CRITÉRIOS */
-.criterios{display:flex;flex-direction:column;gap:.45rem;flex:1;overflow-y:auto}
-.criterio{display:grid;align-items:center;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:.6rem 1rem;transition:all .3s;animation:slideIn .35s ease both;box-shadow:var(--shadow)}
-@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.criterio:hover{border-color:var(--border2);box-shadow:var(--shadow2)}
-.criterio-label{font-family:var(--fm);font-size:.68rem;color:var(--text3);padding-right:.75rem;letter-spacing:.02em}
-.criterio-val{text-align:center;font-size:.9rem;font-weight:500;color:var(--text);padding:.18rem .45rem;border-radius:var(--r);transition:all .3s}
-.criterio-val.melhor{color:#fff;background:var(--green);font-weight:600}
-.criterio-val.pior{color:var(--red)}
+/* Header com fotos */
+.crit-header{
+  display:flex;align-items:stretch;
+  border-bottom:1px solid var(--border);
+  background:#fff;
+  flex-shrink:0;
+}
+.crit-car{
+  flex:1;display:flex;align-items:center;gap:1rem;
+  padding:.75rem 1.5rem;border-right:1px solid var(--border);
+}
+.crit-car:last-child{border-right:none}
+.crit-car-foto{height:60px;width:110px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 2px 8px rgba(0,0,0,.1))}
+.crit-car-foto-ph{height:60px;width:110px;background:var(--green3);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.4rem;font-weight:900;color:var(--green2);flex-shrink:0}
+.crit-car-info{flex:1;min-width:0}
+.crit-car-marca{font-family:var(--fm);font-size:.62rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+.crit-car-nome{font-family:var(--fh);font-size:1rem;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1.1}
+.crit-car-ver{font-size:.75rem;color:var(--text2)}
+.crit-car-pts{flex-shrink:0;background:var(--green3);border:1px solid var(--green4);border-radius:100px;padding:.2rem .6rem;font-family:var(--fm);font-size:.68rem;font-weight:500;color:var(--green)}
 
-/* SLIDE PLACAR FINAL */
-.placar-final{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem}
-.placar-titulo{font-family:var(--fm);font-size:.75rem;font-weight:500;color:var(--text3);letter-spacing:.1em;text-transform:uppercase}
-.placar-carros{display:flex;align-items:flex-end;gap:2rem;justify-content:center}
-.placar-carro{display:flex;flex-direction:column;align-items:center;gap:.6rem;transition:all .4s}
-.placar-foto{border-radius:var(--r2);overflow:hidden;background:var(--bg3);border:2px solid var(--border)}
-.placar-foto img{width:100%;height:100%;object-fit:cover;display:block}
-.placar-foto-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:800;color:var(--border2)}
-.placar-nome{font-family:var(--fh);font-weight:700;text-align:center;line-height:1.1;letter-spacing:-.02em}
-.placar-pts{font-family:var(--fm);font-size:2.2rem;font-weight:500;color:var(--green);line-height:1}
-.placar-pts-label{font-family:var(--fm);font-size:.65rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
-.placar-carro.vencedor .placar-foto{border-color:var(--green);box-shadow:0 0 0 4px var(--green3)}
+/* Corpo principal */
+.crit-body{
+  display:flex;align-items:stretch;overflow:hidden;
+}
+
+/* Painel lateral esquerdo — critério */
+.crit-painel{
+  width:200px;flex-shrink:0;
+  background:linear-gradient(160deg,var(--green) 0%,var(--green2) 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:1.5rem 1rem;text-align:center;gap:.75rem;
+  border-right:none;
+}
+.crit-painel-num{
+  font-family:var(--fm);font-size:.65rem;font-weight:700;
+  color:rgba(255,255,255,.6);letter-spacing:.1em;text-transform:uppercase;
+}
+.crit-painel-icone{font-size:2.5rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,.2))}
+.crit-painel-nome{
+  font-family:var(--fh);font-size:1rem;font-weight:800;
+  color:#fff;letter-spacing:-.02em;line-height:1.2;text-transform:uppercase;
+}
+.crit-painel-desc{font-size:.72rem;color:rgba(255,255,255,.7);line-height:1.4}
+
+/* Dados dos carros */
+.crit-dados{
+  flex:1;display:grid;
+  border-right:1px solid var(--border);
+}
+.crit-dados:last-child{border-right:none}
+.crit-dado-col{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:1rem 1.5rem;gap:.5rem;
+  border-right:1px solid var(--border);
+  overflow-y:auto;
+}
+.crit-dado-col:last-child{border-right:none}
+.crit-dado-col.vencedor{background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(34,197,94,.02))}
+
+/* Itens de dado */
+.dado-item{width:100%;text-align:center;padding:.3rem 0}
+.dado-val{
+  font-family:var(--fh);font-size:3.5rem;font-weight:900;
+  color:var(--text);letter-spacing:-.04em;line-height:1;
+  transition:color .3s;
+}
+.dado-val.destaque{color:var(--green)}
+.dado-val.pior{color:var(--red)}
+.dado-val.txt{font-size:1.4rem;font-weight:700;letter-spacing:-.02em}
+.dado-val.pequeno{font-size:2rem}
+.dado-unid{
+  font-family:var(--fm);font-size:.72rem;font-weight:500;
+  color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-top:.1rem;
+}
+.dado-label{font-size:.7rem;color:var(--text3);margin-top:.15rem}
+.dado-sep{width:40px;height:1px;background:var(--border);margin:.4rem auto}
+
+/* Badge vencedor */
+.badge-venc{
+  display:inline-flex;align-items:center;gap:.3rem;
+  background:var(--green);color:#fff;
+  font-family:var(--fm);font-size:.62rem;font-weight:600;
+  padding:.2rem .55rem;border-radius:100px;margin-top:.5rem;
+  letter-spacing:.04em;
+}
+
+/* ── SLIDE PLACAR FINAL ───────────────────────────── */
+.placar-slide{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:2rem;gap:2rem;
+}
+.placar-titulo{font-family:var(--fm);font-size:.75rem;color:var(--text3);letter-spacing:.12em;text-transform:uppercase}
+.placar-carros{display:flex;align-items:flex-end;gap:3rem;justify-content:center}
+.placar-carro{display:flex;flex-direction:column;align-items:center;gap:.75rem;transition:all .5s}
+.placar-foto-wrap{border-radius:16px;overflow:hidden;border:2px solid var(--border);background:#fff}
+.placar-foto-wrap img{display:block;width:100%;height:100%;object-fit:contain}
+.placar-foto-ph{display:flex;align-items:center;justify-content:center;background:var(--green3);font-family:var(--fh);font-weight:900;color:var(--green2)}
+.placar-carro.vencedor .placar-foto-wrap{border-color:var(--green);box-shadow:0 0 0 4px var(--green3)}
+.placar-nome{font-family:var(--fh);font-weight:800;text-align:center;letter-spacing:-.02em;line-height:1.1}
 .placar-carro.vencedor .placar-nome{color:var(--green)}
-.coroa{font-size:1.4rem;animation:float 2s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.empate-tag{background:var(--green3);border:1px solid var(--green4);color:var(--green2);font-family:var(--fm);font-size:.72rem;font-weight:500;padding:.35rem .9rem;border-radius:100px;letter-spacing:.04em}
+.placar-pts-num{font-family:var(--fh);font-size:3rem;font-weight:900;color:var(--green);letter-spacing:-.04em;line-height:1}
+.placar-pts-label{font-family:var(--fm);font-size:.65rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+.coroa{font-size:1.8rem;animation:float 2s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.empate-tag{background:var(--green3);border:1px solid var(--green4);color:var(--green2);font-family:var(--fm);font-size:.72rem;padding:.35rem .9rem;border-radius:100px}
 
-/* BARRA INFERIOR */
-.bottom{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:.65rem 2rem;border-top:1px solid var(--border);background:var(--bg2)}
-.bnav-btn{display:flex;align-items:center;gap:.4rem;background:none;border:1px solid var(--border2);color:var(--text2);padding:.42rem 1rem;border-radius:100px;font-size:.78rem;font-family:var(--fh);cursor:pointer;transition:all .2s}
-.bnav-btn:hover:not(:disabled){border-color:var(--green);color:var(--green);background:var(--green3)}
-.bnav-btn:disabled{opacity:.3;cursor:not-allowed}
-.bnav-btn.proximo{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
-.bnav-btn.proximo:hover{background:var(--green2)}
-.grupo-dots{display:flex;gap:.35rem}
-.gdot{width:6px;height:6px;border-radius:50%;background:var(--border2);border:none;cursor:pointer;transition:all .2s;padding:0}
-.gdot.on{background:var(--green);width:16px;border-radius:3px}
+/* ── BARRA DE NAVEGAÇÃO ───────────────────────────── */
+.nav-bar{
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.6rem 1.5rem;
+  background:#fff;border-top:1px solid var(--border);
+  z-index:10;
+}
+.nav-logo{font-family:var(--fh);font-weight:800;font-size:.95rem;color:var(--green);display:flex;align-items:center;gap:.3rem}
+.nav-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--greenbright);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.nav-centro{display:flex;align-items:center;gap:.75rem}
+.nav-btn{
+  background:none;border:1px solid var(--border);color:var(--text2);
+  width:32px;height:32px;border-radius:50%;
+  font-size:1.1rem;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;
+}
+.nav-btn:hover:not(:disabled){border-color:var(--green);color:var(--green);background:var(--green3)}
+.nav-btn:disabled{opacity:.25;cursor:not-allowed}
+.nav-dots{display:flex;gap:.3rem}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--border);border:none;cursor:pointer;padding:0;transition:all .2s}
+.nav-dot.on{background:var(--green);width:18px;border-radius:3px}
+.nav-grupo-info{text-align:center}
+.nav-grupo-n{font-family:var(--fm);font-size:.6rem;color:var(--text3);letter-spacing:.06em}
+.nav-grupo-nome{font-family:var(--fh);font-size:.85rem;font-weight:700;color:var(--text);letter-spacing:-.02em}
+.nav-right{display:flex;align-items:center;gap:.75rem}
+.nav-prox{
+  background:var(--green);border:none;color:#fff;
+  font-family:var(--fh);font-weight:600;font-size:.78rem;
+  padding:.4rem 1rem;border-radius:100px;cursor:pointer;
+  transition:all .2s;white-space:nowrap;
+}
+.nav-prox:hover{background:var(--green2)}
+.nav-prox:disabled{background:var(--border);color:var(--text3);cursor:not-allowed}
+.nav-fechar{
+  background:none;border:1px solid var(--border);color:var(--text3);
+  width:30px;height:30px;border-radius:50%;font-size:.8rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.nav-fechar:hover{border-color:var(--red);color:var(--red)}
 
-/* KEYBOARD HINT */
-.kbd-hint{font-family:var(--fm);font-size:.62rem;color:var(--text3);display:flex;align-items:center;gap:.3rem}
-.kbd{background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:.1rem .35rem;font-size:.6rem}
+/* ── WRAPPER DE SLIDES ────────────────────────────── */
+.slides-wrap{flex:1;position:relative;overflow:hidden}
 </style>
 </head>
 <body>
 
-<!-- TOPO -->
-<div class="top">
-  <div class="logo">
-    <div class="logo-dot"></div>
-    SPCE
-  </div>
-  <div class="grupo-nav">
-    <button class="gnav-btn" id="btn-prev" onclick="navGrupo(-1)" disabled>‹</button>
-    <div class="grupo-info">
-      <div class="grupo-num" id="gnav-num">GRUPO 1 DE 8</div>
-      <div class="grupo-nome" id="gnav-nome">Fabricante</div>
+<div class="slides-wrap" id="slides-wrap"></div>
+
+<div class="nav-bar">
+  <div class="nav-logo"><div class="nav-logo-dot"></div>SPCE</div>
+  <div class="nav-centro">
+    <button class="nav-btn" id="btn-prev" onclick="navGrupo(-1)" disabled>‹</button>
+    <div>
+      <div class="nav-dots" id="nav-dots"></div>
     </div>
-    <button class="gnav-btn" id="btn-next" onclick="navGrupo(1)">›</button>
+    <button class="nav-btn" id="btn-next" onclick="navGrupo(1)">›</button>
   </div>
-  <div class="top-right">
-    <div class="kbd-hint"><span class="kbd">←</span><span class="kbd">→</span> navegar</div>
-    <div class="progresso" id="progresso"></div>
-    <button class="fechar" onclick="window.close()" title="Fechar">✕</button>
+  <div class="nav-right">
+    <div class="nav-grupo-info">
+      <div class="nav-grupo-n" id="nav-n">SLIDE 1</div>
+      <div class="nav-grupo-nome" id="nav-nome">Introdução</div>
+    </div>
+    <button class="nav-prox" id="btn-prox" onclick="navGrupo(1)">Próximo ›</button>
+    <button class="nav-fechar" onclick="window.close()" title="Fechar">✕</button>
   </div>
-</div>
-
-<!-- HEADER CARROS -->
-<div class="carros-header" id="carros-header"></div>
-
-<!-- CONTEÚDO -->
-<div class="content" id="content"></div>
-
-<!-- BARRA INFERIOR -->
-<div class="bottom">
-  <button class="bnav-btn" id="bbtn-prev" onclick="navGrupo(-1)" disabled>‹ Anterior</button>
-  <div class="grupo-dots" id="grupo-dots"></div>
-  <button class="bnav-btn proximo" id="bbtn-next" onclick="navGrupo(1)">Próximo ›</button>
 </div>
 
 <script>
-let CARROS=[], grupoAtual=0, pontos=[]
+let CARROS=[], atual=0, pontos=[]
 
+const ICONES=['🏭','⚡','🛣️','🔌','📐','🛡️','🔒','💰']
 const GRUPOS=[
-  {n:'1',nome:'Fabricante',criterios:[
-    {l:'Nota Reclame Aqui',k:'reclame_aqui_nota',tp:'num',m:'maior',suf:'/10'},
+  {n:'1',nome:'Fabricante',icone:'🏭',desc:'Origem e reputação da marca',criterios:[
+    {l:'Nota Reclame Aqui',k:'reclame_aqui_nota',tp:'num',m:'maior',unid:'/10'},
     {l:'Fabricado em',k:'fabricado_em',tp:'txt'},
-    {l:'Status',k:'status_venda',tp:'txt'},
     {l:'Isenção PcD',k:'pcd_isencao',tp:'bool'},
   ]},
-  {n:'2',nome:'Bateria e Motor',criterios:[
-    {l:'Bateria',k:'bateria_kwh',tp:'num',m:'maior',suf:' kWh'},
-    {l:'Potência elétrica',k:'potencia_cv',tp:'num',m:'maior',suf:' cv'},
-    {l:'Potência combinada',k:'potencia_combinada_cv',tp:'num',m:'maior',suf:' cv'},
-    {l:'Torque',k:'torque_kgfm',tp:'num',m:'maior',suf:' kgf.m'},
-    {l:'0–100 km/h',k:'zero_100_s',tp:'num',m:'menor',suf:'s'},
-    {l:'Vel. máxima',k:'vel_max_kmh',tp:'num',m:'maior',suf:' km/h'},
+  {n:'2',nome:'Bateria e Motor',icone:'⚡',desc:'Capacidade e performance',criterios:[
+    {l:'Bateria',k:'bateria_kwh',tp:'num',m:'maior',unid:'kWh'},
+    {l:'Potência',k:'potencia_cv',tp:'num',m:'maior',unid:'cv'},
+    {l:'Torque',k:'torque_kgfm',tp:'num',m:'maior',unid:'kgf.m'},
+    {l:'0–100 km/h',k:'zero_100_s',tp:'num',m:'menor',unid:'seg'},
+    {l:'Vel. máxima',k:'vel_max_kmh',tp:'num',m:'maior',unid:'km/h'},
     {l:'Tração',k:'tracao',tp:'txt'},
   ]},
-  {n:'3',nome:'Autonomia INMETRO',criterios:[
-    {l:'Autonomia elétrica',k:'autonomia_km',tp:'num',m:'maior',suf:' km'},
-    {l:'Consumo',k:'consumo_kmkwh',tp:'num',m:'maior',suf:' km/kWh'},
-    {l:'Consumo cidade (HEV)',k:'autonomia_hev_cidade',tp:'num',m:'maior',suf:' km/l'},
-    {l:'Consumo estrada (HEV)',k:'autonomia_hev_estrada',tp:'num',m:'maior',suf:' km/l'},
-    {l:'Eficiência',k:'eficiencia_mj_km',tp:'num',m:'menor',suf:' MJ/km'},
+  {n:'3',nome:'Autonomia',icone:'🛣️',desc:'Dados oficiais INMETRO',criterios:[
+    {l:'Autonomia elétrica',k:'autonomia_km',tp:'num',m:'maior',unid:'km'},
+    {l:'Consumo',k:'consumo_kmkwh',tp:'num',m:'maior',unid:'km/kWh'},
+    {l:'Consumo cidade',k:'autonomia_hev_cidade',tp:'num',m:'maior',unid:'km/l'},
   ]},
-  {n:'4',nome:'Recarga',criterios:[
-    {l:'Recarga AC',k:'recarga_ac_kw',tp:'num',m:'maior',suf:' kW'},
-    {l:'Tempo AC',k:'recarga_ac_tempo_h',tp:'num',m:'menor',suf:'h'},
-    {l:'Recarga DC',k:'recarga_dc_kw',tp:'num',m:'maior',suf:' kW'},
-    {l:'DC 30→80%',k:'recarga_dc_tempo_min',tp:'num',m:'menor',suf:' min'},
+  {n:'4',nome:'Recarga',icone:'🔌',desc:'Velocidade de carregamento',criterios:[
+    {l:'Recarga AC',k:'recarga_ac_kw',tp:'num',m:'maior',unid:'kW'},
+    {l:'Recarga DC',k:'recarga_dc_kw',tp:'num',m:'maior',unid:'kW'},
+    {l:'DC 30→80%',k:'recarga_dc_tempo_min',tp:'num',m:'menor',unid:'min'},
     {l:'Protocolo DC',k:'protocolo_dc',tp:'txt'},
   ]},
-  {n:'5',nome:'Dimensões',criterios:[
-    {l:'Comprimento',k:'comprimento_mm_v',tp:'num',suf:' mm'},
-    {l:'Largura',k:'largura_mm_v',tp:'num',suf:' mm'},
-    {l:'Altura',k:'altura_mm_v',tp:'num',suf:' mm'},
-    {l:'Porta-malas',k:'porta_malas_l',tp:'num',m:'maior',suf:' L'},
-    {l:'Frunk',k:'frunk_l',tp:'num',m:'maior',suf:' L'},
-    {l:'Peso',k:'peso_kg',tp:'num',m:'menor',suf:' kg'},
-    {l:'Passageiros',k:'passageiros',tp:'num'},
-    {l:'Suspensão dianteira',k:'suspensao_diant',tp:'txt'},
-    {l:'Suspensão traseira',k:'suspensao_tras',tp:'txt'},
+  {n:'5',nome:'Dimensões',icone:'📐',desc:'Espaço e conforto',criterios:[
+    {l:'Comprimento',k:'comprimento_mm_v',tp:'num',unid:'mm'},
+    {l:'Porta-malas',k:'porta_malas_l',tp:'num',m:'maior',unid:'litros'},
+    {l:'Frunk',k:'frunk_l',tp:'num',m:'maior',unid:'litros'},
+    {l:'Peso',k:'peso_kg',tp:'num',m:'menor',unid:'kg'},
   ]},
-  {n:'6',nome:'Segurança',criterios:[
-    {l:'Airbags',k:'airbags_qtd',tp:'num',m:'maior',suf:' airbags'},
+  {n:'6',nome:'Segurança',icone:'🛡️',desc:'Proteção e assistência',criterios:[
+    {l:'Airbags',k:'airbags_qtd',tp:'num',m:'maior',unid:'airbags'},
     {l:'Nível ADAS',k:'adas_nivel',tp:'txt'},
     {l:'HUD',k:'hud',tp:'txt'},
   ]},
-  {n:'7',nome:'Garantias',criterios:[
-    {l:'Garantia veículo',k:'garantia_veiculo_anos',tp:'num',m:'maior',suf:' anos'},
-    {l:'Garantia bateria',k:'garantia_bateria_anos',tp:'num',m:'maior',suf:' anos'},
+  {n:'7',nome:'Garantias',icone:'🔒',desc:'Proteção do investimento',criterios:[
+    {l:'Garantia veículo',k:'garantia_veiculo_anos',tp:'num',m:'maior',unid:'anos'},
+    {l:'Garantia bateria',k:'garantia_bateria_anos',tp:'num',m:'maior',unid:'anos'},
   ]},
-  {n:'$',nome:'Preço',criterios:[
-    {l:'Preço 0km',k:'preco_atual',tp:'preco',m:'menor'},
+  {n:'$',nome:'Preço',icone:'💰',desc:'Valor de referência 0km',criterios:[
+    {l:'Preço 0km',k:'preco_atual',tp:'preco',m:'menor',unid:'R$'},
   ]},
 ]
 
@@ -203,98 +301,150 @@ function gi(m,mo){return((m||'')[0]+((mo||'')[0]||'')).toUpperCase()}
 function initComparador(carros){
   CARROS=carros
   pontos=carros.map(()=>0)
-  renderHeader()
-  renderSlides()
-  renderDots()
-  renderProgresso()
+  buildSlides()
+  buildDots()
   irPara(0)
 }
 
-function renderHeader(){
-  const h=document.getElementById('carros-header')
-  h.style.gridTemplateColumns=`repeat(${CARROS.length},1fr)`
-  h.innerHTML=CARROS.map((d,i)=>`
-    <div class="carro-col">
-      <div class="cfoto-wrap">
-        ${d.foto_principal
-          ?`<img src="${d.foto_principal}" alt="${d.marca} ${d.modelo}">`
-          :`<div class="cfoto-ph">${gi(d.marca,d.modelo)}</div>`}
-      </div>
-      <div class="cinfo">
-        <div class="cmarca-tag">${d.marca||''}</div>
-        <div class="cmodelo">${d.modelo||''}</div>
-        <div class="cversao">${d.versao||''}</div>
-        ${d.preco_atual?`<div class="cpreco-tag">${fp(d.preco_atual)}</div>`:''}
-      </div>
-      <div class="vplacar" id="placar-${i}">0 pts</div>
-    </div>
-  `).join('')
-}
+function buildSlides(){
+  const wrap=document.getElementById('slides-wrap')
+  wrap.innerHTML=''
 
-function renderSlides(){
-  const content=document.getElementById('content')
-  content.innerHTML=''
+  // Slide 0 — Capa
+  const capa=document.createElement('div')
+  capa.className='slide'
+  capa.id='slide-0'
+  capa.innerHTML=`
+    <div class="capa">
+      <div class="capa-vs">Comparativo SPCE</div>
+      <div class="capa-carros">
+        ${CARROS.map((d,i)=>[
+          i===1?`<div class="vs-divider"><div class="vs-text">VS</div></div>`:''  ,
+          `<div class="capa-carro">
+            ${d.foto_principal
+              ?`<img class="capa-foto" src="${d.foto_principal}" alt="${d.marca}">`
+              :`<div class="capa-foto-ph">${gi(d.marca,d.modelo)}</div>`}
+            <div class="capa-marca">${d.marca}</div>
+            <div class="capa-modelo">${d.modelo}</div>
+            <div class="capa-versao">${d.versao||''}</div>
+            ${d.preco_atual?`<div class="capa-preco">${fp(d.preco_atual)}</div>`:''}
+          </div>`
+        ].join('')).join('')}
+        ${CARROS.length===3?'':''}
+      </div>
+      <div class="capa-titulo">Use as setas para navegar pelos critérios de comparação</div>
+      <div class="capa-hint">
+        <span class="kbd">←</span><span class="kbd">→</span> navegar &nbsp;·&nbsp; <span class="kbd">ESC</span> fechar
+      </div>
+    </div>
+  `
+  wrap.appendChild(capa)
+
+  // Slides de grupos
   GRUPOS.forEach((g,gi)=>{
     const div=document.createElement('div')
-    div.className='grupo-slide'
-    div.id=`slide-${gi}`
-    const crits=g.criterios.filter(f=>CARROS.some(d=>{
-      const v=d[f.k];return v!==null&&v!==undefined&&v!==''
-    }))
-    const ncols=CARROS.length
-    div.innerHTML=`<div class="criterios" id="crits-${gi}">
-      ${crits.map((f,fi)=>{
-        const vals=CARROS.map(d=>d[f.k])
-        let bi=-1,wi=-1
-        if((f.tp==='num'||f.tp==='preco')&&f.m){
-          const ns=vals.map(v=>parseFloat(v)||null)
-          const vl=ns.filter(v=>v!==null)
-          if(vl.length>1){
-            const bv=f.m==='maior'?Math.max(...vl):Math.min(...vl)
-            const wv=f.m==='maior'?Math.min(...vl):Math.max(...vl)
-            bi=ns.indexOf(bv);wi=ns.indexOf(wv)
-            if(bi===wi)wi=-1
-          }
-        }
-        const colunas=vals.map((v,i)=>{
-          const disp=v===null||v===undefined||v===''?'—'
-            :f.tp==='preco'?fp(v)
-            :f.tp==='bool'?(v?'✓ Sim':'Não')
-            :f.tp==='num'?(Number(v).toLocaleString('pt-BR')+(f.suf||''))
-            :v+(f.suf||'')
-          const cls=i===bi?'melhor':i===wi?'pior':''
-          return`<div class="criterio-val ${cls}">${disp}</div>`
-        }).join('')
-        return`<div class="criterio" style="grid-template-columns:170px ${Array(ncols).fill('1fr').join(' ')};animation-delay:${fi*.05}s">
-          <div class="criterio-label">${f.l}</div>${colunas}
-        </div>`
-      }).join('')}
+    div.className='slide criterio-slide'
+    div.id=`slide-${gi+1}`
+
+    // Calcular vencedor
+    const vencedores=CARROS.map(()=>false)
+    const temDados=CARROS.map(d=>{
+      const v=d[g.criterios[0]?.k]
+      return v!==null&&v!==undefined&&v!==''
+    })
+
+    // Header
+    const headerHTML=`<div class="crit-header">
+      ${CARROS.map((d,i)=>`
+        <div class="crit-car">
+          ${d.foto_principal
+            ?`<img class="crit-car-foto" src="${d.foto_principal}" alt="${d.marca}">`
+            :`<div class="crit-car-foto-ph">${gi(d.marca,d.modelo)}</div>`}
+          <div class="crit-car-info">
+            <div class="crit-car-marca">${d.marca}</div>
+            <div class="crit-car-nome">${d.modelo}</div>
+            <div class="crit-car-ver">${d.versao||''}</div>
+          </div>
+          <div class="crit-car-pts" id="g${gi}-pts-${i}">0 pts</div>
+        </div>
+      `).join('')}
     </div>`
-    content.appendChild(div)
+
+    // Calcular melhor/pior por critério
+    const critRows=g.criterios.map(f=>{
+      const vals=CARROS.map(d=>d[f.k])
+      const temAlgum=vals.some(v=>v!==null&&v!==undefined&&v!=='')
+      if(!temAlgum) return null
+      let bi=-1,wi=-1
+      if((f.tp==='num'||f.tp==='preco')&&f.m){
+        const ns=vals.map(v=>parseFloat(v)||null)
+        const vl=ns.filter(v=>v!==null)
+        if(vl.length>1){
+          const bv=f.m==='maior'?Math.max(...vl):Math.min(...vl)
+          const wv=f.m==='maior'?Math.min(...vl):Math.max(...vl)
+          bi=ns.indexOf(bv);wi=ns.indexOf(wv)
+          if(bi===wi)wi=-1
+        }
+      }
+      return {f,vals,bi,wi}
+    }).filter(Boolean)
+
+    // Corpo
+    const dadosHTML=CARROS.map((d,ci)=>{
+      // Contar quantos critérios este carro vence neste grupo
+      let vence=0
+      critRows.forEach(({bi})=>{if(bi===ci)vence++})
+
+      const rows=critRows.map(({f,vals,bi,wi})=>{
+        const v=vals[ci]
+        const disp=v===null||v===undefined||v===''?null
+          :f.tp==='preco'?fp(v)
+          :f.tp==='bool'?(v?'✓ Sim':'Não')
+          :f.tp==='num'?Number(v).toLocaleString('pt-BR')
+          :v
+        if(!disp) return ''
+        const cls=ci===bi?'destaque':ci===wi?'pior':''
+        const isGrande=f.tp==='num'||f.tp==='preco'
+        const isTxt=f.tp==='txt'||f.tp==='bool'
+        // Tamanho da fonte baseado no número de dígitos
+        const numStr=disp.replace(/[^0-9]/g,'')
+        const tamFonte=numStr.length>5?'pequeno':''
+        return `<div class="dado-item">
+          <div class="dado-val ${cls} ${isTxt?'txt':''} ${tamFonte}">${disp}</div>
+          ${f.unid&&!isTxt?`<div class="dado-unid">${f.unid}</div>`:''}
+          <div class="dado-label">${f.l}</div>
+        </div><div class="dado-sep"></div>`
+      }).join('')
+
+      return`<div class="crit-dado-col${vence>0?' vencedor':''}" id="g${gi}-col-${ci}">
+        ${rows}
+        ${vence>0?`<div class="badge-venc">✓ melhor neste critério</div>`:''}
+      </div>`
+    }).join('')
+
+    div.innerHTML=`
+      ${headerHTML}
+      <div class="crit-body">
+        <div class="crit-painel">
+          <div class="crit-painel-num">CRITÉRIO ${g.n}</div>
+          <div class="crit-painel-icone">${g.icone}</div>
+          <div class="crit-painel-nome">${g.nome}</div>
+          <div class="crit-painel-desc">${g.desc}</div>
+        </div>
+        <div style="flex:1;display:grid;grid-template-columns:repeat(${CARROS.length},1fr)">
+          ${dadosHTML}
+        </div>
+      </div>
+    `
+    wrap.appendChild(div)
   })
 
   // Slide placar final
-  const pDiv=document.createElement('div')
-  pDiv.className='grupo-slide'
-  pDiv.id=`slide-${GRUPOS.length}`
-  pDiv.innerHTML=`<div class="placar-final" id="placar-final"></div>`
-  content.appendChild(pDiv)
-}
-
-function renderDots(){
-  const total=GRUPOS.length+1
-  document.getElementById('grupo-dots').innerHTML=
-    Array.from({length:total},(_,i)=>
-      `<button class="gdot${i===0?' on':''}" onclick="irPara(${i})"></button>`
-    ).join('')
-}
-
-function renderProgresso(){
-  const total=GRUPOS.length+1
-  document.getElementById('progresso').innerHTML=
-    Array.from({length:total},(_,i)=>
-      `<div class="pdot${i===0?' on':''}" id="pd-${i}"></div>`
-    ).join('')
+  const placar=document.createElement('div')
+  placar.className='slide'
+  placar.id=`slide-${GRUPOS.length+1}`
+  placar.innerHTML=`<div class="placar-slide" id="placar-final"></div>`
+  wrap.appendChild(placar)
 }
 
 function calcularPontos(){
@@ -310,9 +460,12 @@ function calcularPontos(){
       if(bi>=0) pontos[bi]++
     })
   })
-  CARROS.forEach((_,i)=>{
-    const el=document.getElementById(`placar-${i}`)
-    if(el) el.textContent=`${pontos[i]} pts`
+  // Atualizar placares no header de cada slide
+  GRUPOS.forEach((g,gi)=>{
+    CARROS.forEach((_,ci)=>{
+      const el=document.getElementById(`g${gi}-pts-${ci}`)
+      if(el) el.textContent=`${pontos[ci]} pts`
+    })
   })
 }
 
@@ -323,52 +476,69 @@ function renderPlacarFinal(){
   const pf=document.getElementById('placar-final')
   if(!pf) return
   pf.innerHTML=`
-    <div class="placar-titulo">Resultado Final</div>
+    <div class="placar-titulo">🏁 Resultado Final</div>
     ${empate?`<div class="empate-tag">🤝 Empate técnico</div>`:''}
     <div class="placar-carros">
       ${CARROS.map((d,i)=>{
-        const isVencedor=!empate&&vencedores.includes(i)
-        const larg=isVencedor?180:150
-        const alt=isVencedor?108:90
-        return`<div class="placar-carro${isVencedor?' vencedor':''}">
-          ${isVencedor?'<div class="coroa">👑</div>':'<div style="height:28px"></div>'}
-          <div class="placar-foto" style="width:${larg}px;height:${alt}px">
+        const isVenc=!empate&&vencedores.includes(i)
+        const larg=isVenc?220:170
+        const alt=isVenc?130:100
+        return`<div class="placar-carro${isVenc?' vencedor':''}">
+          ${isVenc?'<div class="coroa">👑</div>':'<div style="height:30px"></div>'}
+          <div class="placar-foto-wrap" style="width:${larg}px;height:${alt}px">
             ${d.foto_principal
-              ?`<img src="${d.foto_principal}" alt="${d.marca}">`
-              :`<div class="placar-foto-ph" style="font-size:${isVencedor?'1.8rem':'1.4rem'}">${gi(d.marca,d.modelo)}</div>`}
+              ?`<img src="${d.foto_principal}" style="width:100%;height:100%;object-fit:contain">`
+              :`<div class="placar-foto-ph" style="width:${larg}px;height:${alt}px;font-size:${isVenc?'2.5rem':'2rem'}">${gi(d.marca,d.modelo)}</div>`}
           </div>
-          <div class="placar-nome" style="font-size:${isVencedor?'.9rem':'.78rem'};max-width:${larg}px">
-            ${d.marca}<br>${d.modelo}
+          <div class="placar-nome" style="font-size:${isVenc?'1rem':'.85rem'};max-width:${larg}px">
+            ${d.marca} ${d.modelo}<br><span style="font-weight:400;color:var(--text3);font-size:.8em">${d.versao||''}</span>
           </div>
-          <div class="placar-pts">${pontos[i]}</div>
-          <div class="placar-pts-label">critérios</div>
+          <div class="placar-pts-num">${pontos[i]}</div>
+          <div class="placar-pts-label">critérios vencidos</div>
         </div>`
       }).join('')}
     </div>
   `
 }
 
-function irPara(idx){
-  const total=GRUPOS.length+1
-  if(idx<0||idx>=total) return
-  if(idx===GRUPOS.length){calcularPontos();renderPlacarFinal()}
-  const anterior=document.querySelector('.grupo-slide.active')
-  if(anterior){anterior.classList.remove('active');anterior.classList.add('saindo');setTimeout(()=>anterior.classList.remove('saindo'),350)}
-  setTimeout(()=>{const novo=document.getElementById(`slide-${idx}`);if(novo)novo.classList.add('active')},50)
-  grupoAtual=idx
-  const isPlaycar=idx===GRUPOS.length
-  document.getElementById('gnav-num').textContent=isPlaycar?'RESULTADO FINAL':`GRUPO ${idx+1} DE ${GRUPOS.length}`
-  document.getElementById('gnav-nome').textContent=isPlaycar?'🏆 Placar Final':GRUPOS[idx].nome
-  document.getElementById('btn-prev').disabled=idx===0
-  document.getElementById('btn-next').disabled=idx===total-1
-  document.getElementById('bbtn-prev').disabled=idx===0
-  document.getElementById('bbtn-next').disabled=idx===total-1
-  document.getElementById('bbtn-next').textContent=idx===total-2?'🏆 Ver Placar ›':'Próximo ›'
-  document.querySelectorAll('.gdot').forEach((d,i)=>d.classList.toggle('on',i===idx))
-  document.querySelectorAll('.pdot').forEach((d,i)=>d.classList.toggle('on',i===idx))
+function buildDots(){
+  const total=GRUPOS.length+2 // capa + grupos + placar
+  document.getElementById('nav-dots').innerHTML=
+    Array.from({length:total},(_,i)=>
+      `<button class="nav-dot${i===0?' on':''}" onclick="irPara(${i})"></button>`
+    ).join('')
 }
 
-function navGrupo(dir){irPara(grupoAtual+dir)}
+function irPara(idx){
+  const total=GRUPOS.length+2
+  if(idx<0||idx>=total) return
+
+  if(idx===GRUPOS.length+1){calcularPontos();renderPlacarFinal()}
+
+  const ant=document.querySelector('.slide.active')
+  if(ant){ant.classList.remove('active');ant.classList.add('exit');setTimeout(()=>ant.classList.remove('exit'),400)}
+  setTimeout(()=>{
+    const novo=document.getElementById(`slide-${idx}`)
+    if(novo) novo.classList.add('active')
+  },50)
+
+  atual=idx
+  const isCapa=idx===0
+  const isPlacar=idx===GRUPOS.length+1
+  document.getElementById('nav-n').textContent=
+    isCapa?'INTRODUÇÃO':isPlacar?'RESULTADO':
+    `GRUPO ${GRUPOS[idx-1].n} DE ${GRUPOS.length}`
+  document.getElementById('nav-nome').textContent=
+    isCapa?'Comparativo':isPlacar?'🏆 Placar Final':GRUPOS[idx-1].nome
+  document.getElementById('btn-prev').disabled=idx===0
+  document.getElementById('btn-next').disabled=idx===total-1
+  document.getElementById('btn-prox').disabled=idx===total-1
+  document.getElementById('btn-prox').textContent=
+    idx===total-2?'🏆 Ver Placar ›':'Próximo ›'
+  document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('on',i===idx))
+}
+
+function navGrupo(dir){irPara(atual+dir)}
 
 document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight'||e.key==='ArrowDown') navGrupo(1)
@@ -376,26 +546,17 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape') window.close()
 })
 
-// ── DADOS DEMO ────────────────────────────────────────────────
+// ── DADOS ─────────────────────────────────────────
 const DEMO=[
-  {marca:'BYD',modelo:'Dolphin',versao:'SE',foto_principal:null,preco_atual:159990,reclame_aqui_nota:7.2,fabricado_em:'China',status_venda:'Ativo',pcd_isencao:true,bateria_kwh:44.9,potencia_cv:95,torque_kgfm:18.35,zero_100_s:10.9,vel_max_kmh:150,autonomia_km:291,consumo_kmkwh:6.7,eficiencia_mj_km:0.42,recarga_ac_kw:7.5,recarga_ac_tempo_h:7,recarga_dc_kw:60,recarga_dc_tempo_min:30,protocolo_dc:'CCS2',comprimento_mm_v:4290,largura_mm_v:1770,altura_mm_v:1570,porta_malas_l:345,peso_kg:1490,passageiros:5,airbags_qtd:6,adas_nivel:'L2',hud:'Não',garantia_veiculo_anos:6,garantia_bateria_anos:8,tracao:'FWD'},
-  {marca:'BYD',modelo:'Yuan Plus',versao:'EV',foto_principal:null,preco_atual:189990,reclame_aqui_nota:7.2,fabricado_em:'China',status_venda:'Ativo',pcd_isencao:true,bateria_kwh:60.5,potencia_cv:204,torque_kgfm:31.6,zero_100_s:7.3,vel_max_kmh:160,autonomia_km:422,consumo_kmkwh:7.1,eficiencia_mj_km:0.51,recarga_ac_kw:11,recarga_ac_tempo_h:6,recarga_dc_kw:88,recarga_dc_tempo_min:28,protocolo_dc:'CCS2',comprimento_mm_v:4455,largura_mm_v:1875,altura_mm_v:1615,porta_malas_l:440,peso_kg:1810,passageiros:5,airbags_qtd:6,adas_nivel:'L2',hud:'Sim',garantia_veiculo_anos:6,garantia_bateria_anos:8,tracao:'FWD'},
-  {marca:'MG',modelo:'MG4',versao:'EV Luxury',foto_principal:null,preco_atual:179990,reclame_aqui_nota:7.5,fabricado_em:'China',status_venda:'Ativo',pcd_isencao:false,bateria_kwh:64,potencia_cv:204,torque_kgfm:25,zero_100_s:7.7,vel_max_kmh:160,autonomia_km:425,consumo_kmkwh:6.6,eficiencia_mj_km:0.54,recarga_ac_kw:11,recarga_ac_tempo_h:7,recarga_dc_kw:117,recarga_dc_tempo_min:28,protocolo_dc:'CCS2',comprimento_mm_v:4287,largura_mm_v:1836,altura_mm_v:1504,porta_malas_l:363,peso_kg:1685,passageiros:5,airbags_qtd:6,adas_nivel:'L2',hud:'Não',garantia_veiculo_anos:5,garantia_bateria_anos:8,tracao:'FWD'}
+  {marca:'BYD',modelo:'Dolphin',versao:'SE',foto_principal:null,preco_atual:159990,reclame_aqui_nota:7.2,fabricado_em:'China',pcd_isencao:true,bateria_kwh:44.9,potencia_cv:95,torque_kgfm:18.35,zero_100_s:10.9,vel_max_kmh:150,autonomia_km:291,consumo_kmkwh:6.7,recarga_ac_kw:7.5,recarga_dc_kw:60,recarga_dc_tempo_min:30,protocolo_dc:'CCS2',comprimento_mm_v:4290,porta_malas_l:345,peso_kg:1490,airbags_qtd:6,adas_nivel:'L2',hud:'Não',garantia_veiculo_anos:6,garantia_bateria_anos:8,tracao:'FWD'},
+  {marca:'BYD',modelo:'Yuan Plus',versao:'EV',foto_principal:null,preco_atual:189990,reclame_aqui_nota:7.2,fabricado_em:'China',pcd_isencao:true,bateria_kwh:60.5,potencia_cv:204,torque_kgfm:31.6,zero_100_s:7.3,vel_max_kmh:160,autonomia_km:422,consumo_kmkwh:7.1,recarga_ac_kw:11,recarga_dc_kw:88,recarga_dc_tempo_min:28,protocolo_dc:'CCS2',comprimento_mm_v:4455,porta_malas_l:440,peso_kg:1810,airbags_qtd:6,adas_nivel:'L2',hud:'Sim',garantia_veiculo_anos:6,garantia_bateria_anos:8,tracao:'FWD'},
 ]
 
 try{
   const salvo=sessionStorage.getItem('spce_comparar')
-  if(salvo){
-    const carros=JSON.parse(salvo)
-    sessionStorage.removeItem('spce_comparar')
-    initComparador(carros)
-  } else {
-    initComparador(DEMO)
-  }
-}catch(e){
-  console.error('Erro ao carregar dados:',e)
-  initComparador(DEMO)
-}
+  if(salvo){const carros=JSON.parse(salvo);sessionStorage.removeItem('spce_comparar');initComparador(carros)}
+  else initComparador(DEMO)
+}catch(e){console.error(e);initComparador(DEMO)}
 </script>
 </body>
 </html>
