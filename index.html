@@ -750,9 +750,6 @@ function openCmp(){
           ?`<img src="${d.foto_principal}" onerror="this.style.display='none'">`
           :`<div class="cmod-car-bg-ph"></div>`}
       </div>
-      ${d.foto_principal
-        ?`<img class="cmod-car-foto" src="${d.foto_principal}" onerror="this.style.display='none'">`
-        :`<div class="cmod-car-foto-ph">${gi(d.marca,d.modelo)}</div>`}
       <div class="cmod-car-overlay"></div>
       <div class="cmod-car-info">
         <div class="cmod-car-marca">${d.marca}</div>
