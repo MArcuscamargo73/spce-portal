@@ -677,6 +677,13 @@ function clrCmp(){cmp=[];render();upCbar()}
 
 function openCmp(){
   const carros=cmp.map(i=>fd[i])
+  // Salva dados no sessionStorage e abre comparador em nova aba
+  sessionStorage.setItem('spce_comparar', JSON.stringify(carros))
+  window.open('comparador.html','_blank')
+}
+
+function openCmpLegado(){
+  const carros=cmp.map(i=>fd[i])
   const grupos=[
     {n:'1',t:'Fabricante',c:[{l:'Fabricado em',k:'fabricado_em',tp:'txt'},{l:'Nota Reclame Aqui',k:'reclame_aqui_nota',tp:'num',m:'maior'}]},
     {n:'2',t:'Bateria e Motor',c:[{l:'Bateria (kWh)',k:'bateria_kwh',tp:'num',m:'maior'},{l:'Potência (cv)',k:'potencia_cv',tp:'num',m:'maior'},{l:'Torque (kgf.m)',k:'torque_kgfm',tp:'num',m:'maior'},{l:'0–100 km/h (s)',k:'zero_100_s',tp:'num',m:'menor'},{l:'Vel. máxima (km/h)',k:'vel_max_kmh',tp:'num',m:'maior'},{l:'Pot. combinada (cv)',k:'potencia_combinada_cv',tp:'num',m:'maior'},{l:'Tração',k:'tracao',tp:'txt'}]},
