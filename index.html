@@ -261,6 +261,38 @@ button{cursor:pointer;font-family:var(--fh)}
 .cmod-venc-badge{background:var(--green);color:#fff;font-family:var(--fm);font-size:.58rem;font-weight:600;padding:.15rem .5rem;border-radius:100px;letter-spacing:.04em;white-space:nowrap}
 .cmod-venc-empty{height:18px}
 
+/* ADAS */
+.adas-grupo{margin-bottom:.75rem}
+.adas-grupo-titulo{font-family:var(--fm);font-size:.62rem;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;padding:.3rem 0;border-bottom:1px solid var(--border);margin-bottom:.4rem}
+.adas-grid{display:flex;flex-direction:column;gap:.25rem}
+.adas-item{display:flex;align-items:center;gap:.6rem;padding:.3rem .5rem;border-radius:var(--r);transition:background .15s}
+.adas-item:hover{background:var(--bg3)}
+.adas-check{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+.adas-check.sim{background:var(--green3);color:var(--green)}
+.adas-check.nao{background:#fff5f5;color:#fca5a5}
+.adas-nome{font-size:.8rem;color:var(--text);flex:1}
+.adas-nome.nao{color:var(--text3);text-decoration:line-through}
+.adas-cod{font-family:var(--fm);font-size:.6rem;color:var(--text3);background:var(--bg3);border:1px solid var(--border);padding:.1rem .35rem;border-radius:4px;flex-shrink:0}
+.adas-tipo{font-size:.62rem;color:var(--text3);flex-shrink:0}
+.adas-tipo.ativo{color:var(--blue)}
+.adas-contran{font-size:.6rem;background:#eff6ff;color:#0284c7;border:1px solid #bfdbfe;padding:.1rem .3rem;border-radius:100px;flex-shrink:0}
+.adas-loading{text-align:center;padding:1rem;color:var(--text3);font-size:.8rem}
+.adas-score{display:flex;align-items:center;gap:.75rem;background:var(--green3);border:1px solid var(--green4);border-radius:var(--r2);padding:.75rem 1rem;margin-bottom:1rem}
+.adas-score-num{font-family:var(--fh);font-size:1.8rem;font-weight:800;color:var(--green);line-height:1}
+.adas-score-info{display:flex;flex-direction:column;gap:.1rem}
+.adas-score-lbl{font-size:.72rem;color:var(--text2)}
+.adas-score-bar{height:6px;background:var(--border2);border-radius:3px;width:120px;margin-top:.3rem;overflow:hidden}
+.adas-score-fill{height:100%;background:var(--green);border-radius:3px;transition:width .6s ease}
+/* ADAS no comparador */
+.cmod-adas-row{display:grid;border-bottom:1px solid var(--border)}
+.cmod-adas-row:hover{background:var(--bg3)}
+.cmod-adas-lbl{padding:.45rem 1rem;display:flex;align-items:center;gap:.4rem;border-right:1px solid var(--border)}
+.cmod-adas-lbl span{font-size:.72rem;color:var(--text2)}
+.cmod-adas-lbl .cod{font-family:var(--fm);font-size:.6rem;color:var(--text3)}
+.cmod-adas-val{padding:.45rem 1rem;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--border)}
+.cmod-adas-val:last-child{border-right:none}
+.adas-tag-sim{background:var(--green3);color:var(--green);border:1px solid var(--green4);border-radius:100px;padding:.15rem .55rem;font-family:var(--fm);font-size:.62rem;font-weight:600}
+.adas-tag-nao{background:var(--bg3);color:var(--text3);border:1px solid var(--border);border-radius:100px;padding:.15rem .55rem;font-family:var(--fm);font-size:.62rem}
 /* FOOTER */
 .footer{padding:1.5rem 2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;color:var(--text3);font-family:var(--fm);font-size:.72rem;background:var(--bg2)}
 .footer strong{color:var(--green)}
@@ -652,13 +684,14 @@ function openD(i){
         ${d.suspensao_tras?sc(d.suspensao_tras,'suspensão traseira'):''}
       </div>
     </div>
-    <div class="grupo"><div class="gtit"><span class="gnum">6</span>Segurança</div>
+    <div class="grupo"><div class="gtit"><span class="gnum">6</span>Segurança e ADAS</div>
       <div class="sgrid">
         ${d.airbags_qtd?sc(d.airbags_qtd+' airbags','airbags'):''}
         ${d.adas!==null&&d.adas!==undefined?sc(d.adas?'Sim':'Não','possui ADAS?',d.adas):''}
         ${d.adas_nivel?sc(d.adas_nivel,'nível ADAS'):''}
         ${d.hud?sc(d.hud,'HUD',d.hud==='Sim'):''}
       </div>
+      <div id="adas-detalhe-${d.id}" class="adas-loading" style="margin-top:.75rem">Carregando funções ADAS...</div>
     </div>
     <div class="grupo"><div class="gtit"><span class="gnum">7</span>Garantias</div>
       <div class="sgrid">
@@ -683,6 +716,8 @@ function openD(i){
   `
   G('overlay').classList.add('open')
   document.body.style.overflow='hidden'
+  // Carregar ADAS detalhado
+  loadADASDetalhe(d.id)
 }
 
 function closeD(e){
@@ -881,6 +916,8 @@ function openCmp(){
   G('cmod-body').innerHTML=body
   G('cov').classList.add('open')
   document.body.style.overflow='hidden'
+  // Carregar ADAS detalhado no comparador
+  loadADASComparador(carros, gridCols)
 }
 
 function closeCmp(e){
@@ -920,6 +957,130 @@ function renderAdCard(idx){
   if(!ADS_PROPRIOS.length)return''
   const ad=ADS_PROPRIOS[idx%ADS_PROPRIOS.length]
   return`<div class="ad-card"><span class="ad-label">publicidade</span><a class="ad-own" href="${ad.link}" ${ad.nova_aba?'target="_blank"':''}><img class="ad-own-img" src="${ad.imagem}" alt="${ad.titulo}" onerror="this.style.display='none'"><div class="ad-own-body"><div class="ad-own-tag">${ad.tag}</div><div class="ad-own-title">${ad.titulo}</div><div class="ad-own-desc">${ad.descricao}</div><span class="ad-own-cta">${ad.cta}</span></div></a></div>`
+}
+
+// ── ADAS ─────────────────────────────────────────────────────
+async function loadADASDetalhe(versaoId){
+  const el=document.getElementById(`adas-detalhe-${versaoId}`)
+  if(!el) return
+  try{
+    const r=await fetch(`${SB}/rest/v1/adas_funcoes?versao_id=eq.${versaoId}&order=grupo_ordem,peso.desc`,{headers:H})
+    const data=await r.json()
+    if(!Array.isArray(data)||data.length===0){
+      el.innerHTML='<span style="color:var(--text3);font-size:.78rem">Dados ADAS não disponíveis para esta versão</span>'
+      return
+    }
+    // Score
+    const presentes=data.filter(f=>f.presente).length
+    const total=data.length
+    const pct=Math.round((presentes/total)*100)
+    // Agrupar
+    const grupos={}
+    data.forEach(f=>{
+      if(!grupos[f.grupo]) grupos[f.grupo]=[]
+      grupos[f.grupo].push(f)
+    })
+    let html=`<div class="adas-score">
+      <div class="adas-score-num">${presentes}/${total}</div>
+      <div class="adas-score-info">
+        <div class="adas-score-lbl">funções ADAS presentes</div>
+        <div class="adas-score-bar"><div class="adas-score-fill" style="width:${pct}%"></div></div>
+      </div>
+    </div>`
+    Object.entries(grupos).forEach(([grupo,fns])=>{
+      html+=`<div class="adas-grupo">
+        <div class="adas-grupo-titulo">${grupo}</div>
+        <div class="adas-grid">`
+      fns.forEach(f=>{
+        const sim=f.presente
+        html+=`<div class="adas-item">
+          <div class="adas-check ${sim?'sim':'nao'}">${sim?'✓':'✗'}</div>
+          <span class="adas-nome ${sim?'':'nao'}">${f.nome}</span>
+          <span class="adas-cod">${f.codigo}</span>
+          ${f.tipo_atuacao?`<span class="adas-tipo ${f.tipo_atuacao.includes('ativa')?'ativo':''}">${f.tipo_atuacao}</span>`:''}
+          ${f.obrigatorio_contran?`<span class="adas-contran">CONTRAN</span>`:''}
+        </div>`
+      })
+      html+=`</div></div>`
+    })
+    el.innerHTML=html
+    el.classList.remove('adas-loading')
+  }catch(e){
+    console.error('Erro ADAS:',e)
+    el.innerHTML='<span style="color:var(--text3);font-size:.78rem">Erro ao carregar dados ADAS</span>'
+  }
+}
+
+async function loadADASComparador(carros, gridCols){
+  try{
+    const ids=carros.map(d=>d.id)
+    const r=await fetch(`${SB}/rest/v1/adas_funcoes?versao_id=in.(${ids.join(',')})&order=grupo_ordem,peso.desc`,{headers:H})
+    const data=await r.json()
+    if(!Array.isArray(data)||data.length===0) return
+
+    // Organizar por função e versão
+    const funcoes={} // {codigo: {nome, grupo, grupo_ordem, obrigatorio, por_versao: {id: presente}}}
+    data.forEach(f=>{
+      if(!funcoes[f.codigo]){
+        funcoes[f.codigo]={
+          nome:f.nome, grupo:f.grupo, grupo_ordem:f.grupo_ordem,
+          obrigatorio:f.obrigatorio_contran, por_versao:{}
+        }
+      }
+      funcoes[f.codigo].por_versao[f.versao_id]=f.presente
+    })
+
+    // Agrupar por grupo
+    const grupos={}
+    Object.entries(funcoes).forEach(([cod,f])=>{
+      if(!grupos[f.grupo]) grupos[f.grupo]={ordem:f.grupo_ordem,fns:{}}
+      grupos[f.grupo].fns[cod]=f
+    })
+
+    // Renderizar no body do comparador
+    const body=G('cmod-body')
+    if(!body) return
+
+    let html=`<div class="cmod-grupo-hdr" style="grid-template-columns:${gridCols}">
+      <div class="cmod-grupo-lbl">
+        <div class="cmod-grupo-num">🛡️</div>
+        <div class="cmod-grupo-nome">ADAS Detalhado</div>
+      </div>
+      ${carros.map(()=>'<div class="cmod-grupo-spacer"></div>').join('')}
+    </div>`
+
+    Object.entries(grupos).sort((a,b)=>a[1].ordem-b[1].ordem).forEach(([grupo,g])=>{
+      // sub-header do grupo
+      html+=`<div class="cmod-row" style="grid-template-columns:${gridCols};background:var(--bg3)">
+        <div class="cmod-row-lbl"><span style="font-weight:600;color:var(--text2)">${grupo}</span></div>
+        ${carros.map(()=>`<div class="cmod-adas-val"></div>`).join('')}
+      </div>`
+      Object.entries(g.fns).forEach(([cod,f])=>{
+        html+=`<div class="cmod-adas-row" style="grid-template-columns:${gridCols}">
+          <div class="cmod-adas-lbl">
+            <span>${f.nome}</span>
+            <span class="cod">${cod}</span>
+            ${f.obrigatorio?`<span class="adas-contran">CONTRAN</span>`:''}
+          </div>`
+        carros.forEach(d=>{
+          const tem=f.por_versao[d.id]
+          const temDados=d.id in f.por_versao
+          html+=`<div class="cmod-adas-val">
+            ${temDados
+              ?(tem
+                ?`<span class="adas-tag-sim">✓ Sim</span>`
+                :`<span class="adas-tag-nao">✗ Não</span>`)
+              :`<span style="color:var(--text3);font-size:.75rem">—</span>`}
+          </div>`
+        })
+        html+=`</div>`
+      })
+    })
+
+    body.innerHTML+=html
+  }catch(e){
+    console.error('Erro ADAS comparador:',e)
+  }
 }
 
 load()
