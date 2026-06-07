@@ -201,28 +201,39 @@ button{cursor:pointer;font-family:var(--fh)}
 .vplay{width:50px;height:50px;border-radius:50%;background:#ff0000;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fff;padding-left:3px}
 .vov span{color:#fff;font-size:.82rem;font-weight:500}
 
-/* MODAL COMPARADOR */
-.cov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:400;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(6px);overflow-y:auto;padding:1.5rem 1rem}
+/* MODAL COMPARADOR — estilo detalhe lado a lado */
+.cov{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:400;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1.5rem 1rem}
 .cov.open{opacity:1;pointer-events:all}
-.cmod{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:1060px;margin:0 auto;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.15)}
-.cmodhead{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.5rem;border-bottom:1px solid var(--border)}
-.cmodhead h2{font-family:var(--fh);font-size:1.1rem;font-weight:700;letter-spacing:-.02em}
-.ctable{width:100%;border-collapse:collapse;table-layout:fixed}
-.ctable th{background:var(--bg3);padding:.65rem 1rem;text-align:center;border-bottom:1px solid var(--border);font-family:var(--fh);vertical-align:top}
-.ctable th.lcol{text-align:left;width:150px}
-.ctable td{padding:.55rem 1rem;border-bottom:1px solid var(--border);font-size:.82rem;vertical-align:middle}
-.ctable td.lcol{font-family:var(--fm);color:var(--text3);font-size:.7rem;font-weight:400;white-space:nowrap;background:var(--bg3)}
-.ctable td.vcol{text-align:center;font-weight:500}
-.ctable td.vcol.best{color:var(--green);font-weight:700}
-.ctable td.vcol.worst{color:var(--red)}
-.ctable tr.ghdr td{background:var(--green3);color:var(--green2);font-family:var(--fm);font-size:.65rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem}
-.ccarhead{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.4rem 0}
-.ccfoto{width:100%;height:72px;object-fit:cover;border-radius:var(--r);background:var(--bg4)}
-.ccph{width:100%;height:72px;background:var(--bg4);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.4rem;font-weight:800;color:var(--border2)}
-.ccmarca{font-family:var(--fm);font-size:.62rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
-.ccnome{font-family:var(--fh);font-size:.88rem;font-weight:700;text-align:center;letter-spacing:-.02em}
-.ccver{font-size:.72rem;color:var(--text2);text-align:center}
-.ccpreco{font-family:var(--fh);font-size:.8rem;font-weight:700;color:var(--green)}
+.cmod{background:var(--bg2);border:1px solid var(--border2);border-radius:24px;width:100%;max-width:1100px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.15);transform:scale(.97) translateY(10px);transition:transform .28s cubic-bezier(.34,1.56,.64,1);position:relative}
+.cov.open .cmod{transform:scale(1) translateY(0)}
+.cmod-fechar{position:absolute;top:.9rem;right:1rem;z-index:10;background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:32px;height:32px;border-radius:50%;font-size:.85rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.cmod-fechar:hover{border-color:var(--red);color:var(--red);background:#fff5f5}
+.cmod-head{flex-shrink:0;display:grid;border-bottom:2px solid var(--border)}
+.cmod-lbl-col{padding:.85rem 1rem;border-right:1px solid var(--border);display:flex;align-items:center}
+.cmod-lbl-col span{font-family:var(--fm);font-size:.62rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.cmod-car-col{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.75rem 1rem;border-right:1px solid var(--border);text-align:center;position:relative}
+.cmod-car-col:last-child{border-right:none;padding-right:3rem}
+.cmod-car-foto{height:80px;max-width:160px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.1))}
+.cmod-car-foto-ph{height:80px;width:130px;background:var(--green3);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.8rem;font-weight:800;color:var(--green2)}
+.cmod-car-marca{font-family:var(--fm);font-size:.6rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+.cmod-car-nome{font-family:var(--fh);font-size:.92rem;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1.1}
+.cmod-car-ver{font-size:.7rem;color:var(--text2)}
+.cmod-car-preco{font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--green)}
+.cmod-pts{background:var(--green3);border:1px solid var(--green4);border-radius:100px;padding:.12rem .45rem;font-family:var(--fm);font-size:.58rem;font-weight:500;color:var(--green);margin-top:.1rem}
+.cmod-body{flex:1;overflow-y:auto}
+.cmod-grupo-hdr{display:grid;background:var(--green3);border-bottom:1px solid var(--green4);position:sticky;top:0;z-index:2}
+.cmod-grupo-lbl{padding:.45rem 1rem;display:flex;align-items:center;gap:.35rem;border-right:1px solid var(--green4)}
+.cmod-grupo-num{width:18px;height:18px;border-radius:50%;background:var(--green);color:#fff;font-family:var(--fm);font-size:.58rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cmod-grupo-nome{font-family:var(--fm);font-size:.62rem;font-weight:500;color:var(--green2);letter-spacing:.06em;text-transform:uppercase}
+.cmod-grupo-spacer{border-right:1px solid var(--green4)}
+.cmod-row{display:grid;border-bottom:1px solid var(--border)}
+.cmod-row:hover{background:var(--bg3)}
+.cmod-row-lbl{padding:.5rem 1rem;display:flex;align-items:center;border-right:1px solid var(--border)}
+.cmod-row-lbl span{font-family:var(--fm);font-size:.66rem;color:var(--text3)}
+.cmod-val{padding:.5rem 1rem;display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:500;border-right:1px solid var(--border);text-align:center}
+.cmod-val:last-child{border-right:none}
+.cmod-val.best{color:var(--green);font-weight:700;background:rgba(34,197,94,.05)}
+.cmod-val.worst{color:var(--red)}
 
 /* FOOTER */
 .footer{padding:1.5rem 2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;color:var(--text3);font-family:var(--fm);font-size:.72rem;background:var(--bg2)}
@@ -396,12 +407,10 @@ button{cursor:pointer;font-family:var(--fh)}
 
 <!-- MODAL COMPARADOR -->
 <div class="cov" id="cov" onclick="closeCmp(event)">
-  <div class="cmod">
-    <div class="cmodhead">
-      <h2>⚖️ Comparativo</h2>
-      <button class="xbtn" onclick="closeCmp()">✕</button>
-    </div>
-    <div id="ctbl" style="overflow-x:auto"></div>
+  <div class="cmod" id="cmod-inner">
+    <button class="cmod-fechar" onclick="closeCmp()">✕</button>
+    <div class="cmod-head" id="cmod-head"></div>
+    <div class="cmod-body" id="cmod-body"></div>
   </div>
 </div>
 
@@ -677,39 +686,64 @@ function clrCmp(){cmp=[];render();upCbar()}
 
 function openCmp(){
   const carros=cmp.map(i=>fd[i])
-  // Salva dados no sessionStorage e abre comparador em nova aba
-  sessionStorage.setItem('spce_comparar', JSON.stringify(carros))
-  window.open('comparador.html','_blank')
-}
-
-function openCmpLegado(){
-  const carros=cmp.map(i=>fd[i])
-  const grupos=[
-    {n:'1',t:'Fabricante',c:[{l:'Fabricado em',k:'fabricado_em',tp:'txt'},{l:'Nota Reclame Aqui',k:'reclame_aqui_nota',tp:'num',m:'maior'}]},
-    {n:'2',t:'Bateria e Motor',c:[{l:'Bateria (kWh)',k:'bateria_kwh',tp:'num',m:'maior'},{l:'Potência (cv)',k:'potencia_cv',tp:'num',m:'maior'},{l:'Torque (kgf.m)',k:'torque_kgfm',tp:'num',m:'maior'},{l:'0–100 km/h (s)',k:'zero_100_s',tp:'num',m:'menor'},{l:'Vel. máxima (km/h)',k:'vel_max_kmh',tp:'num',m:'maior'},{l:'Pot. combinada (cv)',k:'potencia_combinada_cv',tp:'num',m:'maior'},{l:'Tração',k:'tracao',tp:'txt'}]},
-    {n:'3',t:'Autonomia INMETRO',c:[{l:'Autonomia elétrica (km)',k:'autonomia_km',tp:'num',m:'maior'},{l:'Consumo (km/kWh)',k:'consumo_kmkwh',tp:'num',m:'maior'},{l:'Consumo cidade (km/l)',k:'autonomia_hev_cidade',tp:'num',m:'maior'},{l:'Eficiência (MJ/km)',k:'eficiencia_mj_km',tp:'num',m:'menor'}]},
-    {n:'4',t:'Recarga',c:[{l:'Recarga AC (kW)',k:'recarga_ac_kw',tp:'num',m:'maior'},{l:'Recarga DC (kW)',k:'recarga_dc_kw',tp:'num',m:'maior'},{l:'DC 30→80% (min)',k:'recarga_dc_tempo_min',tp:'num',m:'menor'},{l:'Protocolo DC',k:'protocolo_dc',tp:'txt'}]},
-    {n:'5',t:'Dimensões',c:[{l:'Comprimento (mm)',k:'comprimento_mm_v',tp:'num'},{l:'Largura (mm)',k:'largura_mm_v',tp:'num'},{l:'Porta-malas (L)',k:'porta_malas_l',tp:'num',m:'maior'},{l:'Frunk (L)',k:'frunk_l',tp:'num',m:'maior'},{l:'Peso (kg)',k:'peso_kg',tp:'num',m:'menor'},{l:'Suspensão dianteira',k:'suspensao_diant',tp:'txt'},{l:'Suspensão traseira',k:'suspensao_tras',tp:'txt'}]},
-    {n:'6',t:'Segurança',c:[{l:'Airbags',k:'airbags_qtd',tp:'num',m:'maior'},{l:'ADAS',k:'adas_nivel',tp:'txt'},{l:'HUD',k:'hud',tp:'txt'}]},
-    {n:'7',t:'Garantias',c:[{l:'Garantia veículo (anos)',k:'garantia_veiculo_anos',tp:'num',m:'maior'},{l:'Garantia bateria (anos)',k:'garantia_bateria_anos',tp:'num',m:'maior'}]},
-    {n:'$',t:'Preço',c:[{l:'Preço 0km',k:'preco_atual',tp:'preco',m:'menor'}]},
-  ]
   const nc=carros.length
-  let h=`<table class="ctable"><thead><tr><th class="lcol"></th>`
-  carros.forEach(d=>{
-    h+=`<th><div class="ccarhead">
-      ${d.foto_principal?`<img src="${d.foto_principal}" class="ccfoto" onerror="this.style.display='none'">`:`<div class="ccph">${gi(d.marca,d.modelo)}</div>`}
-      <div class="ccmarca">${d.marca}</div><div class="ccnome">${d.modelo}</div>
-      <div class="ccver">${d.versao||''}</div>
-      <div class="ccpreco">${d.preco_atual?fp(d.preco_atual):'Consulte'}</div>
-    </div></th>`
+
+  const GRUPOS=[
+    {n:'1',nome:'Fabricante',c:[{l:'Fabricado em',k:'fabricado_em',tp:'txt'},{l:'Nota Reclame Aqui',k:'reclame_aqui_nota',tp:'num',m:'maior'},{l:'Status',k:'status_venda',tp:'txt'},{l:'Isenção PcD',k:'pcd_isencao',tp:'bool'}]},
+    {n:'2',nome:'Bateria e Motor',c:[{l:'Bateria (kWh)',k:'bateria_kwh',tp:'num',m:'maior'},{l:'Potência (cv)',k:'potencia_cv',tp:'num',m:'maior'},{l:'Pot. combinada (cv)',k:'potencia_combinada_cv',tp:'num',m:'maior'},{l:'Torque (kgf.m)',k:'torque_kgfm',tp:'num',m:'maior'},{l:'0–100 km/h (s)',k:'zero_100_s',tp:'num',m:'menor'},{l:'Vel. máxima (km/h)',k:'vel_max_kmh',tp:'num',m:'maior'},{l:'Tração',k:'tracao',tp:'txt'}]},
+    {n:'3',nome:'Autonomia INMETRO',c:[{l:'Autonomia elétrica (km)',k:'autonomia_km',tp:'num',m:'maior'},{l:'Consumo (km/kWh)',k:'consumo_kmkwh',tp:'num',m:'maior'},{l:'Consumo cidade (km/l)',k:'autonomia_hev_cidade',tp:'num',m:'maior'},{l:'Eficiência (MJ/km)',k:'eficiencia_mj_km',tp:'num',m:'menor'}]},
+    {n:'4',nome:'Recarga',c:[{l:'Recarga AC (kW)',k:'recarga_ac_kw',tp:'num',m:'maior'},{l:'Tempo AC (h)',k:'recarga_ac_tempo_h',tp:'num',m:'menor'},{l:'Recarga DC (kW)',k:'recarga_dc_kw',tp:'num',m:'maior'},{l:'DC 30→80% (min)',k:'recarga_dc_tempo_min',tp:'num',m:'menor'},{l:'Protocolo DC',k:'protocolo_dc',tp:'txt'}]},
+    {n:'5',nome:'Dimensões e Acessórios',c:[{l:'Comprimento (mm)',k:'comprimento_mm_v',tp:'num'},{l:'Largura (mm)',k:'largura_mm_v',tp:'num'},{l:'Altura (mm)',k:'altura_mm_v',tp:'num'},{l:'Porta-malas (L)',k:'porta_malas_l',tp:'num',m:'maior'},{l:'Frunk (L)',k:'frunk_l',tp:'num',m:'maior'},{l:'Peso (kg)',k:'peso_kg',tp:'num',m:'menor'},{l:'Passageiros',k:'passageiros',tp:'num'},{l:'Suspensão diant.',k:'suspensao_diant',tp:'txt'},{l:'Suspensão tras.',k:'suspensao_tras',tp:'txt'}]},
+    {n:'6',nome:'Segurança',c:[{l:'Airbags',k:'airbags_qtd',tp:'num',m:'maior'},{l:'Nível ADAS',k:'adas_nivel',tp:'txt'},{l:'HUD',k:'hud',tp:'txt'}]},
+    {n:'7',nome:'Garantias',c:[{l:'Garantia veículo (anos)',k:'garantia_veiculo_anos',tp:'num',m:'maior'},{l:'Garantia bateria (anos)',k:'garantia_bateria_anos',tp:'num',m:'maior'}]},
+    {n:'$',nome:'Preço',c:[{l:'Preço 0km',k:'preco_atual',tp:'preco',m:'menor'}]},
+  ]
+
+  // Calcular pontos
+  const pts=carros.map(()=>0)
+  GRUPOS.forEach(g=>g.c.forEach(f=>{
+    if(!(f.tp==='num'||f.tp==='preco')||!f.m) return
+    const ns=carros.map(d=>parseFloat(d[f.k])||null)
+    const vl=ns.filter(v=>v!==null)
+    if(vl.length<2) return
+    const bv=f.m==='maior'?Math.max(...vl):Math.min(...vl)
+    const bi=ns.indexOf(bv)
+    if(bi>=0) pts[bi]++
+  }))
+
+  // Header
+  const gridCols=`160px ${Array(nc).fill('1fr').join(' ')}`
+  let head=`<div class="cmod-lbl-col"><span>critério</span></div>`
+  carros.forEach((d,i)=>{
+    head+=`<div class="cmod-car-col">
+      ${d.foto_principal
+        ?`<img class="cmod-car-foto" src="${d.foto_principal}" onerror="this.style.display='none'">`
+        :`<div class="cmod-car-foto-ph">${gi(d.marca,d.modelo)}</div>`}
+      <div class="cmod-car-marca">${d.marca}</div>
+      <div class="cmod-car-nome">${d.modelo}</div>
+      <div class="cmod-car-ver">${d.versao||''}</div>
+      ${d.preco_atual?`<div class="cmod-car-preco">${fp(d.preco_atual)}</div>`:''}
+      <div class="cmod-pts">${pts[i]} pts</div>
+    </div>`
   })
-  h+=`</tr></thead><tbody>`
-  grupos.forEach(g=>{
-    h+=`<tr class="ghdr"><td colspan="${nc+1}"><span style="margin-right:.4rem">${g.n}</span>${g.t}</td></tr>`
+  G('cmod-head').style.gridTemplateColumns=gridCols
+  G('cmod-head').innerHTML=head
+
+  // Body
+  let body=''
+  GRUPOS.forEach(g=>{
+    const temDados=g.c.some(f=>carros.some(d=>{const v=d[f.k];return v!==null&&v!==undefined&&v!==''}))
+    if(!temDados) return
+    body+=`<div class="cmod-grupo-hdr" style="grid-template-columns:${gridCols}">
+      <div class="cmod-grupo-lbl">
+        <div class="cmod-grupo-num">${g.n}</div>
+        <div class="cmod-grupo-nome">${g.nome}</div>
+      </div>
+      ${carros.map(()=>'<div class="cmod-grupo-spacer"></div>').join('')}
+    </div>`
     g.c.forEach(f=>{
       const vals=carros.map(d=>d[f.k])
-      if(!vals.some(v=>v!==null&&v!==undefined&&v!==''))return
+      if(!vals.some(v=>v!==null&&v!==undefined&&v!=='')) return
       let bi=-1,wi=-1
       if((f.tp==='num'||f.tp==='preco')&&f.m){
         const ns=vals.map(v=>parseFloat(v)||null)
@@ -717,65 +751,16 @@ function openCmpLegado(){
         if(vl.length>1){
           const bv=f.m==='maior'?Math.max(...vl):Math.min(...vl)
           const wv=f.m==='maior'?Math.min(...vl):Math.max(...vl)
-          bi=ns.indexOf(bv);wi=ns.indexOf(wv)
+          bi=ns.indexOf(bv); wi=ns.indexOf(wv)
           if(bi===wi)wi=-1
         }
       }
-      h+=`<tr><td class="lcol">${f.l}</td>`
+      body+=`<div class="cmod-row" style="grid-template-columns:${gridCols}">
+        <div class="cmod-row-lbl"><span>${f.l}</span></div>`
       vals.forEach((v,i)=>{
-        const disp=v===null||v===undefined||v===''?'—':f.tp==='preco'?fp(v):f.tp==='num'?Number(v).toLocaleString('pt-BR'):v
-        const cls=i===bi?'best':i===wi?'worst':''
-        h+=`<td class="vcol ${cls}">${disp}</td>`
-      })
-      h+=`</tr>`
-    })
-  })
-  h+=`</tbody></table>`
-  G('ctbl').innerHTML=h
-  G('cov').classList.add('open')
-  document.body.style.overflow='hidden'
-}
-
-function closeCmp(e){
-  if(e&&e.target!==G('cov'))return
-  G('cov').classList.remove('open')
-  document.body.style.overflow=''
-}
-
-let carIdx=0,carTimer=null
-const CAR_TOTAL=3
-function carMove(dir){carGo((carIdx+dir+CAR_TOTAL)%CAR_TOTAL)}
-function carGo(i){
-  carIdx=i
-  document.getElementById('carousel').style.transform=`translateX(-${i*100}%)`
-  document.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('on',j===i))
-  resetTimer()
-}
-function resetTimer(){clearInterval(carTimer);carTimer=setInterval(()=>carMove(1),5000)}
-resetTimer()
-;(function(){
-  let sx=0
-  const el=document.getElementById('carousel')
-  if(!el)return
-  el.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true})
-  el.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)carMove(dx<0?1:-1)},{passive:true})
-})()
-
-const ADSENSE_ATIVO=false
-const ADSENSE_CLIENT='ca-pub-XXXXXXXXXXXXXXXX'
-const ADSENSE_SLOT='XXXXXXXXXX'
-const ADS_PROPRIOS=[
-  {tag:'Patrocinado',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x300/f0fdf4/16a34a?text=Anuncie+no+SPCE',nova_aba:true},
-  {tag:'Parceiro',titulo:'Seu Anúncio Aqui',descricao:'Espaço disponível para publicidade. Entre em contato para anunciar no SPCE.',cta:'Saiba mais →',link:'mailto:contato@spce.com.br',imagem:'https://placehold.co/600x300/eff6ff/0284c7?text=Anuncie+no+SPCE',nova_aba:true}
-]
-function renderAdCard(idx){
-  if(ADSENSE_ATIVO){return`<div class="ad-card"><span class="ad-label">publicidade</span><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:1rem"><ins class="adsbygoogle" style="display:block;width:100%;height:280px" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>`}
-  if(!ADS_PROPRIOS.length)return''
-  const ad=ADS_PROPRIOS[idx%ADS_PROPRIOS.length]
-  return`<div class="ad-card"><span class="ad-label">publicidade</span><a class="ad-own" href="${ad.link}" ${ad.nova_aba?'target="_blank"':''}><img class="ad-own-img" src="${ad.imagem}" alt="${ad.titulo}" onerror="this.style.display='none'"><div class="ad-own-body"><div class="ad-own-tag">${ad.tag}</div><div class="ad-own-title">${ad.titulo}</div><div class="ad-own-desc">${ad.descricao}</div><span class="ad-own-cta">${ad.cta}</span></div></a></div>`
-}
-
-load()
-</script>
-</body>
-</html>
+        const disp=v===null||v===undefined||v===''?'—'
+          :f.tp==='preco'?fp(v)
+          :f.tp==='bool'?(v?'✓ Sim':'Não')
+          :f.tp==='num'?Number(v).toLocaleString('pt-BR')
+          :v
+        const cls=i
