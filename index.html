@@ -300,16 +300,31 @@ button{cursor:pointer;font-family:var(--fh)}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 @media(max-width:768px){
-  .hdr{padding:0 1rem}
-  .carousel{height:240px}
-  .slide-overlay{padding:1.25rem}
-  .slide-title{font-size:1.1rem}
-  .slide-sub{font-size:.8rem}
+  .hdr{padding:0 1rem;height:52px}
+  .logo-sub{display:none}
+  .carousel{height:160px}
+  .slide-overlay{padding:1rem 1.25rem}
+  .slide-title{font-size:.95rem}
+  .slide-sub{display:none}
+  .slide-tag{font-size:.62rem;padding:.18rem .5rem}
+  .car-prev,.car-next{width:28px;height:28px;font-size:.9rem}
   .car-stats{display:none}
-  .filters{padding:.75rem 1rem;top:60px}
-  .gwrap{padding:1rem 1rem 5rem}
-  .grid{grid-template-columns:1fr}
-  .cimg{height:180px}
+  .filters{padding:.5rem .75rem;top:52px;flex-wrap:nowrap;overflow-x:auto;gap:.4rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .filters::-webkit-scrollbar{display:none}
+  .flbl{display:none}
+  .rwrap{display:none}
+  .fcnt{display:none}
+  .srch{min-width:160px;max-width:200px;flex-shrink:0}
+  .chip{font-size:.75rem;padding:.28rem .65rem;flex-shrink:0}
+  .gwrap{padding:.75rem .75rem 5rem}
+  .grid{grid-template-columns:1fr 1fr;gap:.6rem}
+  .cimg{height:120px}
+  .cbody{padding:.7rem .75rem .75rem}
+  .cnome{font-size:.95rem}
+  .cver{font-size:.72rem;margin-bottom:.6rem}
+  .cspecs{gap:.25rem .4rem;margin-bottom:.7rem}
+  .spv{font-size:.8rem}
+  .spl{font-size:.6rem}
   .detail{border-radius:16px 16px 0 0;max-height:95vh}
   .overlay{padding:0;align-items:flex-end}
   .dhead{padding:.9rem 1rem}
@@ -317,7 +332,7 @@ button{cursor:pointer;font-family:var(--fh)}
   .dbody{padding:.9rem 1rem}
   .sgrid{grid-template-columns:1fr 1fr}
   .pgrid{grid-template-columns:1fr}
-  .cmod{border-radius:16px 16px 0 0}
+  .cmod{border-radius:16px 16px 0 0;max-height:95vh}
   .cov{padding:0;align-items:flex-end}
   .cbar{padding:.65rem 1rem}
   .cslots{flex-wrap:wrap}
@@ -326,15 +341,33 @@ button{cursor:pointer;font-family:var(--fh)}
   .footer{flex-direction:column;text-align:center}
 }
 @media(max-width:480px){
-  .carousel{height:200px}
-  .slide-title{font-size:.95rem}
-  .slide-sub{display:none}
-  .filters{flex-direction:column;align-items:stretch}
-  .srch{max-width:100%}
-  .rwrap{max-width:100%}
+  .carousel{height:130px}
+  .slide-title{font-size:.85rem}
+  .grid{grid-template-columns:1fr}
+  .cimg{height:160px}
   .sgrid{grid-template-columns:1fr}
   .cbarbtns{width:100%;justify-content:space-between}
   .bcmp,.bclr{flex:1;text-align:center}
+}
+/* Botão filtros avançados mobile */
+.filtros-avancados-btn{display:none}
+.filtros-painel{display:none}
+@media(max-width:768px){
+  .filtros-avancados-btn{
+    display:flex;align-items:center;gap:.3rem;flex-shrink:0;
+    background:none;border:1px solid var(--border2);color:var(--text2);
+    font-size:.75rem;padding:.28rem .65rem;border-radius:100px;
+    cursor:pointer;white-space:nowrap;font-family:var(--fh);transition:all .18s;
+  }
+  .filtros-avancados-btn.on{background:var(--green3);border-color:var(--green4);color:var(--green2)}
+  .filtros-painel{
+    padding:.6rem .75rem;border-bottom:1px solid var(--border);
+    background:var(--bg2);gap:.6rem;flex-wrap:wrap;align-items:center;
+  }
+  .filtros-painel.aberto{display:flex}
+  .filtros-painel .rwrap{display:flex;min-width:140px;max-width:100%}
+  .filtros-painel .flbl{display:block;font-size:.72rem}
+  .filtros-painel .fcnt{display:block}
 }
 </style>
 </head>
@@ -424,7 +457,27 @@ button{cursor:pointer;font-family:var(--fh)}
       <div class="rtrack"><div class="rfill" id="af"></div></div>
     </div>
   </div>
+  <button class="filtros-avancados-btn" id="btn-filtros-av" onclick="toggleFiltrosAv()">⚙️ Filtros</button>
   <span class="fcnt" id="cnt"></span>
+</div>
+<div class="filtros-painel" id="filtros-painel">
+  <span class="flbl">PREÇO MÁX</span>
+  <div class="rwrap">
+    <div class="rlbls"><span>qualquer</span><span class="rval" id="lp2">qualquer</span></div>
+    <div class="srange">
+      <input type="range" id="pmax2" min="0" max="1000000" step="50000" value="1000000" oninput="syncRange('pmax','pmax2','lp','lp2','pf')">
+      <div class="rtrack"><div class="rfill" id="pf2"></div></div>
+    </div>
+  </div>
+  <span class="flbl">AUTONOMIA MÍN</span>
+  <div class="rwrap">
+    <div class="rlbls"><span>qualquer</span><span class="rval" id="la2">qualquer</span></div>
+    <div class="srange">
+      <input type="range" id="amin2" min="0" max="600" step="50" value="0" oninput="syncRange('amin','amin2','la','la2','af')">
+      <div class="rtrack"><div class="rfill" id="af2"></div></div>
+    </div>
+  </div>
+  <span class="fcnt" id="cnt2"></span>
 </div>
 
 <div class="gwrap">
@@ -1081,6 +1134,30 @@ async function loadADASComparador(carros, gridCols){
   }catch(e){
     console.error('Erro ADAS comparador:',e)
   }
+}
+
+function toggleFiltrosAv(){
+  const btn=G('btn-filtros-av'),painel=G('filtros-painel')
+  if(!btn||!painel) return
+  btn.classList.toggle('on')
+  painel.classList.toggle('aberto')
+}
+
+function syncRange(id1,id2,lbl1,lbl2,fill){
+  const src=G(id1)||G(id2)
+  if(!src) return
+  const v1=G(id1),v2=G(id2)
+  if(v1&&v2){
+    if(event.target.id===id1) v2.value=v1.value
+    else v1.value=v2.value
+  }
+  upRanges()
+  // Atualizar label do painel
+  const pmax=parseInt(G('pmax').value),amin=parseInt(G('amin').value)
+  const lp2=G('lp2'),la2=G('la2'),cnt2=G('cnt2')
+  if(lp2) lp2.textContent=pmax>=1000000?'qualquer':'R$ '+pmax.toLocaleString('pt-BR')
+  if(la2) la2.textContent=amin===0?'qualquer':amin+' km'
+  if(cnt2) cnt2.textContent=G('cnt').textContent
 }
 
 load()
