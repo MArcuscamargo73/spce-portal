@@ -630,8 +630,8 @@ function render(){
     <button class="cmpbtn${cmp.includes(i)?' sel':''}" onclick="togCmp(event,${i})" id="cb${i}">${cmp.includes(i)?'✓ sel':'＋ comp'}</button>
     <div class="cimg">
       ${d.foto_principal?`<img src="${d.foto_principal}" alt="${d.marca} ${d.modelo}" loading="lazy">`:`<div class="cph">${gi(d.marca,d.modelo)}</div>`}
+      ${d.logo_url?`<div class="clogo-wrap"><img src="${d.logo_url}" alt="${d.marca}" loading="lazy"></div>`:''}
     </div>
-    ${d.logo_url?`<div class="clogo-wrap"><img src="${d.logo_url}" alt="${d.marca}" loading="lazy"></div>`:''}
     <div class="cbody">
       <div class="cmarca">${d.logo_url?'':d.marca+' <span style="color:var(--border2)">·</span> '}<span class="cano">${d.ano_fabricacao||d.ano_modelo||''}</span></div>
       <div class="cnome">${d.modelo}</div>
@@ -1145,3 +1145,19 @@ function syncRange(id1,id2,lbl1,lbl2,fill){
   if(!src) return
   const v1=G(id1),v2=G(id2)
   if(v1&&v2){
+    if(event.target.id===id1) v2.value=v1.value
+    else v1.value=v2.value
+  }
+  upRanges()
+  // Atualizar label do painel
+  const pmax=parseInt(G('pmax').value),amin=parseInt(G('amin').value)
+  const lp2=G('lp2'),la2=G('la2'),cnt2=G('cnt2')
+  if(lp2) lp2.textContent=pmax>=1000000?'qualquer':'R$ '+pmax.toLocaleString('pt-BR')
+  if(la2) la2.textContent=amin===0?'qualquer':amin+' km'
+  if(cnt2) cnt2.textContent=G('cnt').textContent
+}
+
+load()
+</script>
+</body>
+</html>
