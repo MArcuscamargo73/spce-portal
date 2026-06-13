@@ -112,7 +112,7 @@ button{cursor:pointer;font-family:var(--fh)}
 .card:hover .carr{background:var(--green);border-color:var(--green);color:#fff;transform:translateX(2px)}
 
 /* Logo da marca no card */
-.clogo-wrap{position:absolute;bottom:.5rem;right:.5rem;z-index:3;width:40px;height:24px;background:rgba(255,255,255,.92);border-radius:5px;display:flex;align-items:center;justify-content:center;padding:2px 5px;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.clogo-wrap{position:absolute;top:.75rem;right:.75rem;z-index:3;height:22px;max-width:52px;background:#fff;border-radius:5px;display:flex;align-items:center;justify-content:center;padding:2px 5px;box-shadow:0 1px 4px rgba(0,0,0,.1);border:1px solid var(--border)}
 .clogo-wrap img{max-width:100%;max-height:100%;object-fit:contain}
 /* CARD AD */
 .ad-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;position:relative;min-height:340px;display:flex;flex-direction:column;box-shadow:var(--shadow)}
@@ -630,8 +630,8 @@ function render(){
     <button class="cmpbtn${cmp.includes(i)?' sel':''}" onclick="togCmp(event,${i})" id="cb${i}">${cmp.includes(i)?'✓ sel':'＋ comp'}</button>
     <div class="cimg">
       ${d.foto_principal?`<img src="${d.foto_principal}" alt="${d.marca} ${d.modelo}" loading="lazy">`:`<div class="cph">${gi(d.marca,d.modelo)}</div>`}
-      ${d.logo_url?`<div class="clogo-wrap"><img src="${d.logo_url}" alt="${d.marca}" loading="lazy"></div>`:''}
     </div>
+    ${d.logo_url?`<div class="clogo-wrap"><img src="${d.logo_url}" alt="${d.marca}" loading="lazy"></div>`:''}
     <div class="cbody">
       <div class="cmarca">${d.logo_url?'':d.marca+' <span style="color:var(--border2)">·</span> '}<span class="cano">${d.ano_fabricacao||d.ano_modelo||''}</span></div>
       <div class="cnome">${d.modelo}</div>
