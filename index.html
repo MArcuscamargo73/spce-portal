@@ -111,6 +111,9 @@ button{cursor:pointer;font-family:var(--fh)}
 .carr{color:var(--text3);font-size:.9rem;transition:all .2s;width:24px;height:24px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
 .card:hover .carr{background:var(--green);border-color:var(--green);color:#fff;transform:translateX(2px)}
 
+/* Logo da marca no card */
+.clogo-wrap{position:absolute;bottom:.5rem;right:.5rem;z-index:3;width:40px;height:24px;background:rgba(255,255,255,.92);border-radius:5px;display:flex;align-items:center;justify-content:center;padding:2px 5px;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.clogo-wrap img{max-width:100%;max-height:100%;object-fit:contain}
 /* CARD AD */
 .ad-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;position:relative;min-height:340px;display:flex;flex-direction:column;box-shadow:var(--shadow)}
 .ad-card .ad-label{position:absolute;top:.6rem;right:.6rem;font-family:var(--fm);font-size:.6rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;background:var(--bg3);border:1px solid var(--border);padding:.12rem .45rem;border-radius:100px;z-index:2}
@@ -628,8 +631,9 @@ function render(){
     <div class="cimg">
       ${d.foto_principal?`<img src="${d.foto_principal}" alt="${d.marca} ${d.modelo}" loading="lazy">`:`<div class="cph">${gi(d.marca,d.modelo)}</div>`}
     </div>
+    ${d.logo_url?`<div class="clogo-wrap"><img src="${d.logo_url}" alt="${d.marca}" loading="lazy"></div>`:''}
     <div class="cbody">
-      <div class="cmarca">${d.marca} <span style="color:var(--border2)">·</span> <span class="cano">${d.ano_fabricacao||d.ano_modelo||''}</span></div>
+      <div class="cmarca">${d.logo_url?'':d.marca+' <span style="color:var(--border2)">·</span> '}<span class="cano">${d.ano_fabricacao||d.ano_modelo||''}</span></div>
       <div class="cnome">${d.modelo}</div>
       <div class="cver">${d.versao||'—'}</div>
       <div class="cspecs">
@@ -1141,19 +1145,3 @@ function syncRange(id1,id2,lbl1,lbl2,fill){
   if(!src) return
   const v1=G(id1),v2=G(id2)
   if(v1&&v2){
-    if(event.target.id===id1) v2.value=v1.value
-    else v1.value=v2.value
-  }
-  upRanges()
-  // Atualizar label do painel
-  const pmax=parseInt(G('pmax').value),amin=parseInt(G('amin').value)
-  const lp2=G('lp2'),la2=G('la2'),cnt2=G('cnt2')
-  if(lp2) lp2.textContent=pmax>=1000000?'qualquer':'R$ '+pmax.toLocaleString('pt-BR')
-  if(la2) la2.textContent=amin===0?'qualquer':amin+' km'
-  if(cnt2) cnt2.textContent=G('cnt').textContent
-}
-
-load()
-</script>
-</body>
-</html>
