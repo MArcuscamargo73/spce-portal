@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
 <title>SPCE — Seu Primeiro Carro Elétrico</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
+  color-scheme:light;
   --bg:#f7f9f7;--bg2:#ffffff;--bg3:#f0f4f1;--bg4:#e8efe9;
   --green:#16a34a;--green2:#15803d;--green3:#dcfce7;--green4:#bbf7d0;--greenbright:#22c55e;
   --text:#0f1f14;--text2:#3d6349;--text3:#7a9e82;
@@ -1156,10 +1158,4 @@ function syncRange(id1,id2,lbl1,lbl2,fill){
   const lp2=G('lp2'),la2=G('la2'),cnt2=G('cnt2')
   if(lp2) lp2.textContent=pmax>=1000000?'qualquer':'R$ '+pmax.toLocaleString('pt-BR')
   if(la2) la2.textContent=amin===0?'qualquer':amin+' km'
-  if(cnt2) cnt2.textContent=G('cnt').textContent
-}
-
-load()
-</script>
-</body>
-</html>
+  if(cnt2) cnt2.text
